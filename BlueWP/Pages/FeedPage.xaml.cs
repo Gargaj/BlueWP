@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
@@ -47,9 +48,23 @@ namespace BlueWP.Pages
             IsLoading = false;
         }
 
-        private void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
         {
-            _app.Logout();
+            var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");
+            // Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
+            dialog.Commands.Add(new Windows.UI.Popups.UICommand("No", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
+            dialog.DefaultCommandIndex = 1;
+            dialog.CancelCommandIndex = 1;
+            await dialog.ShowAsync();
+        }
+
+        private void LogoutMessageDialogHandler(Windows.UI.Popups.IUICommand command)
+        {
+            if (command.Label == "Yes")
+            {
+                _app.Logout();
+            }
         }
 
         public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get { return _feedItems; } }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -51,6 +52,7 @@ namespace BlueWP.ATProto
 
             return true;
         }
+
         public bool IsAuthenticated { get { return _credentials.accessToken != null; } }
         public string Handle { get { return _credentials.handle; } }
         public string DID { get { return _credentials.did; } }
@@ -87,7 +89,34 @@ namespace BlueWP.ATProto
                     first = false;
                 }
             }
-            var responseJson = await http.DoGETRequestAsync(url, null, headers);
+            string responseJson = null;
+            try
+            {
+                responseJson = await http.DoGETRequestAsync(url, null, headers);
+            }
+            catch (WebException ex)
+            {
+                var webResponse = ex.Response as HttpWebResponse;
+                var error = ex.Response != null ? await new StreamReader(ex.Response.GetResponseStream()).ReadToEndAsync() : ex.ToString();
+                var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
+                if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
+                {
+                    if (await RefreshCredentials())
+                    {
+                        headers["Authorization"] = $"Bearer {_credentials.accessToken}";
+                        responseJson = await http.DoGETRequestAsync(url, null, headers);
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+
             return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson) : null;
         }
 
@@ -107,9 +136,57 @@ namespace BlueWP.ATProto
                 headers["Authorization"] = $"Bearer {_credentials.accessToken}";
             }
             var bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+            if (bodyJson == "{}")
+            {
+                bodyJson = string.Empty;
+            }
             var url = $"https://{_credentials.serviceHost}/xrpc/{input.EndpointID}";
-            var responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+            string responseJson = null;
+            try
+            {
+                responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+            }
+            catch (WebException ex)
+            {
+                var webResponse = ex.Response as HttpWebResponse;
+                var error = ex.Response != null ? await new StreamReader(ex.Response.GetResponseStream()).ReadToEndAsync() : ex.ToString();
+                var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
+                if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
+                {
+                    if (await RefreshCredentials())
+                    {
+                        headers["Authorization"] = $"Bearer {_credentials.accessToken}";
+                        responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                    }
+                    else
+                    {
+                        throw ex;
+                    }
+                }
+                else
+                {
+                    throw ex;
+                }
+            }
+
             return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson) : null;
+        }
+
+        private async Task<bool> RefreshCredentials()
+        {
+            _credentials.accessToken = _credentials.refreshToken;
+            var body = new Lexicons.COM.AtProto.Server.RefreshSession();
+            var response = await PostAsync<Lexicons.COM.AtProto.Server.RefreshSessionResponse>(body);
+            if (response != null && !string.IsNullOrEmpty(response.accessJwt))
+            {
+                _credentials.did = response.did;
+                _credentials.handle = response.handle;
+                _credentials.accessToken = response.accessJwt;
+                _credentials.refreshToken = response.refreshJwt;
+                await WriteCredentials();
+            }
+
+            return true;
         }
 
         private async Task<bool> ReadCredentials()

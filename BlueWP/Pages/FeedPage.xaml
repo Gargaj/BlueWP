@@ -7,6 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -50,7 +51,30 @@
             <Button Grid.Row="2" Click="Logout_Click">Log out</Button>
         </Grid>
         <Canvas x:Name="RootCanvas">
-            <ProgressRing Width="64" Height="64" Canvas.Left="150" Canvas.Top="300" Canvas.ZIndex="5" IsActive="{Binding IsLoading}"/>
+            <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
+                Height="{Binding ActualHeight, ElementName=RootCanvas}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Canvas.ZIndex="5">
+                <ProgressRing Width="64" Height="64" IsActive="{Binding IsLoading}"/>
+            </Grid>
+            <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
+                Height="{Binding ActualHeight, ElementName=RootCanvas}"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Canvas.ZIndex="10">
+                <Border Width="300" Height="100" Background="Red" CornerRadius="10,10,10,10">
+                    <i:Interaction.Behaviors>
+                        <c:DataTriggerBehavior Binding="{Binding HasError}" Value="True">
+                            <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                        </c:DataTriggerBehavior>
+                        <c:DataTriggerBehavior Binding="{Binding HasError}" Value="False">
+                            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                        </c:DataTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" Foreground="White" TextWrapping="WrapWholeWords" Text="{Binding ErrorText}"/>
+                </Border>
+            </Grid>
         </Canvas>
     </Grid>
 </Page>

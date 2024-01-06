@@ -128,6 +128,7 @@
     <Compile Include="Lexicons\App\BSky\Feed\GetTimeline.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\COM\AtProto\Server\CreateSession.cs" />
+    <Compile Include="Lexicons\COM\AtProto\Server\RefreshSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\BlueWP.ATProto.rd.xml" />
   </ItemGroup>

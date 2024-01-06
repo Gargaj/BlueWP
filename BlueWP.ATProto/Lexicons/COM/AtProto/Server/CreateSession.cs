@@ -18,7 +18,7 @@
         public string refreshJwt;
         public string handle;
         public string did;
-        //public string didDoc
+        public object didDoc;
         public string email;
         public bool emailConfirmed;
     }

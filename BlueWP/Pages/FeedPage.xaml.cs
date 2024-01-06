@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Net;
 using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Pages
@@ -9,6 +11,8 @@ namespace BlueWP.Pages
         private App _app;
         private List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> _feedItems = new List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>();
         private bool _isLoading = false;
+        private bool _hasError = false;
+        private string _errorText = string.Empty;
 
         public FeedPage()
         {
@@ -23,13 +27,22 @@ namespace BlueWP.Pages
         {
             IsLoading = true;
 
-            var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+            try
             {
-                limit = 60
-            });
-
-            _feedItems = response?.feed;
-            OnPropertyChanged(nameof(FeedItems));
+                var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+                {
+                    limit = 60
+                });
+                _feedItems = response?.feed;
+                OnPropertyChanged(nameof(FeedItems));
+            }
+            catch (WebException ex)
+            {
+                HasError = true;
+                var webResponse = ex.Response as HttpWebResponse;
+                var error = ex.Response != null ? new StreamReader(ex.Response.GetResponseStream()).ReadToEnd() : ex.ToString();
+                ErrorText = $"HTTP ERROR {(int)webResponse.StatusCode}\n\n{error}";
+            }
 
             IsLoading = false;
         }
@@ -41,6 +54,8 @@ namespace BlueWP.Pages
 
         public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get { return _feedItems; } }
         public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+        public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
+        public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

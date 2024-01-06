@@ -14,5 +14,16 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
             public object viewer;
             public object labels;
         }
+        public class ProfileView
+        {
+            public string did;
+            public string handle;
+            public string displayName;
+            public string description;
+            public string avatar;
+            public DateTime indexedAt;
+            public object viewer;
+            public object labels;
+        }
     }
 }

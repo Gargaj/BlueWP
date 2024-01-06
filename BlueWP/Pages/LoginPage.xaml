@@ -1,0 +1,22 @@
+﻿<Page
+    x:Class="BlueWP.Pages.LoginPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BlueWP"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <TextBlock>Service host</TextBlock>
+            <TextBox Text="{Binding ServiceHost, Mode=TwoWay}"/>
+            <TextBlock>Username or email address</TextBlock>
+            <TextBox Text="{Binding Handle, Mode=TwoWay}"/>
+            <TextBlock>App password</TextBlock>
+            <TextBox Text="{Binding AppPassword, Mode=TwoWay}"/>
+            <Button Click="Login_Click">Log in</Button>
+        </StackPanel>
+    </Grid>
+</Page>

@@ -124,6 +124,7 @@
     <Compile Include="HTTP.cs" />
     <Compile Include="LexiconBase.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Embed\Images.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Defs.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\GetTimeline.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />

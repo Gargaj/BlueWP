@@ -70,6 +70,23 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
                     return "[UNKNOWN]";
                 }
             }
+            public string PostImage
+            {
+                get
+                {
+                    var jobjEmbed = post?.embed as Newtonsoft.Json.Linq.JObject;
+                    var typedEmbed = jobjEmbed?.ToObject<Embed.Images.View>();
+                    if (typedEmbed == null || typedEmbed.images == null)
+                    {
+                        return string.Empty;
+                    }
+                    if (typedEmbed.images.Count < 1)
+                    {
+                        return string.Empty;
+                    }
+                    return typedEmbed.images[0].thumb;
+                }
+            }
         }
 
         public class ReplyRef

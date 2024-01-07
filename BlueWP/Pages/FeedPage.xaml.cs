@@ -99,5 +99,10 @@ namespace BlueWP.Pages
             }
             await Windows.System.Launcher.LaunchUriAsync(new Uri(dataContext.PostEmbedExternalURL));
         }
+
+        private async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            RefreshFeed();
+        }
     }
 }

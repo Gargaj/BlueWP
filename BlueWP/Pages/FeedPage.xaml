@@ -21,7 +21,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="35"/>
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="20" Margin="0,0,0,10">Timeline</TextBlock>
+            <Button Click="Refresh_Click">
+                <Button.Template>
+                    <ControlTemplate>
+                        <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="20" Margin="0,0,0,10">Timeline</TextBlock>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
             <ListView Grid.Row="1" ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
                 <ListView.ItemContainerStyle>

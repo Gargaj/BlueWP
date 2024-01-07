@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 {
@@ -10,15 +11,22 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             public string uri;
             public string cid;
             public Actor.Defs.ProfileViewBasic author;
-            public object record; // marked as unknown
-            public object embed; // TODO
+            public object record; // unknown
+            public object embed; // union
             public uint? replyCount;
             public uint? repostCount;
             public uint? likeCount;
             public DateTime indexedAt;
-            public object viewer; // TODO
-            public object labels; // TODO
-            public object threadgate; // TODO
+            public ViewerState viewer;
+            public List<COM.AtProto.Label.Defs.Label> labels;
+            public ThreadgateView threadgate;
+        }
+
+        public class ViewerState
+        {
+            public string repost;
+            public string like;
+            public bool replyDisabled;
         }
 
         public class FeedViewPost
@@ -52,19 +60,9 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             {
                 get
                 {
-                    var jobjPost = post?.record as Newtonsoft.Json.Linq.JObject;
-                    if (jobjPost == null)
+                    var typedPost = post?.record as Post;
+                    if (typedPost != null)
                     {
-                        return "[ERROR]";
-                    }
-                    var type = jobjPost.GetValue("$type")?.ToString() ?? string.Empty;
-                    if (type == "app.bsky.feed.post")
-                    {
-                        var typedPost = jobjPost.ToObject<Post>();
-                        if (typedPost == null)
-                        {
-                            return "[ERROR]";
-                        }
                         return typedPost.text;
                     }
                     return "[UNKNOWN]";
@@ -74,17 +72,16 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             {
                 get
                 {
-                    var jobjEmbed = post?.embed as Newtonsoft.Json.Linq.JObject;
-                    var typedEmbed = jobjEmbed?.ToObject<Embed.Images.View>();
-                    if (typedEmbed == null || typedEmbed.images == null)
+                    var imagesView = post?.embed as Embed.Images.View;
+                    if (imagesView != null)
                     {
-                        return string.Empty;
+                        if (imagesView.images == null || imagesView.images.Count < 1)
+                        {
+                            return null;
+                        }
+                        return imagesView.images[0].thumb;
                     }
-                    if (typedEmbed.images.Count < 1)
-                    {
-                        return string.Empty;
-                    }
-                    return typedEmbed.images[0].thumb;
+                    return null;
                 }
             }
         }
@@ -99,6 +96,33 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
         {
             public Actor.Defs.ProfileViewBasic by;
             public DateTime indexedAt;
+        }
+
+        public class NotFoundPost
+        {
+            public string uri;
+            public bool notFound;
+        }
+
+        public class BlockedPost
+        {
+            public string uri;
+            public bool blocked;
+            public BlockedAuthor author;
+        }
+
+        public class BlockedAuthor
+        {
+            public string did;
+            public Actor.Defs.ViewerState viewer;
+        }
+
+        public class ThreadgateView
+        {
+            public string uri;
+            public string cid;
+            public object record;
+            public List<object> lists;
         }
     }
 }

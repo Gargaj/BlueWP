@@ -124,12 +124,17 @@
     <Compile Include="HTTP.cs" />
     <Compile Include="LexiconBase.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Actor\GetPreferences.cs" />
+    <Compile Include="Lexicons\App\BSky\Embed\External.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\Images.cs" />
+    <Compile Include="Lexicons\App\BSky\Embed\Record.cs" />
+    <Compile Include="Lexicons\App\BSky\Embed\RecordWithMedia.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Defs.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\GetTimeline.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
+    <Compile Include="Lexicons\COM\AtProto\Label\Defs.cs" />
     <Compile Include="Lexicons\COM\AtProto\Server\CreateSession.cs" />
     <Compile Include="Lexicons\COM\AtProto\Server\RefreshSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,9 +148,7 @@
       <Version>13.0.3</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Lexicons\COM\AtProto\Repo\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

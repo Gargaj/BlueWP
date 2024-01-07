@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
@@ -12,9 +13,15 @@ namespace BlueWP.ATProto
         private const string _credentialsFilename = "credentials.dat";
         private string _appPassword;
         private Credentials _credentials;
-
+        private Newtonsoft.Json.JsonSerializerSettings _deserializerSettings;
         public Client()
         {
+            _deserializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
+            {
+                MetadataPropertyHandling = Newtonsoft.Json.MetadataPropertyHandling.ReadAhead,
+                TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
+                SerializationBinder = new TypesBinder()
+            };
         }
 
         public async Task<bool> Authenticate()
@@ -117,7 +124,7 @@ namespace BlueWP.ATProto
                 }
             }
 
-            return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson) : null;
+            return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson, _deserializerSettings) : null;
         }
 
         public async Task<T> PostAsync<T>(LexiconBase input) where T : LexiconBase
@@ -169,7 +176,7 @@ namespace BlueWP.ATProto
                 }
             }
 
-            return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson) : null;
+            return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson, _deserializerSettings) : null;
         }
 
         private async Task<bool> RefreshCredentials()
@@ -265,6 +272,56 @@ namespace BlueWP.ATProto
             public string handle;
             public string accessToken;
             public string refreshToken;
+        }
+
+        private class TypesBinder : Newtonsoft.Json.Serialization.ISerializationBinder
+        {
+            private Dictionary<string, Type> _atprotoTypes;
+
+            public TypesBinder()
+            {
+                _atprotoTypes = new Dictionary<string, Type>()
+                {
+                    { "app.bsky.actor.defs#adultContentPref",    typeof(Lexicons.App.BSky.Actor.Defs.AdultContentPref) },
+                    { "app.bsky.actor.defs#contentLabelPref",    typeof(Lexicons.App.BSky.Actor.Defs.ContentLabelPref) },
+                    { "app.bsky.actor.defs#savedFeedsPref",      typeof(Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) },
+                    { "app.bsky.actor.defs#personalDetailsPref", typeof(Lexicons.App.BSky.Actor.Defs.PersonalDetailsPref) },
+                    { "app.bsky.actor.defs#feedViewPref",        typeof(Lexicons.App.BSky.Actor.Defs.FeedViewPref) },
+                    { "app.bsky.actor.defs#threadViewPref",      typeof(Lexicons.App.BSky.Actor.Defs.ThreadViewPref) },
+                    { "app.bsky.embed.images",                   typeof(Lexicons.App.BSky.Embed.Images) },
+                    { "app.bsky.embed.images#view",              typeof(Lexicons.App.BSky.Embed.Images.View) },
+                    { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },
+                    { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
+                    { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
+                    { "app.bsky.embed.external#view",            typeof(Lexicons.App.BSky.Embed.External.View) },
+                    { "app.bsky.embed.record#view",              typeof(Lexicons.App.BSky.Embed.Record.View) },
+                    { "app.bsky.embed.record#viewRecord",        typeof(Lexicons.App.BSky.Embed.Record.ViewRecord) },
+                    { "app.bsky.embed.record#viewNotFound",      typeof(Lexicons.App.BSky.Embed.Record.ViewNotFound) },
+                    { "app.bsky.embed.record#viewBlocked",       typeof(Lexicons.App.BSky.Embed.Record.ViewBlocked) },
+                    { "app.bsky.embed.recordWithMedia#view",     typeof(Lexicons.App.BSky.Embed.RecordWithMedia.View) },
+                };
+            }
+
+            public Type BindToType(string assemblyName, string typeName)
+            {
+                if (!_atprotoTypes.ContainsKey(typeName))
+                {
+#if TRUE
+                    System.Diagnostics.Debug.WriteLine($"ATProto type '{typeName}' not found");
+                    _atprotoTypes[typeName] = typeof(object);
+                    return typeof(object);
+#else
+                    throw new ArgumentException($"ATProto type '{typeName}' not found");
+#endif
+                }
+                return _atprotoTypes[typeName];
+            }
+
+            public void BindToName(Type serializedType, out string assemblyName, out string typeName)
+            {
+                assemblyName = null;
+                typeName = serializedType.Name;
+            }
         }
     }
 }

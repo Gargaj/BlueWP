@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
 {
@@ -14,6 +15,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
             public object viewer;
             public object labels;
         }
+
         public class ProfileView
         {
             public string did;
@@ -24,6 +26,55 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
             public DateTime indexedAt;
             public object viewer;
             public object labels;
+        }
+
+        public class ViewerState
+        {
+            public bool muted;
+            public object mutedByList;
+            public bool blockedBy;
+            public string blocking;
+            public object blockingByList;
+            public string following;
+            public string followedBy;
+        }
+
+        public class AdultContentPref
+        {
+            public bool enabled;
+        }
+
+        public class ContentLabelPref
+        {
+            public string label;
+            public string visibility;
+        }
+
+        public class SavedFeedsPref
+        {
+            public List<string> pinned;
+            public List<string> saved;
+        }
+
+        public class PersonalDetailsPref
+        {
+            public DateTime? birthDate;
+        }
+
+        public class FeedViewPref
+        {
+            public string feed;
+            public bool hideReplies;
+            public bool hideRepliesByUnfollowed;
+            public bool hideRepliesByLikeCount;
+            public bool hideReposts;
+            public bool hideQuotePosts;
+        }
+
+        public class ThreadViewPref
+        {
+            public string sort;
+            public bool prioritizeFollowedUsers;
         }
     }
 }

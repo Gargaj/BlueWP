@@ -142,6 +142,66 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
                     return null;
                 }
             }
+            public string PostEmbedExternalURL
+            {
+                get
+                {
+                    var externalView = post?.embed as Embed.External.View;
+                    if (externalView != null && externalView.external != null)
+                    {
+                        return externalView.external.uri;
+                    }
+                    return string.Empty;
+                }
+            }
+            public string PostEmbedExternalThumbURL
+            {
+                get
+                {
+                    var externalView = post?.embed as Embed.External.View;
+                    if (externalView != null && externalView.external != null)
+                    {
+                        return externalView.external.thumb;
+                    }
+                    return null;
+                }
+            }
+            public string PostEmbedExternalHostname
+            {
+                get
+                {
+                    var externalView = post?.embed as Embed.External.View;
+                    if (externalView != null && externalView.external != null)
+                    {
+                        return new Uri(externalView.external.uri).Host;
+                    }
+                    return null;
+                }
+            }
+            public string PostEmbedExternalTitle
+            {
+                get
+                {
+                    var externalView = post?.embed as Embed.External.View;
+                    if (externalView != null && externalView.external != null)
+                    {
+                        return externalView.external.title;
+                    }
+                    return null;
+                }
+            }
+            public string PostEmbedExternalDescription
+            {
+                get
+                {
+                    var externalView = post?.embed as Embed.External.View;
+                    if (externalView != null && externalView.external != null)
+                    {
+                        return externalView.external.description;
+                    }
+                    return null;
+                }
+            }
         }
 
         public class ReplyRef

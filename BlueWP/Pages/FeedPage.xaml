@@ -70,6 +70,11 @@
                                     </TextBlock>
                                     <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
                                     <ListView ItemsSource="{Binding PostImages}"> <!-- TODO: replace this with a custom control that displays images as tiles -->
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Padding" Value="0"/>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
                                         <i:Interaction.Behaviors>
                                             <c:DataTriggerBehavior Binding="{Binding PostImages.Count}" Value="0">
                                                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
@@ -85,6 +90,31 @@
                                             </DataTemplate>
                                         </ListView.ItemTemplate>
                                     </ListView>
+                                    <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}">
+                                        <i:Interaction.Behaviors>
+                                            <c:DataTriggerBehavior Binding="{Binding PostEmbedExternalURL}" Value="">
+                                                <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                            </c:DataTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                        <Button Click="OpenExternalURL_Click">
+                                            <Button.Template>
+                                                <ControlTemplate>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <Image Stretch="UniformToFill" Height="150">
+                                                            <Image.Source>
+                                                                <BitmapImage UriSource="{Binding PostEmbedExternalThumbURL}"/>
+                                                            </Image.Source>
+                                                        </Image>
+                                                        <StackPanel Orientation="Vertical" Padding="5">
+                                                            <TextBlock Text="{Binding PostEmbedExternalHostname}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                                                            <TextBlock Text="{Binding PostEmbedExternalTitle}" TextWrapping="WrapWholeWords" MaxHeight="20" FontWeight="Bold"/>
+                                                            <TextBlock Text="{Binding PostEmbedExternalDescription}" TextWrapping="WrapWholeWords" MaxHeight="60"/>
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                        </Button>
+                                    </Border>
                                 </StackPanel>
                             </Grid>
                         </Grid>

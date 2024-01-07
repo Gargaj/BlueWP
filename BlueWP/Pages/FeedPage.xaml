@@ -39,7 +39,7 @@
         </ListView.ItemContainerStyle>
         <ListView.ItemTemplate>
           <DataTemplate>
-            <bwpc:Post DataContext="{Binding}"/>
+            <bwpc:Post PostData="{Binding}"/>
           </DataTemplate>
         </ListView.ItemTemplate>
       </ListView>

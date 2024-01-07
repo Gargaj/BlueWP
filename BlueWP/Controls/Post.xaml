@@ -11,29 +11,32 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-  <Grid>
+  <Grid x:Name="LayoutRoot">
     <Grid HorizontalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
       <Grid.RowDefinitions>
-        <RowDefinition Height="*"/>
+        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
-      <TextBlock Grid.Row="0" Text="{Binding PostReason}" Opacity="0.5" FontWeight="Bold" Margin="0,0,0,5">
+      <TextBlock Grid.Row="0" Text="{Binding PostData.PostReason}" Opacity="0.5" FontWeight="Bold" Margin="0,0,0,5">
         <i:Interaction.Behaviors>
-            <c:DataTriggerBehavior Binding="{Binding PostReason}" Value="">
+            <c:DataTriggerBehavior Binding="{Binding IsRepost}" Value="True">
+                <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+            </c:DataTriggerBehavior>
+            <c:DataTriggerBehavior Binding="{Binding IsRepost}" Value="False">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
             </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
       </TextBlock>
       <Grid Grid.Row="1">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="40"/>
+          <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
         <!-- big avatar -->
-        <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top">
+        <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
           <Image.Source>
-            <BitmapImage UriSource="{Binding PostAvatar}"/>
+            <BitmapImage UriSource="{Binding PostData.PostAvatar}"/>
           </Image.Source>
         </Image>
         
@@ -41,34 +44,37 @@
           
           <!-- byline -->
           <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
-            <TextBlock Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5" Margin="0,0,5,0"/>
+            <TextBlock Text="{Binding PostData.PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
+            <TextBlock Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5" Margin="0,0,5,0"/>
             <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-            <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+            <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
           </StackPanel>
 
           <!-- reply to -->
-          <TextBlock Text="{Binding PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5">
+          <TextBlock Text="{Binding PostData.PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5">
             <i:Interaction.Behaviors>
-                <c:DataTriggerBehavior Binding="{Binding PostReplyTo}" Value="">
-                    <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                </c:DataTriggerBehavior>
+              <c:DataTriggerBehavior Binding="{Binding Path=IsReply}" Value="True">
+                <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+              </c:DataTriggerBehavior>
+              <c:DataTriggerBehavior Binding="{Binding Path=IsReply}" Value="False">
+                <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+              </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
           </TextBlock>
 
           <!-- post contents -->
-          <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
+          <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
 
           <!-- image block -->
           <!-- TODO: replace this with a custom control that displays images as tiles -->
-          <ListView ItemsSource="{Binding PostImages}">
+          <ListView ItemsSource="{Binding PostData.PostImages}">
             <ListView.ItemContainerStyle>
               <Style TargetType="ListViewItem">
                 <Setter Property="Padding" Value="0"/>
               </Style>
             </ListView.ItemContainerStyle>
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding PostImages.Count}" Value="0">
+              <c:DataTriggerBehavior Binding="{Binding PostData.PostImages.Count}" Value="0">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
@@ -86,7 +92,7 @@
           <!-- embed link -->
           <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}">
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding PostEmbedExternalURL}" Value="">
+              <c:DataTriggerBehavior Binding="{Binding PostData.PostEmbedExternalURL}" Value="">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
@@ -96,13 +102,13 @@
                   <StackPanel Orientation="Vertical">
                     <Image Stretch="UniformToFill" Height="150">
                       <Image.Source>
-                        <BitmapImage UriSource="{Binding PostEmbedExternalThumbURL}"/>
+                        <BitmapImage UriSource="{Binding PostData.PostEmbedExternalThumbURL}"/>
                       </Image.Source>
                     </Image>
                     <StackPanel Orientation="Vertical" Padding="5">
-                      <TextBlock Text="{Binding PostEmbedExternalHostname}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
-                      <TextBlock Text="{Binding PostEmbedExternalTitle}" TextWrapping="WrapWholeWords" MaxHeight="20" FontWeight="Bold"/>
-                      <TextBlock Text="{Binding PostEmbedExternalDescription}" TextWrapping="WrapWholeWords" MaxHeight="60"/>
+                      <TextBlock Text="{Binding PostData.PostEmbedExternalHostname}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                      <TextBlock Text="{Binding PostData.PostEmbedExternalTitle}" TextWrapping="WrapWholeWords" MaxHeight="20" FontWeight="Bold"/>
+                      <TextBlock Text="{Binding PostData.PostEmbedExternalDescription}" TextWrapping="WrapWholeWords" MaxHeight="60"/>
                     </StackPanel>
                   </StackPanel>
                 </ControlTemplate>

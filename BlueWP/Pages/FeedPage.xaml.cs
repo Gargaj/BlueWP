@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Pages
@@ -20,11 +21,14 @@ namespace BlueWP.Pages
       this.InitializeComponent();
       _app = (App)Windows.UI.Xaml.Application.Current;
       DataContext = this;
-
-      RefreshFeed();
     }
 
-    private async void RefreshFeed()
+    public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get { return _feedItems; } }
+    public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+    public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
+    public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
+
+    protected async Task RefreshFeed()
     {
       IsLoading = true;
 
@@ -50,7 +54,7 @@ namespace BlueWP.Pages
       IsLoading = false;
     }
 
-    private async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    protected async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
       var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");
       dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
@@ -60,7 +64,7 @@ namespace BlueWP.Pages
       await dialog.ShowAsync();
     }
 
-    private void LogoutMessageDialogHandler(Windows.UI.Popups.IUICommand command)
+    protected void LogoutMessageDialogHandler(Windows.UI.Popups.IUICommand command)
     {
       if (command.Label == "Yes")
       {
@@ -68,10 +72,15 @@ namespace BlueWP.Pages
       }
     }
 
-    public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get { return _feedItems; } }
-    public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
-    public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
-    public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
+    protected async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+      await RefreshFeed();
+    }
+
+    protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+    {
+      await RefreshFeed();
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -82,11 +91,6 @@ namespace BlueWP.Pages
     protected virtual void OnPropertyChanged(string propertyName)
     {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      RefreshFeed();
     }
   }
 }

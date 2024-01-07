@@ -139,6 +139,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
           {
             return imagesView.images;
           }
+          var rwmView = post?.embed as Embed.RecordWithMedia.View;
+          if (rwmView != null)
+          {
+            imagesView = rwmView?.media as Embed.Images.View;
+            if (imagesView != null)
+            {
+              return imagesView.images;
+            }
+          }
           return null;
         }
       }

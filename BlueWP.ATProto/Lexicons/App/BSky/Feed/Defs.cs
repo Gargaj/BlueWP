@@ -61,7 +61,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             {
                 get
                 {
-                    return $"@{post?.AuthorHandle}";
+                    return post?.AuthorHandle ?? "[ERROR]";
                 }
             }
             public string PostElapsedTime

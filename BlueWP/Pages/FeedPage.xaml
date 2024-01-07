@@ -56,7 +56,19 @@
                                     </Image.Source>
                                 </Image>
                                 <StackPanel Grid.Column="1" Orientation="Vertical" Width="Auto">
-                                    <TextBlock Text="{Binding PostAuthor}" TextWrapping="WrapWholeWords" FontWeight="Bold"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
+                                        <TextBlock Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5" Margin="0,0,5,0"/>
+                                        <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
+                                        <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                                    </StackPanel>
+                                    <TextBlock Text="{Binding PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5">
+                                        <i:Interaction.Behaviors>
+                                            <c:DataTriggerBehavior Binding="{Binding PostReplyTo}" Value="">
+                                                <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                                            </c:DataTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </TextBlock>
                                     <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
                                     <Image>
                                         <i:Interaction.Behaviors>

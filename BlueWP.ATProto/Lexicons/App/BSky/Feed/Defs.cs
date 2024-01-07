@@ -35,11 +35,58 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             public ReplyRef reply;
             public ReasonRepost reason;
 
-            public string PostAuthor
+            public string PostAuthorDisplayName
             {
                 get
                 {
-                    return post?.author?.displayName ?? "[ERROR]";
+                    return post?.author?.displayName ?? post?.author?.handle ?? "[ERROR]";
+                }
+            }
+            public string PostAuthorHandle
+            {
+                get
+                {
+                    return $"@{post?.author?.handle}";
+                }
+            }
+            public string PostElapsedTime
+            {
+                get
+                {
+                    var timespan = DateTime.Now - post.indexedAt;
+                    if (timespan.TotalSeconds < 60)
+                    {
+                        return timespan.ToString("%s") + "s";
+                    }
+                    if (timespan.TotalSeconds < 60 * 60)
+                    {
+                        return timespan.ToString("%m") + "m";
+                    }
+                    if (timespan.TotalSeconds < 60 * 60 * 24)
+                    {
+                        return timespan.ToString("%h") + "h";
+                    }
+                    if (timespan.TotalSeconds < 60 * 60 * 24 * 7)
+                    {
+                        return timespan.ToString("%d") + "d";
+                    }
+                    if (post.indexedAt.Year != DateTime.Now.Year)
+                    {
+                        return post.indexedAt.ToString("MMM d");
+                    }
+                    return post.indexedAt.ToString("'yy MMM d");
+                }
+            }
+            public string PostReplyTo
+            {
+                get
+                {
+                    var replyParentPostView = reply?.parent as PostView;
+                    if (replyParentPostView == null)
+                    {
+                        return string.Empty;
+                    }
+                    return $"Reply to {replyParentPostView.author.displayName}";
                 }
             }
             public string PostReason
@@ -88,8 +135,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 
         public class ReplyRef
         {
-            public object root; // TODO
-            public object parent; // TODO
+            public object root; // union
+            public object parent; // union
         }
 
         public class ReasonRepost

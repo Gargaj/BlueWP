@@ -53,7 +53,6 @@ namespace BlueWP.Pages
     private async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
       var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");
-      // Add commands and set their callbacks; both buttons use the same callback function instead of inline event handlers
       dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
       dialog.Commands.Add(new Windows.UI.Popups.UICommand("No", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
       dialog.DefaultCommandIndex = 1;
@@ -83,21 +82,6 @@ namespace BlueWP.Pages
     protected virtual void OnPropertyChanged(string propertyName)
     {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    private async void OpenExternalURL_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      var button = e.OriginalSource as Button;
-      if (button == null)
-      {
-        return;
-      }
-      var dataContext = button.DataContext as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
-      if (dataContext == null)
-      {
-        return;
-      }
-      await Windows.System.Launcher.LaunchUriAsync(new Uri(dataContext.PostEmbedExternalURL));
     }
 
     private async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

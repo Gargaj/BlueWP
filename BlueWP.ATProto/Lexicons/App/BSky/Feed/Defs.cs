@@ -20,6 +20,21 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             public ViewerState viewer;
             public List<COM.AtProto.Label.Defs.Label> labels;
             public ThreadgateView threadgate;
+
+            public string AuthorDisplayName
+            {
+                get
+                {
+                    return author?.DisplayName ?? "[ERROR]";
+                }
+            }
+            public string AuthorHandle
+            {
+                get
+                {
+                    return author?.Handle ?? "[ERROR]";
+                }
+            }
         }
 
         public class ViewerState
@@ -39,14 +54,14 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
             {
                 get
                 {
-                    return post?.author?.displayName ?? post?.author?.handle ?? "[ERROR]";
+                    return post?.AuthorDisplayName ?? "[ERROR]";
                 }
             }
             public string PostAuthorHandle
             {
                 get
                 {
-                    return $"@{post?.author?.handle}";
+                    return $"@{post?.AuthorHandle}";
                 }
             }
             public string PostElapsedTime
@@ -86,21 +101,21 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
                     {
                         return string.Empty;
                     }
-                    return $"Reply to {replyParentPostView.author.displayName}";
+                    return $"Reply to {replyParentPostView.AuthorDisplayName}";
                 }
             }
             public string PostReason
             {
                 get
                 {
-                    return reason == null ? string.Empty : $"Reposted by {reason?.by?.displayName}";
+                    return reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
                 }
             }
             public string PostAvatar
             {
                 get
                 {
-                    return post?.author?.avatar ?? string.Empty;
+                    return post?.author?.avatar ?? null;
                 }
             }
             public string PostText

@@ -14,6 +14,21 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
             public string avatar;
             public object viewer;
             public object labels;
+
+            public string DisplayName
+            {
+                get
+                {
+                    return displayName ?? handle ?? "[ERROR]";
+                }
+            }
+            public string Handle
+            {
+                get
+                {
+                    return $"@{handle}";
+                }
+            }
         }
 
         public class ProfileView

@@ -31,6 +31,14 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
             public string fullsize;
             public string alt;
             public AspectRatio aspectRatio;
+
+            public string ThumbURL
+            {
+                get
+                {
+                    return thumb;
+                }
+            }
         }
     }
 }

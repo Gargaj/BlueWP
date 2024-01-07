@@ -70,16 +70,22 @@
                                         </i:Interaction.Behaviors>
                                     </TextBlock>
                                     <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
-                                    <Image>
+                                    <ListView ItemsSource="{Binding PostImages}"> <!-- TODO: replace this with a custom control that displays images as tiles -->
                                         <i:Interaction.Behaviors>
-                                            <c:DataTriggerBehavior Binding="{Binding PostImage}" Value="">
+                                            <c:DataTriggerBehavior Binding="{Binding PostImages.Count}" Value="0">
                                                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
                                             </c:DataTriggerBehavior>
                                         </i:Interaction.Behaviors>
-                                        <Image.Source>
-                                            <BitmapImage UriSource="{Binding PostImage}"/>
-                                        </Image.Source>
-                                    </Image>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Image>
+                                                    <Image.Source>
+                                                        <BitmapImage UriSource="{Binding ThumbURL}"/>
+                                                    </Image.Source>
+                                                </Image>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
                                 </StackPanel>
                             </Grid>
                             <Rectangle Grid.Row="2" HorizontalAlignment="Stretch" Fill="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Height="1" Margin="0,10,0,10"/>

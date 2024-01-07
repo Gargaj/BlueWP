@@ -130,18 +130,14 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
                     return "[UNKNOWN]";
                 }
             }
-            public string PostImage
+            public IEnumerable<Embed.Images.ViewImage> PostImages
             {
                 get
                 {
                     var imagesView = post?.embed as Embed.Images.View;
                     if (imagesView != null)
                     {
-                        if (imagesView.images == null || imagesView.images.Count < 1)
-                        {
-                            return null;
-                        }
-                        return imagesView.images[0].thumb;
+                        return imagesView.images;
                     }
                     return null;
                 }

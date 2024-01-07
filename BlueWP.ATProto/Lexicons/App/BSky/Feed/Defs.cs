@@ -3,244 +3,244 @@ using System.Collections.Generic;
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 {
-    /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json"/>
-    public class Defs
+  /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json"/>
+  public class Defs
+  {
+    public class PostView
     {
-        public class PostView
+      public string uri;
+      public string cid;
+      public Actor.Defs.ProfileViewBasic author;
+      public object record; // unknown
+      public object embed; // union
+      public uint? replyCount;
+      public uint? repostCount;
+      public uint? likeCount;
+      public DateTime indexedAt;
+      public ViewerState viewer;
+      public List<COM.AtProto.Label.Defs.Label> labels;
+      public ThreadgateView threadgate;
+
+      public string AuthorDisplayName
+      {
+        get
         {
-            public string uri;
-            public string cid;
-            public Actor.Defs.ProfileViewBasic author;
-            public object record; // unknown
-            public object embed; // union
-            public uint? replyCount;
-            public uint? repostCount;
-            public uint? likeCount;
-            public DateTime indexedAt;
-            public ViewerState viewer;
-            public List<COM.AtProto.Label.Defs.Label> labels;
-            public ThreadgateView threadgate;
-
-            public string AuthorDisplayName
-            {
-                get
-                {
-                    return author?.DisplayName ?? "[ERROR]";
-                }
-            }
-            public string AuthorHandle
-            {
-                get
-                {
-                    return author?.Handle ?? "[ERROR]";
-                }
-            }
+          return author?.DisplayName ?? "[ERROR]";
         }
-
-        public class ViewerState
+      }
+      public string AuthorHandle
+      {
+        get
         {
-            public string repost;
-            public string like;
-            public bool replyDisabled;
+          return author?.Handle ?? "[ERROR]";
         }
-
-        public class FeedViewPost
-        {
-            public PostView post;
-            public ReplyRef reply;
-            public ReasonRepost reason;
-
-            public string PostAuthorDisplayName
-            {
-                get
-                {
-                    return post?.AuthorDisplayName ?? "[ERROR]";
-                }
-            }
-            public string PostAuthorHandle
-            {
-                get
-                {
-                    return post?.AuthorHandle ?? "[ERROR]";
-                }
-            }
-            public string PostElapsedTime
-            {
-                get
-                {
-                    var timespan = DateTime.Now - post.indexedAt;
-                    if (timespan.TotalSeconds < 60)
-                    {
-                        return timespan.ToString("%s") + "s";
-                    }
-                    if (timespan.TotalSeconds < 60 * 60)
-                    {
-                        return timespan.ToString("%m") + "m";
-                    }
-                    if (timespan.TotalSeconds < 60 * 60 * 24)
-                    {
-                        return timespan.ToString("%h") + "h";
-                    }
-                    if (timespan.TotalSeconds < 60 * 60 * 24 * 7)
-                    {
-                        return timespan.ToString("%d") + "d";
-                    }
-                    if (post.indexedAt.Year != DateTime.Now.Year)
-                    {
-                        return post.indexedAt.ToString("MMM d");
-                    }
-                    return post.indexedAt.ToString("'yy MMM d");
-                }
-            }
-            public string PostReplyTo
-            {
-                get
-                {
-                    var replyParentPostView = reply?.parent as PostView;
-                    if (replyParentPostView == null)
-                    {
-                        return string.Empty;
-                    }
-                    return $"Reply to {replyParentPostView.AuthorDisplayName}";
-                }
-            }
-            public string PostReason
-            {
-                get
-                {
-                    return reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
-                }
-            }
-            public string PostAvatar
-            {
-                get
-                {
-                    return post?.author?.avatar ?? null;
-                }
-            }
-            public string PostText
-            {
-                get
-                {
-                    var typedPost = post?.record as Post;
-                    if (typedPost != null)
-                    {
-                        return typedPost.text;
-                    }
-                    return "[UNKNOWN]";
-                }
-            }
-            public IEnumerable<Embed.Images.ViewImage> PostImages
-            {
-                get
-                {
-                    var imagesView = post?.embed as Embed.Images.View;
-                    if (imagesView != null)
-                    {
-                        return imagesView.images;
-                    }
-                    return null;
-                }
-            }
-            public string PostEmbedExternalURL
-            {
-                get
-                {
-                    var externalView = post?.embed as Embed.External.View;
-                    if (externalView != null && externalView.external != null)
-                    {
-                        return externalView.external.uri;
-                    }
-                    return string.Empty;
-                }
-            }
-            public string PostEmbedExternalThumbURL
-            {
-                get
-                {
-                    var externalView = post?.embed as Embed.External.View;
-                    if (externalView != null && externalView.external != null)
-                    {
-                        return externalView.external.thumb;
-                    }
-                    return null;
-                }
-            }
-            public string PostEmbedExternalHostname
-            {
-                get
-                {
-                    var externalView = post?.embed as Embed.External.View;
-                    if (externalView != null && externalView.external != null)
-                    {
-                        return new Uri(externalView.external.uri).Host;
-                    }
-                    return null;
-                }
-            }
-            public string PostEmbedExternalTitle
-            {
-                get
-                {
-                    var externalView = post?.embed as Embed.External.View;
-                    if (externalView != null && externalView.external != null)
-                    {
-                        return externalView.external.title;
-                    }
-                    return null;
-                }
-            }
-            public string PostEmbedExternalDescription
-            {
-                get
-                {
-                    var externalView = post?.embed as Embed.External.View;
-                    if (externalView != null && externalView.external != null)
-                    {
-                        return externalView.external.description;
-                    }
-                    return null;
-                }
-            }
-        }
-
-        public class ReplyRef
-        {
-            public object root; // union
-            public object parent; // union
-        }
-
-        public class ReasonRepost
-        {
-            public Actor.Defs.ProfileViewBasic by;
-            public DateTime indexedAt;
-        }
-
-        public class NotFoundPost
-        {
-            public string uri;
-            public bool notFound;
-        }
-
-        public class BlockedPost
-        {
-            public string uri;
-            public bool blocked;
-            public BlockedAuthor author;
-        }
-
-        public class BlockedAuthor
-        {
-            public string did;
-            public Actor.Defs.ViewerState viewer;
-        }
-
-        public class ThreadgateView
-        {
-            public string uri;
-            public string cid;
-            public object record;
-            public List<object> lists;
-        }
+      }
     }
+
+    public class ViewerState
+    {
+      public string repost;
+      public string like;
+      public bool replyDisabled;
+    }
+
+    public class FeedViewPost
+    {
+      public PostView post;
+      public ReplyRef reply;
+      public ReasonRepost reason;
+
+      public string PostAuthorDisplayName
+      {
+        get
+        {
+          return post?.AuthorDisplayName ?? "[ERROR]";
+        }
+      }
+      public string PostAuthorHandle
+      {
+        get
+        {
+          return post?.AuthorHandle ?? "[ERROR]";
+        }
+      }
+      public string PostElapsedTime
+      {
+        get
+        {
+          var timespan = DateTime.Now - post.indexedAt;
+          if (timespan.TotalSeconds < 60)
+          {
+            return timespan.ToString("%s") + "s";
+          }
+          if (timespan.TotalSeconds < 60 * 60)
+          {
+            return timespan.ToString("%m") + "m";
+          }
+          if (timespan.TotalSeconds < 60 * 60 * 24)
+          {
+            return timespan.ToString("%h") + "h";
+          }
+          if (timespan.TotalSeconds < 60 * 60 * 24 * 7)
+          {
+            return timespan.ToString("%d") + "d";
+          }
+          if (post.indexedAt.Year != DateTime.Now.Year)
+          {
+            return post.indexedAt.ToString("MMM d");
+          }
+          return post.indexedAt.ToString("'yy MMM d");
+        }
+      }
+      public string PostReplyTo
+      {
+        get
+        {
+          var replyParentPostView = reply?.parent as PostView;
+          if (replyParentPostView == null)
+          {
+            return string.Empty;
+          }
+          return $"Reply to {replyParentPostView.AuthorDisplayName}";
+        }
+      }
+      public string PostReason
+      {
+        get
+        {
+          return reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
+        }
+      }
+      public string PostAvatar
+      {
+        get
+        {
+          return post?.author?.avatar ?? null;
+        }
+      }
+      public string PostText
+      {
+        get
+        {
+          var typedPost = post?.record as Post;
+          if (typedPost != null)
+          {
+            return typedPost.text;
+          }
+          return "[UNKNOWN]";
+        }
+      }
+      public IEnumerable<Embed.Images.ViewImage> PostImages
+      {
+        get
+        {
+          var imagesView = post?.embed as Embed.Images.View;
+          if (imagesView != null)
+          {
+            return imagesView.images;
+          }
+          return null;
+        }
+      }
+      public string PostEmbedExternalURL
+      {
+        get
+        {
+          var externalView = post?.embed as Embed.External.View;
+          if (externalView != null && externalView.external != null)
+          {
+            return externalView.external.uri;
+          }
+          return string.Empty;
+        }
+      }
+      public string PostEmbedExternalThumbURL
+      {
+        get
+        {
+          var externalView = post?.embed as Embed.External.View;
+          if (externalView != null && externalView.external != null)
+          {
+            return externalView.external.thumb;
+          }
+          return null;
+        }
+      }
+      public string PostEmbedExternalHostname
+      {
+        get
+        {
+          var externalView = post?.embed as Embed.External.View;
+          if (externalView != null && externalView.external != null)
+          {
+            return new Uri(externalView.external.uri).Host;
+          }
+          return null;
+        }
+      }
+      public string PostEmbedExternalTitle
+      {
+        get
+        {
+          var externalView = post?.embed as Embed.External.View;
+          if (externalView != null && externalView.external != null)
+          {
+            return externalView.external.title;
+          }
+          return null;
+        }
+      }
+      public string PostEmbedExternalDescription
+      {
+        get
+        {
+          var externalView = post?.embed as Embed.External.View;
+          if (externalView != null && externalView.external != null)
+          {
+            return externalView.external.description;
+          }
+          return null;
+        }
+      }
+    }
+
+    public class ReplyRef
+    {
+      public object root; // union
+      public object parent; // union
+    }
+
+    public class ReasonRepost
+    {
+      public Actor.Defs.ProfileViewBasic by;
+      public DateTime indexedAt;
+    }
+
+    public class NotFoundPost
+    {
+      public string uri;
+      public bool notFound;
+    }
+
+    public class BlockedPost
+    {
+      public string uri;
+      public bool blocked;
+      public BlockedAuthor author;
+    }
+
+    public class BlockedAuthor
+    {
+      public string did;
+      public Actor.Defs.ViewerState viewer;
+    }
+
+    public class ThreadgateView
+    {
+      public string uri;
+      public string cid;
+      public object record;
+      public List<object> lists;
+    }
+  }
 }

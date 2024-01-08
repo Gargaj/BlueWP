@@ -122,6 +122,9 @@
     <Compile Include="Controls\EmbedExternal.xaml.cs">
       <DependentUpon>EmbedExternal.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\FeedPagePivotHeader.xaml.cs">
+      <DependentUpon>FeedPagePivotHeader.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImageGallery.xaml.cs">
       <DependentUpon>ImageGallery.xaml</DependentUpon>
     </Compile>
@@ -165,6 +168,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\EmbedExternal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FeedPagePivotHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

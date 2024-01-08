@@ -26,7 +26,7 @@
       <!-- Home -->
       <PivotItem>
         <PivotItem.Header>
-          <TextBlock>Home</TextBlock>
+          <bwpc:FeedPagePivotHeader Glyph="&#xE80F;" Label="Home"/>
         </PivotItem.Header>
 
         <Grid>
@@ -62,34 +62,36 @@
       <!-- Notifications -->
       <PivotItem>
         <PivotItem.Header>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock>Notifications</TextBlock>
-            <Border Background="Red" Width="16" Height="16" CornerRadius="8" Margin="5,0,0,0" Visibility="Collapsed">
-              <i:Interaction.Behaviors>
-                <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0">
-                  <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                </c:DataTriggerBehavior>
-                <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0" ComparisonCondition="NotEqual">
-                  <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                </c:DataTriggerBehavior>
-              </i:Interaction.Behaviors>
-              <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
-            </Border>
-          </StackPanel>
+          <Grid>
+            <bwpc:FeedPagePivotHeader Glyph="&#xEA8F;" Label="Notifications"/>
+            <Canvas>
+              <Border Canvas.Left="60" Canvas.Top="12" Background="Red" Width="16" Height="16" CornerRadius="8" Visibility="Collapsed">
+                <i:Interaction.Behaviors>
+                  <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0">
+                    <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                  </c:DataTriggerBehavior>
+                  <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0" ComparisonCondition="NotEqual">
+                    <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                  </c:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
+                <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
+              </Border>
+            </Canvas>
+          </Grid>
         </PivotItem.Header>
       </PivotItem>
 
       <!-- Post -->
       <PivotItem>
         <PivotItem.Header>
-          <TextBlock>Post</TextBlock>
+          <bwpc:FeedPagePivotHeader Glyph="&#xE70F;" Label="Post"/>
         </PivotItem.Header>
       </PivotItem>
 
       <!-- Settings -->
       <PivotItem>
         <PivotItem.Header>
-          <TextBlock>Settings</TextBlock>
+          <bwpc:FeedPagePivotHeader Glyph="&#xE713;" Label="Settings"/>
         </PivotItem.Header>
         <bwpi:SettingsInlay />
       </PivotItem>

@@ -2,11 +2,13 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BlueWP.Styles">
+  
   <ControlTemplate x:Name="ScrollViewerScrollBarlessTemplate" TargetType="ScrollViewer">
     <Grid Background="{TemplateBinding Background}">
       <ScrollContentPresenter x:Name="ScrollContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" Margin="{TemplateBinding Padding}"/>
     </Grid>
   </ControlTemplate>
+  
   <Style x:Key="FeedPagePivotStyle" TargetType="Pivot">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
@@ -217,7 +219,7 @@
                     </ItemsPresenter>
 
                     <ContentPresenter Grid.Row="1" x:Name="LeftHeaderPresenter" ContentTemplate="{TemplateBinding LeftHeaderTemplate}" Content="{TemplateBinding LeftHeader}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-                    <ContentControl Grid.Row="1" x:Name="HeaderClipper" Grid.Column="1" HorizontalContentAlignment="Stretch">
+                    <ContentControl Grid.Row="1" x:Name="HeaderClipper" Grid.Column="1" HorizontalContentAlignment="Center">
                       <ContentControl.Clip>
                         <RectangleGeometry x:Name="HeaderClipperGeometry"/>
                       </ContentControl.Clip>

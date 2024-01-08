@@ -28,6 +28,12 @@
         <PivotItem.Header>
           <bwpc:FeedPagePivotHeader Glyph="&#xE80F;" Label="Home"/>
         </PivotItem.Header>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
 
         <Grid>
           <Grid.RowDefinitions>

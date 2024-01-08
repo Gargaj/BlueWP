@@ -30,7 +30,7 @@ namespace BlueWP.Pages
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
     public uint UnreadNotificationCount { get { return _unreadCount; } }
 
-    protected async Task RefreshFeed()
+    protected async Task RefreshFeed( string feedDID )
     {
       IsLoading = true;
 
@@ -43,11 +43,23 @@ namespace BlueWP.Pages
 
       try
       {
-        var timelineResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+        if (string.IsNullOrEmpty(feedDID))
         {
-          limit = 60
-        });
-        _feedItems = timelineResponse?.feed;
+          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+          {
+            limit = 60
+          });
+          _feedItems = response?.feed;
+        }
+        else
+        {
+          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
+          {
+            limit = 60,
+            feed = feedDID
+          });
+          _feedItems = response?.feed;
+        }
         OnPropertyChanged(nameof(FeedItems));
       }
       catch (WebException ex)
@@ -76,12 +88,12 @@ namespace BlueWP.Pages
 
     protected async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-      await RefreshFeed();
+      await RefreshFeed(null);
     }
 
     protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
     {
-      await RefreshFeed();
+      await RefreshFeed(null);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

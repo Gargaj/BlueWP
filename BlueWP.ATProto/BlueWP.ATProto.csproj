@@ -133,6 +133,7 @@
     <Compile Include="Lexicons\App\BSky\Embed\Record.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\RecordWithMedia.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Feed\GetFeed.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\GetTimeline.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />

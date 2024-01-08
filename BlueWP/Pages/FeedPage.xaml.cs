@@ -15,6 +15,7 @@ namespace BlueWP.Pages
     private bool _isLoading = false;
     private bool _hasError = false;
     private string _errorText = string.Empty;
+    private uint _unreadCount = 0;
 
     public FeedPage()
     {
@@ -27,20 +28,26 @@ namespace BlueWP.Pages
     public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
     public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
+    public uint UnreadNotificationCount { get { return _unreadCount; } }
 
     protected async Task RefreshFeed()
     {
       IsLoading = true;
 
-      var pref = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
+      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+      if (unreadCountResponse != null)
+      {
+        _unreadCount = unreadCountResponse.count;
+        OnPropertyChanged(nameof(UnreadNotificationCount));
+      }
 
       try
       {
-        var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+        var timelineResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
         {
           limit = 60
         });
-        _feedItems = response?.feed;
+        _feedItems = timelineResponse?.feed;
         OnPropertyChanged(nameof(FeedItems));
       }
       catch (WebException ex)
@@ -52,6 +59,19 @@ namespace BlueWP.Pages
       }
 
       IsLoading = false;
+    }
+
+    private void Timeline_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+
+    }
+    private void Notifications_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+
+    }
+    private void Settings_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+      _app.NavigateToSettings();
     }
 
     protected async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

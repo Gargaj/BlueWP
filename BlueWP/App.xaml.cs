@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -13,6 +16,8 @@ namespace BlueWP
   sealed partial class App : Application
   {
     private ATProto.Client _client;
+    private List<object> _preferences;
+    private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
 
     /// <summary>
     /// Initializes the singleton application object.  This is the first line of authored code
@@ -66,7 +71,7 @@ namespace BlueWP
           }
           else
           {
-            NavigateToMainScreen();
+            await NavigateToMainScreen();
           }
         }
         // Ensure the current window is active
@@ -74,13 +79,26 @@ namespace BlueWP
       }
     }
 
-    public void NavigateToMainScreen()
+    public void NavigateToSettings()
+    {
+      //rootFrame.Navigate(typeof(Pages.LoginPage), e.Arguments);
+    }
+
+    public async Task NavigateToMainScreen()
     {
       Frame rootFrame = Window.Current.Content as Frame;
       if (rootFrame == null)
       {
         return;
       }
+
+      var preferences = await _client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
+      if (preferences != null)
+      {
+        _preferences = preferences.preferences;
+        _savedFeedsPref = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref;
+      }
+
       rootFrame.Navigate(typeof(Pages.FeedPage));
     }
 

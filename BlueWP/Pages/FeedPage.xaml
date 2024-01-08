@@ -22,7 +22,7 @@
         <RowDefinition Height="*"/>
         <RowDefinition Height="35"/>
       </Grid.RowDefinitions>
-      
+
       <Button Click="Refresh_Click">
         <Button.Template>
           <ControlTemplate>
@@ -45,9 +45,33 @@
         </ListView.ItemTemplate>
       </ListView>
 
-      <Button Grid.Row="2" Click="Logout_Click">Log out</Button>
+      <Grid Grid.Row="2">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Button Grid.Column="0" Click="Timeline_Click" HorizontalAlignment="Center">Timeline</Button>
+        <Button Grid.Column="1" Click="Notifications_Click" HorizontalAlignment="Center">
+          <StackPanel Orientation="Horizontal">
+            <TextBlock>Notifications</TextBlock>
+            <Border Background="Red" Width="16" Height="16" CornerRadius="8" Margin="5,0,0,0" Visibility="Collapsed">
+              <i:Interaction.Behaviors>
+                <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0">
+                  <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                </c:DataTriggerBehavior>
+                <c:DataTriggerBehavior Binding="{Binding UnreadNotificationCount}" Value="0" ComparisonCondition="NotEqual">
+                  <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                </c:DataTriggerBehavior>
+              </i:Interaction.Behaviors>
+              <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
+            </Border>
+          </StackPanel>
+        </Button>
+        <Button Grid.Column="2" Click="Settings_Click" HorizontalAlignment="Center">Settings</Button>
+      </Grid>
     </Grid>
-    
+
     <!-- modals -->
     <Canvas x:Name="RootCanvas">
 

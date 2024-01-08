@@ -244,6 +244,26 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public Actor.Defs.ViewerState viewer;
     }
 
+    public class GeneratorView
+    {
+      public string uri;
+      public string cid;
+      public string did;
+      public Actor.Defs.ProfileView creator;
+      public string displayName;
+      public string description;
+      public List<object> descriptionFacets; // TODO
+      public string avatar;
+      public uint likeCount;
+      public GeneratorViewerState viewer;
+      public DateTime indexedAt;
+    }
+
+    public class GeneratorViewerState
+    {
+      public string like;
+    }
+
     public class ThreadgateView
     {
       public string uri;

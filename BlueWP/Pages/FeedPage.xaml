@@ -22,6 +22,7 @@
         <RowDefinition Height="*"/>
         <RowDefinition Height="35"/>
       </Grid.RowDefinitions>
+      
       <Button Click="Refresh_Click">
         <Button.Template>
           <ControlTemplate>
@@ -46,7 +47,11 @@
 
       <Button Grid.Row="2" Click="Logout_Click">Log out</Button>
     </Grid>
+    
+    <!-- modals -->
     <Canvas x:Name="RootCanvas">
+
+      <!-- progress spinner -->
       <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
                 Height="{Binding ActualHeight, ElementName=RootCanvas}"
                 HorizontalAlignment="Center"
@@ -54,6 +59,8 @@
                 Canvas.ZIndex="5">
         <ProgressRing Width="64" Height="64" IsActive="{Binding IsLoading}"/>
       </Grid>
+
+      <!-- error popup -->
       <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
                 Height="{Binding ActualHeight, ElementName=RootCanvas}"
                 HorizontalAlignment="Center"

@@ -21,17 +21,17 @@
   </Page.Resources>
   
   <Grid>
-    <Pivot> <!--  Style="{StaticResource FeedPagePivotStyle}" -->
-      
-      <!-- TIMELINE-->
+    <Pivot Style="{StaticResource FeedPagePivotStyle}">
+
+      <!-- Home -->
       <PivotItem>
         <PivotItem.Header>
-          <TextBlock>Timeline</TextBlock>
+          <TextBlock>Home</TextBlock>
         </PivotItem.Header>
 
         <Grid>
           <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
             <RowDefinition Height="*"/>
           </Grid.RowDefinitions>
           <Button Grid.Row="0" Click="Refresh_Click">

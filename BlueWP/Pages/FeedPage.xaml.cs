@@ -19,7 +19,7 @@ namespace BlueWP.Pages
 
     public FeedPage()
     {
-      this.InitializeComponent();
+      InitializeComponent();
       _app = (App)Windows.UI.Xaml.Application.Current;
       DataContext = this;
     }
@@ -72,24 +72,6 @@ namespace BlueWP.Pages
     private void Settings_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
       _app.NavigateToSettings();
-    }
-
-    protected async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");
-      dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
-      dialog.Commands.Add(new Windows.UI.Popups.UICommand("No", new Windows.UI.Popups.UICommandInvokedHandler(LogoutMessageDialogHandler)));
-      dialog.DefaultCommandIndex = 1;
-      dialog.CancelCommandIndex = 1;
-      await dialog.ShowAsync();
-    }
-
-    protected void LogoutMessageDialogHandler(Windows.UI.Popups.IUICommand command)
-    {
-      if (command.Label == "Yes")
-      {
-        _app.Logout();
-      }
     }
 
     protected async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

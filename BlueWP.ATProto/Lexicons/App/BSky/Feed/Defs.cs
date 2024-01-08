@@ -50,9 +50,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public ReplyRef reply;
       public ReasonRepost reason;
 
+      public string PostAuthorAvatarURL => post?.author?.avatar ?? null;
       public string PostAuthorDisplayName => post?.AuthorDisplayName ?? "[ERROR]";
       public string PostAuthorHandle => post?.AuthorHandle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);
+
+      public bool IsRepost => reason != null;
+      public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
+
+      public bool IsReply => (reply?.parent as PostView) != null;
       public string PostReplyTo
       {
         get
@@ -65,23 +71,25 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
           return $"Reply to {replyParentPostView.AuthorDisplayName}";
         }
       }
-      public bool IsRepost => reason != null;
-      public bool IsReply => (reply?.parent as PostView) != null;
-      public bool HasQuotedPost => (post?.embed as Embed.Record.View) != null;
+
+      public bool HasQuotedPost => (post?.embed as Embed.Record.View) != null || (post?.embed as Embed.RecordWithMedia.View) != null;
       public Embed.Record.ViewRecord QuotedPost
       {
         get
         {
           var recordView = post?.embed as Embed.Record.View;
-          if (recordView == null)
+          if (recordView != null)
           {
-            return null;
+            return recordView.record as Embed.Record.ViewRecord;
           }
-          return recordView.record as Embed.Record.ViewRecord;
+          var recordWithMediaView = post?.embed as Embed.RecordWithMedia.View;
+          if (recordWithMediaView != null)
+          {
+            return recordWithMediaView.record.record as Embed.Record.ViewRecord;
+          }
+          return null;
         }
       }
-      public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
-      public string PostAuthorAvatarURL => post?.author?.avatar ?? null;
       public string PostText
       {
         get
@@ -115,66 +123,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
           return null;
         }
       }
-      public string PostEmbedExternalURL
-      {
-        get
-        {
-          var externalView = post?.embed as Embed.External.View;
-          if (externalView != null && externalView.external != null)
-          {
-            return externalView.external.uri;
-          }
-          return string.Empty;
-        }
-      }
-      public string PostEmbedExternalThumbURL
-      {
-        get
-        {
-          var externalView = post?.embed as Embed.External.View;
-          if (externalView != null && externalView.external != null)
-          {
-            return externalView.external.thumb;
-          }
-          return null;
-        }
-      }
-      public string PostEmbedExternalHostname
-      {
-        get
-        {
-          var externalView = post?.embed as Embed.External.View;
-          if (externalView != null && externalView.external != null)
-          {
-            return new Uri(externalView.external.uri).Host;
-          }
-          return null;
-        }
-      }
-      public string PostEmbedExternalTitle
-      {
-        get
-        {
-          var externalView = post?.embed as Embed.External.View;
-          if (externalView != null && externalView.external != null)
-          {
-            return externalView.external.title;
-          }
-          return null;
-        }
-      }
-      public string PostEmbedExternalDescription
-      {
-        get
-        {
-          var externalView = post?.embed as Embed.External.View;
-          if (externalView != null && externalView.external != null)
-          {
-            return externalView.external.description;
-          }
-          return null;
-        }
-      }
+      public bool HasEmbedExternal => (post?.embed as Embed.External.View) != null;
+      public Embed.External.View PostEmbedExternal => post?.embed as Embed.External.View;
     }
 
     public class ReplyRef

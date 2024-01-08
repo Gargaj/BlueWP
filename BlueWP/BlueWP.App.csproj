@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\EmbedExternal.xaml.cs">
+      <DependentUpon>EmbedExternal.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ImageGallery.xaml.cs">
       <DependentUpon>ImageGallery.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\EmbedExternal.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\ImageGallery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

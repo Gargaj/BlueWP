@@ -53,10 +53,10 @@
           <!-- reply to -->
           <TextBlock Text="{Binding PostData.PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5">
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding Path=IsReply}" Value="True">
+              <c:DataTriggerBehavior Binding="{Binding IsReply}" Value="True">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
               </c:DataTriggerBehavior>
-              <c:DataTriggerBehavior Binding="{Binding Path=IsReply}" Value="False">
+              <c:DataTriggerBehavior Binding="{Binding IsReply}" Value="False">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
@@ -77,37 +77,23 @@
           <!-- embed link -->
           <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}">
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding PostData.PostEmbedExternalURL}" Value="">
+              <c:DataTriggerBehavior Binding="{Binding HasEmbedExternal}" Value="True">
+                <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+              </c:DataTriggerBehavior>
+              <c:DataTriggerBehavior Binding="{Binding HasEmbedExternal}" Value="False">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
-            <Button Click="OpenExternalURL_Click">
-              <Button.Template>
-                <ControlTemplate>
-                  <StackPanel Orientation="Vertical">
-                    <Image Stretch="UniformToFill" Height="150">
-                      <Image.Source>
-                        <BitmapImage UriSource="{Binding PostData.PostEmbedExternalThumbURL}"/>
-                      </Image.Source>
-                    </Image>
-                    <StackPanel Orientation="Vertical" Padding="5">
-                      <TextBlock Text="{Binding PostData.PostEmbedExternalHostname}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
-                      <TextBlock Text="{Binding PostData.PostEmbedExternalTitle}" TextWrapping="WrapWholeWords" MaxHeight="20" FontWeight="Bold"/>
-                      <TextBlock Text="{Binding PostData.PostEmbedExternalDescription}" TextWrapping="WrapWholeWords" MaxHeight="60"/>
-                    </StackPanel>
-                  </StackPanel>
-                </ControlTemplate>
-              </Button.Template>
-            </Button>
+            <local:EmbedExternal External="{Binding PostData.PostEmbedExternal}"/>
           </Border>
 
           <!-- quote post -->
           <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding PostData.HasQuotedPost}" Value="True">
+              <c:DataTriggerBehavior Binding="{Binding HasQuotedPost}" Value="True">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
               </c:DataTriggerBehavior>
-              <c:DataTriggerBehavior Binding="{Binding PostData.HasQuotedPost}" Value="False">
+              <c:DataTriggerBehavior Binding="{Binding HasQuotedPost}" Value="False">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>

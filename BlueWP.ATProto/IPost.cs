@@ -11,6 +11,7 @@ namespace BlueWP.ATProto
     bool IsRepost { get; }
     bool IsReply { get; }
     bool HasQuotedPost { get; }
+    bool HasEmbedExternal { get; }
     string PostAuthorAvatarURL { get; }
     string PostAuthorDisplayName { get; }
     string PostAuthorHandle { get; }

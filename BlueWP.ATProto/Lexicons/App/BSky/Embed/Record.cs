@@ -25,6 +25,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
       public bool IsRepost => false;
       public bool IsReply => false;
       public bool HasQuotedPost => false;
+      public bool HasEmbedExternal => false;
 
       public string PostAuthorAvatarURL => author?.avatar ?? "[ERROR]";
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";

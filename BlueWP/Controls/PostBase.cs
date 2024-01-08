@@ -26,6 +26,11 @@ namespace BlueWP.Controls
       get { return PostData?.HasQuotedPost ?? false; }
     }
 
+    public bool HasEmbedExternal
+    {
+      get { return PostData?.HasEmbedExternal ?? false; }
+    }
+
     public ATProto.IPost PostData
     {
       get { return GetValue(PostDataProperty) as ATProto.IPost; }
@@ -41,25 +46,7 @@ namespace BlueWP.Controls
         post.OnPropertyChanged(nameof(IsRepost));
         post.OnPropertyChanged(nameof(IsReply));
         post.OnPropertyChanged(nameof(HasQuotedPost));
-      }
-    }
-
-    public async void OpenExternalURL_Click(object sender, RoutedEventArgs e)
-    {
-      var button = e.OriginalSource as Button;
-      if (button == null)
-      {
-        return;
-      }
-      var dataContext = button.DataContext as PostBase;
-      if (dataContext == null)
-      {
-        return;
-      }
-      var post = dataContext.PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
-      if (post != null && !string.IsNullOrEmpty(post.PostEmbedExternalURL))
-      {
-        await Windows.System.Launcher.LaunchUriAsync(new Uri(post.PostEmbedExternalURL));
+        post.OnPropertyChanged(nameof(HasEmbedExternal));
       }
     }
 

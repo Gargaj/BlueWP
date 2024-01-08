@@ -56,12 +56,11 @@ namespace BlueWP.Controls
       {
         return;
       }
-/*
-      if (!string.IsNullOrEmpty(dataContext.PostData.PostEmbedExternalURL))
+      var post = dataContext.PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
+      if (post != null && !string.IsNullOrEmpty(post.PostEmbedExternalURL))
       {
-        await Windows.System.Launcher.LaunchUriAsync(new Uri(dataContext.PostData.PostEmbedExternalURL));
+        await Windows.System.Launcher.LaunchUriAsync(new Uri(post.PostEmbedExternalURL));
       }
-*/
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Net;
-using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 
-namespace BlueWP.Pages
+namespace BlueWP.Inlays
 {
-  public partial class SettingsPage : Page
+  public partial class SettingsInlay : UserControl
   {
     private App _app;
-    public SettingsPage()
+    public SettingsInlay()
     {
       InitializeComponent();
       _app = (App)Windows.UI.Xaml.Application.Current;
-      DataContext = this;
+
+      LayoutRoot.DataContext = this;
 
       Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += SettingsPage_BackRequested;
     }

@@ -80,16 +80,6 @@ namespace BlueWP
       }
     }
 
-    public void NavigateToSettings()
-    {
-      if (_rootFrame == null)
-      {
-        return;
-      }
-
-      _rootFrame.Navigate(typeof(Pages.SettingsPage));
-    }
-
     public async Task NavigateToMainScreen()
     {
       if (_rootFrame == null)

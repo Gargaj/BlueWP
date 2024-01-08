@@ -1,8 +1,8 @@
-﻿<Page
-    x:Class="BlueWP.Pages.SettingsPage"
+﻿<UserControl
+    x:Class="BlueWP.Inlays.SettingsInlay"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:BlueWP.Pages"
+    xmlns:local="using:BlueWP.Inlays"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -10,12 +10,12 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-  <Grid>
+  <Grid x:Name="LayoutRoot">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-
+<!--
     <CommandBar Grid.Row="0">
       <i:Interaction.Behaviors>
         <c:DataTriggerBehavior Binding="{Binding Platform}" Value="Windows.Desktop">
@@ -34,7 +34,7 @@
                 VerticalAlignment="Top"/>
       </CommandBar.Content>
     </CommandBar>
-    
+-->
     <Pivot Grid.Row="1">
       <Pivot.Items>
         <PivotItem Header="Account">
@@ -57,4 +57,4 @@
       </Pivot.Items>
     </Pivot>
   </Grid>
-</Page>
+</UserControl>

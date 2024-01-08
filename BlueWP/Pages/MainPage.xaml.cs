@@ -15,7 +15,7 @@ namespace BlueWP.Pages
     private bool _isLoading = false;
     private bool _hasError = false;
     private string _errorText = string.Empty;
-    private uint _unreadCount = 0;
+    private int _unreadCount = 0;
 
     public FeedPage()
     {
@@ -28,7 +28,7 @@ namespace BlueWP.Pages
     public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
     public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
-    public uint UnreadNotificationCount { get { return _unreadCount; } }
+    public int UnreadNotificationCount { get { return _unreadCount; } }
 
     protected async Task RefreshFeed( string feedDID )
     {
@@ -37,7 +37,7 @@ namespace BlueWP.Pages
       var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
       if (unreadCountResponse != null)
       {
-        _unreadCount = unreadCountResponse.count;
+        _unreadCount = (int)unreadCountResponse.count;
         OnPropertyChanged(nameof(UnreadNotificationCount));
       }
 
@@ -71,19 +71,6 @@ namespace BlueWP.Pages
       }
 
       IsLoading = false;
-    }
-
-    private void Timeline_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-
-    }
-    private void Notifications_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-
-    }
-    private void Settings_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      _app.NavigateToSettings();
     }
 
     protected async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

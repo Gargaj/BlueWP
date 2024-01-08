@@ -9,50 +9,59 @@
     xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bwpc="using:BlueWP.Controls"
+    xmlns:bwpi="using:BlueWP.Inlays"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+  <Page.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Styles/FeedPagePivotStyle.xaml"/>
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Page.Resources>
+  
   <Grid>
-    <Grid>
-      <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="*"/>
-      </Grid.ColumnDefinitions>
-      <Grid.RowDefinitions>
-        <RowDefinition Height="35"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="35"/>
-      </Grid.RowDefinitions>
+    <Pivot> <!--  Style="{StaticResource FeedPagePivotStyle}" -->
+      
+      <!-- TIMELINE-->
+      <PivotItem>
+        <PivotItem.Header>
+          <TextBlock>Timeline</TextBlock>
+        </PivotItem.Header>
 
-      <Button Click="Refresh_Click">
-        <Button.Template>
-          <ControlTemplate>
-            <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="20" Margin="0,0,0,10">Timeline</TextBlock>
-          </ControlTemplate>
-        </Button.Template>
-      </Button>
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+          </Grid.RowDefinitions>
+          <Button Grid.Row="0" Click="Refresh_Click">
+            <Button.Template>
+              <ControlTemplate>
+                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="20" Margin="0,0,0,10">Timeline</TextBlock>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
 
-      <ListView Grid.Row="1" ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
-        <ListView.ItemContainerStyle>
-          <Style TargetType="ListViewItem">
-            <Setter Property="Padding" Value="0"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-          </Style>
-        </ListView.ItemContainerStyle>
-        <ListView.ItemTemplate>
-          <DataTemplate>
-            <bwpc:Post PostData="{Binding}"/>
-          </DataTemplate>
-        </ListView.ItemTemplate>
-      </ListView>
+          <ListView Grid.Row="1" ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
+            <ListView.ItemContainerStyle>
+              <Style TargetType="ListViewItem">
+                <Setter Property="Padding" Value="0"/>
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+              </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <bwpc:Post PostData="{Binding}"/>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </ListView>
+        </Grid>
+          
+      </PivotItem>
 
-      <Grid Grid.Row="2">
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-          <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <Button Grid.Column="0" Click="Timeline_Click" HorizontalAlignment="Center">Timeline</Button>
-        <Button Grid.Column="1" Click="Notifications_Click" HorizontalAlignment="Center">
+      <!-- Notifications -->
+      <PivotItem>
+        <PivotItem.Header>
           <StackPanel Orientation="Horizontal">
             <TextBlock>Notifications</TextBlock>
             <Border Background="Red" Width="16" Height="16" CornerRadius="8" Margin="5,0,0,0" Visibility="Collapsed">
@@ -67,10 +76,24 @@
               <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
             </Border>
           </StackPanel>
-        </Button>
-        <Button Grid.Column="2" Click="Settings_Click" HorizontalAlignment="Center">Settings</Button>
-      </Grid>
-    </Grid>
+        </PivotItem.Header>
+      </PivotItem>
+
+      <!-- Post -->
+      <PivotItem>
+        <PivotItem.Header>
+          <TextBlock>Post</TextBlock>
+        </PivotItem.Header>
+      </PivotItem>
+
+      <!-- Settings -->
+      <PivotItem>
+        <PivotItem.Header>
+          <TextBlock>Settings</TextBlock>
+        </PivotItem.Header>
+        <bwpi:SettingsInlay />
+      </PivotItem>
+    </Pivot>
 
     <!-- modals -->
     <Canvas x:Name="RootCanvas">

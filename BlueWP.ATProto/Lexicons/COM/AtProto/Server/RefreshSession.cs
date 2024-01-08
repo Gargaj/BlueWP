@@ -1,4 +1,4 @@
-﻿namespace BlueWP.ATProto.Lexicons.COM.AtProto.Server
+﻿namespace BlueWP.ATProto.Lexicons.COM.ATProto.Server
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/refreshSession.json"/>
   public class RefreshSession : LexiconBase

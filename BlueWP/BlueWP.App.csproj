@@ -126,6 +126,9 @@
     <Compile Include="Controls\Post.xaml.cs">
       <DependentUpon>Post.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\PostQuoted.xaml.cs">
+      <DependentUpon>PostQuoted.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Pages\FeedPage.xaml.cs">
       <DependentUpon>FeedPage.xaml</DependentUpon>
     </Compile>
@@ -160,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Post.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PostQuoted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

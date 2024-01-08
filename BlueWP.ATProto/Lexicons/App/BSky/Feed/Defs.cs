@@ -18,7 +18,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public uint? likeCount;
       public DateTime indexedAt;
       public ViewerState viewer;
-      public List<COM.AtProto.Label.Defs.Label> labels;
+      public List<COM.ATProto.Label.Defs.Label> labels;
       public ThreadgateView threadgate;
 
       public string AuthorDisplayName
@@ -44,54 +44,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool replyDisabled;
     }
 
-    public class FeedViewPost
+    public class FeedViewPost : IPost
     {
       public PostView post;
       public ReplyRef reply;
       public ReasonRepost reason;
 
-      public string PostAuthorDisplayName
-      {
-        get
-        {
-          return post?.AuthorDisplayName ?? "[ERROR]";
-        }
-      }
-      public string PostAuthorHandle
-      {
-        get
-        {
-          return post?.AuthorHandle ?? "[ERROR]";
-        }
-      }
-      public string PostElapsedTime
-      {
-        get
-        {
-          var timespan = DateTime.Now - post.indexedAt;
-          if (timespan.TotalSeconds < 60)
-          {
-            return timespan.ToString("%s") + "s";
-          }
-          if (timespan.TotalSeconds < 60 * 60)
-          {
-            return timespan.ToString("%m") + "m";
-          }
-          if (timespan.TotalSeconds < 60 * 60 * 24)
-          {
-            return timespan.ToString("%h") + "h";
-          }
-          if (timespan.TotalSeconds < 60 * 60 * 24 * 7)
-          {
-            return timespan.ToString("%d") + "d";
-          }
-          if (post.indexedAt.Year != DateTime.Now.Year)
-          {
-            return post.indexedAt.ToString("MMM d");
-          }
-          return post.indexedAt.ToString("'yy MMM d");
-        }
-      }
+      public string PostAuthorDisplayName => post?.AuthorDisplayName ?? "[ERROR]";
+      public string PostAuthorHandle => post?.AuthorHandle ?? "[ERROR]";
+      public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);
       public string PostReplyTo
       {
         get
@@ -104,20 +65,23 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
           return $"Reply to {replyParentPostView.AuthorDisplayName}";
         }
       }
-      public string PostReason
+      public bool IsRepost => reason != null;
+      public bool IsReply => (reply?.parent as PostView) != null;
+      public bool HasQuotedPost => (post?.embed as Embed.Record.View) != null;
+      public Embed.Record.ViewRecord QuotedPost
       {
         get
         {
-          return reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
+          var recordView = post?.embed as Embed.Record.View;
+          if (recordView == null)
+          {
+            return null;
+          }
+          return recordView.record as Embed.Record.ViewRecord;
         }
       }
-      public string PostAvatar
-      {
-        get
-        {
-          return post?.author?.avatar ?? null;
-        }
-      }
+      public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
+      public string PostAuthorAvatarURL => post?.author?.avatar ?? null;
       public string PostText
       {
         get

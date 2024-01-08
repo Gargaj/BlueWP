@@ -120,8 +120,11 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Blob.cs" />
     <Compile Include="Client.cs" />
+    <Compile Include="Helpers.cs" />
     <Compile Include="HTTP.cs" />
+    <Compile Include="IPost.cs" />
     <Compile Include="LexiconBase.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetPreferences.cs" />
@@ -134,9 +137,11 @@
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
-    <Compile Include="Lexicons\COM\AtProto\Label\Defs.cs" />
-    <Compile Include="Lexicons\COM\AtProto\Server\CreateSession.cs" />
-    <Compile Include="Lexicons\COM\AtProto\Server\RefreshSession.cs" />
+    <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Label\Defs.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Repo\StrongRef.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Server\CreateSession.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Server\RefreshSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\BlueWP.ATProto.rd.xml" />
   </ItemGroup>

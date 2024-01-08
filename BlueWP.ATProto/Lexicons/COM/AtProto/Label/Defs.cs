@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlueWP.ATProto.Lexicons.COM.AtProto.Label
+namespace BlueWP.ATProto.Lexicons.COM.ATProto.Label
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/label/defs.json"/>
   public class Defs

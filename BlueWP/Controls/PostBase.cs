@@ -13,20 +13,25 @@ namespace BlueWP.Controls
 
     public bool IsRepost
     {
-      get { return !string.IsNullOrEmpty(PostData?.PostReason); }
+      get { return PostData?.IsRepost ?? false; }
     }
 
     public bool IsReply
     {
-      get { return !string.IsNullOrEmpty(PostData?.PostReplyTo); }
+      get { return PostData?.IsReply ?? false; }
     }
 
-    public ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost PostData
+    public bool HasQuotedPost
     {
-      get { return GetValue(PostDataProperty) as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost; }
+      get { return PostData?.HasQuotedPost ?? false; }
+    }
+
+    public ATProto.IPost PostData
+    {
+      get { return GetValue(PostDataProperty) as ATProto.IPost; }
       set { SetValue(PostDataProperty, value); }
     }
-    public static readonly DependencyProperty PostDataProperty = DependencyProperty.Register("PostData", typeof(ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost), typeof(PostBase), new PropertyMetadata(null, OnPostDataChanged));
+    public static readonly DependencyProperty PostDataProperty = DependencyProperty.Register("PostData", typeof(ATProto.IPost), typeof(PostBase), new PropertyMetadata(null, OnPostDataChanged));
 
     protected static void OnPostDataChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -35,6 +40,7 @@ namespace BlueWP.Controls
       {
         post.OnPropertyChanged(nameof(IsRepost));
         post.OnPropertyChanged(nameof(IsReply));
+        post.OnPropertyChanged(nameof(HasQuotedPost));
       }
     }
 
@@ -50,10 +56,12 @@ namespace BlueWP.Controls
       {
         return;
       }
+/*
       if (!string.IsNullOrEmpty(dataContext.PostData.PostEmbedExternalURL))
       {
         await Windows.System.Launcher.LaunchUriAsync(new Uri(dataContext.PostData.PostEmbedExternalURL));
       }
+*/
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

@@ -1,0 +1,32 @@
+﻿<local:PostBase
+    x:Class="BlueWP.Controls.PostQuoted"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BlueWP.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+  <Grid x:Name="LayoutRoot">
+    <StackPanel Grid.Column="1" Orientation="Vertical" Width="Auto">
+
+      <!-- byline -->
+      <StackPanel Orientation="Horizontal">
+        <Image Grid.Column="0" Width="20" Height="20" VerticalAlignment="Top" Margin="0,0,5,0">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding PostData.PostAuthorAvatarURL}"/>
+          </Image.Source>
+        </Image>
+        <TextBlock Text="{Binding PostData.PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
+        <TextBlock Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5" Margin="0,0,5,0"/>
+        <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
+        <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+      </StackPanel>
+
+      <!-- post contents -->
+      <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
+    </StackPanel>
+  </Grid>
+</local:PostBase>

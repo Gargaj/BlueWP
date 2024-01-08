@@ -42,12 +42,12 @@ namespace BlueWP.ATProto
       _credentials.handle = handle;
       _appPassword = appPassword;
 
-      var body = new Lexicons.COM.AtProto.Server.CreateSession()
+      var body = new Lexicons.COM.ATProto.Server.CreateSession()
       {
         identifier = _credentials.handle,
         password = _appPassword,
       };
-      var response = await PostAsync<Lexicons.COM.AtProto.Server.CreateSessionResponse>(body);
+      var response = await PostAsync<Lexicons.COM.ATProto.Server.CreateSessionResponse>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
       {
         _credentials.did = response.did;
@@ -182,8 +182,8 @@ namespace BlueWP.ATProto
     private async Task<bool> RefreshCredentials()
     {
       _credentials.accessToken = _credentials.refreshToken;
-      var body = new Lexicons.COM.AtProto.Server.RefreshSession();
-      var response = await PostAsync<Lexicons.COM.AtProto.Server.RefreshSessionResponse>(body);
+      var body = new Lexicons.COM.ATProto.Server.RefreshSession();
+      var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSessionResponse>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
       {
         _credentials.did = response.did;
@@ -282,24 +282,34 @@ namespace BlueWP.ATProto
       {
         _atprotoTypes = new Dictionary<string, Type>()
           {
+              { "blob",                                    typeof(Blob) },
               { "app.bsky.actor.defs#adultContentPref",    typeof(Lexicons.App.BSky.Actor.Defs.AdultContentPref) },
               { "app.bsky.actor.defs#contentLabelPref",    typeof(Lexicons.App.BSky.Actor.Defs.ContentLabelPref) },
               { "app.bsky.actor.defs#savedFeedsPref",      typeof(Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) },
               { "app.bsky.actor.defs#personalDetailsPref", typeof(Lexicons.App.BSky.Actor.Defs.PersonalDetailsPref) },
               { "app.bsky.actor.defs#feedViewPref",        typeof(Lexicons.App.BSky.Actor.Defs.FeedViewPref) },
               { "app.bsky.actor.defs#threadViewPref",      typeof(Lexicons.App.BSky.Actor.Defs.ThreadViewPref) },
+              { "app.bsky.embed.external",                 typeof(Lexicons.App.BSky.Embed.External) },
+              { "app.bsky.embed.external#view",            typeof(Lexicons.App.BSky.Embed.External.View) },
               { "app.bsky.embed.images",                   typeof(Lexicons.App.BSky.Embed.Images) },
               { "app.bsky.embed.images#view",              typeof(Lexicons.App.BSky.Embed.Images.View) },
-              { "app.bsky.feed.defs#generatorView",        typeof(Lexicons.App.BSky.Feed.Defs.GeneratorView) },
-              { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },
-              { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
-              { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
-              { "app.bsky.embed.external#view",            typeof(Lexicons.App.BSky.Embed.External.View) },
+              { "app.bsky.embed.record",                   typeof(Lexicons.App.BSky.Embed.Record) },
               { "app.bsky.embed.record#view",              typeof(Lexicons.App.BSky.Embed.Record.View) },
               { "app.bsky.embed.record#viewRecord",        typeof(Lexicons.App.BSky.Embed.Record.ViewRecord) },
               { "app.bsky.embed.record#viewNotFound",      typeof(Lexicons.App.BSky.Embed.Record.ViewNotFound) },
               { "app.bsky.embed.record#viewBlocked",       typeof(Lexicons.App.BSky.Embed.Record.ViewBlocked) },
+              { "app.bsky.embed.recordWithMedia",          typeof(Lexicons.App.BSky.Embed.RecordWithMedia) },
               { "app.bsky.embed.recordWithMedia#view",     typeof(Lexicons.App.BSky.Embed.RecordWithMedia.View) },
+              { "app.bsky.feed.defs#generatorView",        typeof(Lexicons.App.BSky.Feed.Defs.GeneratorView) },
+              { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },
+              { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
+              { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
+              { "app.bsky.richtext.facet",                 typeof(Lexicons.App.BSky.RichText.Facet) },
+              { "app.bsky.richtext.facet#byteSlice",       typeof(Lexicons.App.BSky.RichText.Facet.ByteSlice) },
+              { "app.bsky.richtext.facet#link",            typeof(Lexicons.App.BSky.RichText.Facet.Link) },
+              { "app.bsky.richtext.facet#mention",         typeof(Lexicons.App.BSky.RichText.Facet.Mention) },
+              { "app.bsky.richtext.facet#tag",             typeof(Lexicons.App.BSky.RichText.Facet.Tag) },
+              { "com.atproto.repo.strongRef",              typeof(Lexicons.COM.ATProto.Repo.StrongRef) },
           };
       }
 

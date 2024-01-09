@@ -15,26 +15,7 @@
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
-<!--
-    <CommandBar Grid.Row="0">
-      <i:Interaction.Behaviors>
-        <c:DataTriggerBehavior Binding="{Binding Platform}" Value="Windows.Desktop">
-          <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-        </c:DataTriggerBehavior>
-        <c:DataTriggerBehavior Binding="{Binding Platform}" Value="Windows.Desktop" ComparisonCondition="NotEqual">
-          <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-        </c:DataTriggerBehavior>
-      </i:Interaction.Behaviors>
-      <CommandBar.Content>
-        <Button x:Name="BackButton"
-                Click="BackButton_Click" 
-                Style="{StaticResource NavigationBackButtonNormalStyle}"
-                IsEnabled="{x:Bind Frame.CanGoBack, Mode=OneWay}" 
-                ToolTipService.ToolTip="Back" 
-                VerticalAlignment="Top"/>
-      </CommandBar.Content>
-    </CommandBar>
--->
+
     <Pivot Grid.Row="1">
       <Pivot.Items>
         <PivotItem Header="Account">

@@ -12,22 +12,11 @@ namespace BlueWP.Inlays
       _app = (App)Windows.UI.Xaml.Application.Current;
 
       LayoutRoot.DataContext = this;
-
-      Windows.UI.Core.SystemNavigationManager.GetForCurrentView().BackRequested += SettingsPage_BackRequested;
     }
 
     public string Platform { get { return Windows.System.Profile.AnalyticsInfo.VersionInfo.DeviceFamily; } }
     public string Handle { get { return _app.Client.Handle; } }
     public string DID { get { return _app.Client.DID; } }
-
-    private void SettingsPage_BackRequested(object sender, Windows.UI.Core.BackRequestedEventArgs e)
-    {
-      App app = Windows.UI.Xaml.Application.Current as App;
-      if (!e.Handled)
-      {
-        e.Handled = app.TryGoBack();
-      }
-    }
 
     private void BackButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {

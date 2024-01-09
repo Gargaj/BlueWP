@@ -16,8 +16,6 @@ namespace BlueWP
   sealed partial class App : Application
   {
     private ATProto.Client _client;
-    private List<object> _preferences;
-    private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
     private Frame _rootFrame;
 
     /// <summary>
@@ -72,7 +70,7 @@ namespace BlueWP
           }
           else
           {
-            await NavigateToMainScreen();
+            NavigateToMainScreen();
           }
         }
         // Ensure the current window is active
@@ -80,7 +78,7 @@ namespace BlueWP
       }
     }
 
-    public async Task NavigateToMainScreen()
+    public void NavigateToMainScreen()
     {
       if (_rootFrame == null)
       {
@@ -88,13 +86,6 @@ namespace BlueWP
       }
 
       _rootFrame.Navigate(typeof(Pages.FeedPage));
-
-      var preferences = await _client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
-      if (preferences != null)
-      {
-        _preferences = preferences.preferences;
-        _savedFeedsPref = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref;
-      }
     }
 
     public bool TryGoBack()

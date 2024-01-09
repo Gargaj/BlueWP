@@ -31,7 +31,7 @@ namespace BlueWP.Pages
     {
       if (await _app.Client.AuthenticateWithPassword(_serviceHost, _handle, _appPassword))
       {
-        await _app.NavigateToMainScreen();
+        _app.NavigateToMainScreen();
       }
       else
       {

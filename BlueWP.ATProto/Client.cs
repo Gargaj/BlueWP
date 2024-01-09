@@ -91,6 +91,17 @@ namespace BlueWP.ATProto
         var value = inputType.GetField(field.Name).GetValue(input);
         if (value != null)
         {
+          if (value is IEnumerable<object>)
+          {
+            var a = value as IEnumerable<object>;
+            foreach (var i in a)
+            {
+              url += first ? "?" : "&";
+              url += $"{field.Name}[]={WebUtility.UrlEncode(i.ToString())}";
+              first = false;
+            }
+            continue;
+          }
           url += first ? "?" : "&";
           url += $"{field.Name}={WebUtility.UrlEncode(value.ToString())}";
           first = false;
@@ -292,6 +303,7 @@ namespace BlueWP.ATProto
               { "app.bsky.embed.external",                 typeof(Lexicons.App.BSky.Embed.External) },
               { "app.bsky.embed.external#view",            typeof(Lexicons.App.BSky.Embed.External.View) },
               { "app.bsky.embed.images",                   typeof(Lexicons.App.BSky.Embed.Images) },
+              { "app.bsky.embed.images#image",             typeof(Lexicons.App.BSky.Embed.Images.Image) },
               { "app.bsky.embed.images#view",              typeof(Lexicons.App.BSky.Embed.Images.View) },
               { "app.bsky.embed.record",                   typeof(Lexicons.App.BSky.Embed.Record) },
               { "app.bsky.embed.record#view",              typeof(Lexicons.App.BSky.Embed.Record.View) },
@@ -304,12 +316,14 @@ namespace BlueWP.ATProto
               { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },
               { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
               { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
+              { "app.bsky.feed.threadgate",                typeof(Lexicons.App.BSky.Feed.Threadgate) },
               { "app.bsky.richtext.facet",                 typeof(Lexicons.App.BSky.RichText.Facet) },
               { "app.bsky.richtext.facet#byteSlice",       typeof(Lexicons.App.BSky.RichText.Facet.ByteSlice) },
               { "app.bsky.richtext.facet#link",            typeof(Lexicons.App.BSky.RichText.Facet.Link) },
               { "app.bsky.richtext.facet#mention",         typeof(Lexicons.App.BSky.RichText.Facet.Mention) },
               { "app.bsky.richtext.facet#tag",             typeof(Lexicons.App.BSky.RichText.Facet.Tag) },
               { "com.atproto.repo.strongRef",              typeof(Lexicons.COM.ATProto.Repo.StrongRef) },
+              { "com.atproto.label.defs#selfLabels",       typeof(Lexicons.COM.ATProto.Label.Defs.SelfLabels) },
           };
       }
 

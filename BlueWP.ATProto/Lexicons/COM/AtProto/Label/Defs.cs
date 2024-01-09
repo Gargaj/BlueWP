@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace BlueWP.ATProto.Lexicons.COM.ATProto.Label
 {
@@ -13,6 +14,16 @@ namespace BlueWP.ATProto.Lexicons.COM.ATProto.Label
       public string val;
       public bool neg;
       public DateTime? cts;
+    }
+
+    public class SelfLabels
+    {
+      public List<SelfLabel> values;
+    }
+
+    public class SelfLabel
+    {
+      public string val;
     }
   }
 }

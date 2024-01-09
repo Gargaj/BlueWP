@@ -19,9 +19,9 @@
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Page.Resources>
-  
+
   <Grid>
-    <Pivot Style="{StaticResource FeedPagePivotStyle}">
+    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}">
 
       <!-- Home -->
       <PivotItem>
@@ -35,11 +35,38 @@
           </Style>
         </PivotItem.Style>
 
-        <Grid>
-          <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
-            <RowDefinition Height="*"/>
-          </Grid.RowDefinitions>
+        <Pivot x:Name="Home" ItemsSource="{Binding Feeds}" PivotItemLoading="Home_PivotItemLoading">
+          <Pivot.HeaderTemplate>
+            <DataTemplate>
+              <TextBlock FontSize="16" Text="{Binding Name}"/>
+            </DataTemplate>
+          </Pivot.HeaderTemplate>
+          <Pivot.ItemContainerStyle>
+            <Style TargetType="PivotItem">
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="Margin" Value="0"/>
+              <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            </Style>
+          </Pivot.ItemContainerStyle>
+          <Pivot.ItemTemplate>
+            <DataTemplate>
+              <ListView ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
+                <ListView.ItemContainerStyle>
+                  <Style TargetType="ListViewItem">
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                  </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                  <DataTemplate>
+                    <bwpc:Post PostData="{Binding}"/>
+                  </DataTemplate>
+                </ListView.ItemTemplate>
+              </ListView>
+            </DataTemplate>
+          </Pivot.ItemTemplate>
+        </Pivot>
+        <!--
           <Button Grid.Row="0" Click="Refresh_Click">
             <Button.Template>
               <ControlTemplate>
@@ -61,8 +88,8 @@
               </DataTemplate>
             </ListView.ItemTemplate>
           </ListView>
-        </Grid>
-          
+          -->
+
       </PivotItem>
 
       <!-- Notifications -->
@@ -70,6 +97,8 @@
         <PivotItem.Header>
           <Grid>
             <bwpc:FeedPagePivotHeader Glyph="&#xEA8F;" Label="Notifications"/>
+
+            <!-- Unread count notifier -->
             <Canvas>
               <Border Canvas.Left="60" Canvas.Top="12" Background="Red" Width="16" Height="16" CornerRadius="8" Visibility="Collapsed">
                 <i:Interaction.Behaviors>
@@ -83,6 +112,7 @@
                 <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
               </Border>
             </Canvas>
+
           </Grid>
         </PivotItem.Header>
       </PivotItem>

@@ -5,6 +5,8 @@
     xmlns:local="using:BlueWP.Controls.Post"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -27,6 +29,16 @@
 
       <!-- post contents -->
       <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
+
+      <!-- image block -->
+      <local:ImageGallery Images="{Binding PostData.PostImages}">
+        <i:Interaction.Behaviors>
+          <c:DataTriggerBehavior Binding="{Binding PostData.PostImages.Count}" Value="0">
+            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+          </c:DataTriggerBehavior>
+        </i:Interaction.Behaviors>
+      </local:ImageGallery>
+      
     </StackPanel>
   </Grid>
 </local:PostBase>

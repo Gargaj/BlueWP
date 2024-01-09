@@ -32,7 +32,23 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
       public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime((value as Feed.Post).createdAt);
       public string PostText => (value as Feed.Post) == null ? "[ERROR]" : (value as Feed.Post).text;
-   }
+      public IEnumerable<Images.ViewImage> PostImages
+      {
+        get
+        {
+          var o = new List<Images.ViewImage>();
+          foreach (var embed in embeds)
+          {
+            if (embed is Images.View)
+            {
+              o.AddRange((embed as Images.View).images);
+            }
+          }
+          return o;
+        }
+      }
+
+    }
 
     public class ViewNotFound
     {

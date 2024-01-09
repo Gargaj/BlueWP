@@ -19,6 +19,7 @@ If someone knows how to build a... thing? App package? Idk? Something I can uplo
   - Images
   - Replies
   - Quoting
+  - Facets / URL embeds
 - Viewing
   - Profiles
   - Single post / threads

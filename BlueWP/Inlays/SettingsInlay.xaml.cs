@@ -18,12 +18,6 @@ namespace BlueWP.Inlays
     public string Handle { get { return _app.Client.Handle; } }
     public string DID { get { return _app.Client.DID; } }
 
-    private void BackButton_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      App app = Windows.UI.Xaml.Application.Current as App;
-      app.TryGoBack();
-    }
-
     protected async void Logout_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
       var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");

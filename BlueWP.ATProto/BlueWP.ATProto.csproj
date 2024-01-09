@@ -143,6 +143,7 @@
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />
     <Compile Include="Lexicons\COM\ATProto\Label\Defs.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Repo\CreateRecord.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\StrongRef.cs" />
     <Compile Include="Lexicons\COM\ATProto\Server\CreateSession.cs" />
     <Compile Include="Lexicons\COM\ATProto\Server\RefreshSession.cs" />

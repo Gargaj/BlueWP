@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -19,8 +20,9 @@ namespace BlueWP.ATProto
       _deserializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
       {
         MetadataPropertyHandling = Newtonsoft.Json.MetadataPropertyHandling.ReadAhead,
+        NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
+        SerializationBinder = new TypesBinder(),
         TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
-        SerializationBinder = new TypesBinder()
       };
     }
 
@@ -153,7 +155,7 @@ namespace BlueWP.ATProto
       {
         headers["Authorization"] = $"Bearer {_credentials.accessToken}";
       }
-      var bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input);
+      var bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
       if (bodyJson == "{}")
       {
         bodyJson = string.Empty;
@@ -322,6 +324,7 @@ namespace BlueWP.ATProto
               { "app.bsky.richtext.facet#link",            typeof(Lexicons.App.BSky.RichText.Facet.Link) },
               { "app.bsky.richtext.facet#mention",         typeof(Lexicons.App.BSky.RichText.Facet.Mention) },
               { "app.bsky.richtext.facet#tag",             typeof(Lexicons.App.BSky.RichText.Facet.Tag) },
+              { "com.atproto.repo.createRecord",           typeof(Lexicons.COM.ATProto.Repo.CreateRecord) },
               { "com.atproto.repo.strongRef",              typeof(Lexicons.COM.ATProto.Repo.StrongRef) },
               { "com.atproto.label.defs#selfLabels",       typeof(Lexicons.COM.ATProto.Label.Defs.SelfLabels) },
           };
@@ -345,7 +348,19 @@ namespace BlueWP.ATProto
       public void BindToName(Type serializedType, out string assemblyName, out string typeName)
       {
         assemblyName = null;
-        typeName = serializedType.Name;
+
+        var kvp = _atprotoTypes.FirstOrDefault(s => s.Value == serializedType);
+        if (kvp.Value == null)
+        {
+#if TRUE
+          System.Diagnostics.Debug.WriteLine($"ATProto name '{serializedType.ToString()}' not found");
+          typeName = serializedType.Name;
+          return;
+#else
+          throw new ArgumentException($"ATProto name '{serializedType.ToString()}' not found");
+#endif
+        }
+        typeName = kvp.Key;
       }
     }
   }

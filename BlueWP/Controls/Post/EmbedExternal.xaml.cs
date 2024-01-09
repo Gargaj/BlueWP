@@ -4,7 +4,7 @@ using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace BlueWP.Controls
+namespace BlueWP.Controls.Post
 {
   public partial class EmbedExternal : UserControl, INotifyPropertyChanged
   {

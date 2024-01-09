@@ -1,4 +1,4 @@
-﻿namespace BlueWP.Controls
+﻿namespace BlueWP.Controls.Post
 {
   public sealed partial class PostQuoted : PostBase
   {

@@ -1,4 +1,4 @@
-﻿namespace BlueWP.Controls
+﻿namespace BlueWP.Controls.Post
 {
   public partial class Post : PostBase
   {

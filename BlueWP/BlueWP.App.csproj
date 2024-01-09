@@ -119,20 +119,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\EmbedExternal.xaml.cs">
+    <Compile Include="Controls\Post\EmbedExternal.xaml.cs">
       <DependentUpon>EmbedExternal.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\FeedPagePivotHeader.xaml.cs">
       <DependentUpon>FeedPagePivotHeader.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\ImageGallery.xaml.cs">
+    <Compile Include="Controls\Post\ImageGallery.xaml.cs">
       <DependentUpon>ImageGallery.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PostBase.cs" />
-    <Compile Include="Controls\Post.xaml.cs">
+    <Compile Include="Controls\Post\PostBase.cs" />
+    <Compile Include="Controls\Post\Post.xaml.cs">
       <DependentUpon>Post.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PostQuoted.xaml.cs">
+    <Compile Include="Controls\Post\PostQuoted.xaml.cs">
       <DependentUpon>PostQuoted.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
@@ -167,7 +167,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Controls\EmbedExternal.xaml">
+    <Page Include="Controls\Post\EmbedExternal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -175,15 +175,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\ImageGallery.xaml">
+    <Page Include="Controls\Post\ImageGallery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\Post.xaml">
+    <Page Include="Controls\Post\Post.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PostQuoted.xaml">
+    <Page Include="Controls\Post\PostQuoted.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

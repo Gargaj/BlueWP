@@ -9,6 +9,7 @@
     xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bwpc="using:BlueWP.Controls"
+    xmlns:bwpcp="using:BlueWP.Controls.Post"
     xmlns:bwpi="using:BlueWP.Inlays"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
@@ -50,6 +51,7 @@
           </Pivot.ItemContainerStyle>
           <Pivot.ItemTemplate>
             <DataTemplate>
+              
               <ListView ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
                 <ListView.ItemContainerStyle>
                   <Style TargetType="ListViewItem">
@@ -59,37 +61,15 @@
                 </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                   <DataTemplate>
-                    <bwpc:Post PostData="{Binding}"/>
+                    <bwpcp:Post PostData="{Binding}"/>
                   </DataTemplate>
                 </ListView.ItemTemplate>
               </ListView>
+              
             </DataTemplate>
           </Pivot.ItemTemplate>
         </Pivot>
-        <!--
-          <Button Grid.Row="0" Click="Refresh_Click">
-            <Button.Template>
-              <ControlTemplate>
-                <TextBlock Grid.Row="0" FontWeight="Bold" FontSize="20" Margin="0,0,0,10">Timeline</TextBlock>
-              </ControlTemplate>
-            </Button.Template>
-          </Button>
-
-          <ListView Grid.Row="1" ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
-            <ListView.ItemContainerStyle>
-              <Style TargetType="ListViewItem">
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-              </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <bwpc:Post PostData="{Binding}"/>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-          -->
-
+        
       </PivotItem>
 
       <!-- Notifications -->

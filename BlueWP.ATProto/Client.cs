@@ -155,8 +155,10 @@ namespace BlueWP.ATProto
       {
         headers["Authorization"] = $"Bearer {_credentials.accessToken}";
       }
+      var inputType = input.GetType();
+      var fields = inputType.GetFields();
       var bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
-      if (bodyJson == "{}")
+      if (bodyJson == "{}" || fields.Length == 0)
       {
         bodyJson = string.Empty;
       }

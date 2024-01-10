@@ -26,8 +26,8 @@ namespace BlueWP
     {
       _client = new ATProto.Client();
 
-      this.InitializeComponent();
-      this.Suspending += OnSuspending;
+      InitializeComponent();
+      Suspending += OnSuspending;
     }
 
     /// <summary>
@@ -85,7 +85,7 @@ namespace BlueWP
         return;
       }
 
-      _rootFrame.Navigate(typeof(Pages.FeedPage));
+      _rootFrame.Navigate(typeof(Pages.MainPage));
     }
 
     public bool TryGoBack()
@@ -107,6 +107,11 @@ namespace BlueWP
 
       await _client.DeleteCredentials();
       _rootFrame.Navigate(typeof(Pages.LoginPage));
+    }
+
+    public T GetCurrentFrame<T>() where T : Page
+    {
+      return _rootFrame.Content as T;
     }
 
     /// <summary>

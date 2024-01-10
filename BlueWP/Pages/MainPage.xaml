@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="BlueWP.Pages.FeedPage"
+    x:Class="BlueWP.Pages.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BlueWP.Pages"
@@ -51,7 +51,7 @@
           </Pivot.ItemContainerStyle>
           <Pivot.ItemTemplate>
             <DataTemplate>
-              <bwpi:FeedInlay FeedItems="{Binding FeedItems}"/>
+              <bwpi:FeedInlay URI="{Binding URI}"/>
             </DataTemplate>
           </Pivot.ItemTemplate>
         </Pivot>

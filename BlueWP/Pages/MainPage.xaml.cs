@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Pages
 {
-  public partial class FeedPage : Page, INotifyPropertyChanged
+  public partial class MainPage : Page, INotifyPropertyChanged
   {
     private App _app;
     private bool _isLoading = false;
@@ -20,7 +20,7 @@ namespace BlueWP.Pages
     private List<object> _preferences;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
 
-    public FeedPage()
+    public MainPage()
     {
       InitializeComponent();
       _app = (App)Windows.UI.Xaml.Application.Current;
@@ -98,47 +98,19 @@ namespace BlueWP.Pages
       {
         return;
       }
-      if (feed.FeedItems == null)
+      var feedInlay = args.Item.ContentTemplateRoot as Inlays.FeedInlay;
+      if (feedInlay == null)
       {
-        try
-        {
-          if (string.IsNullOrEmpty(feed.URI))
-          {
-            var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
-            {
-              limit = 60
-            });
-            feed.FeedItems = response?.feed;
-          }
-          else
-          {
-            if (feed.FeedInfo == null)
-            {
-              var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerator()
-              {
-                feed = feed.URI
-              });
-              feed.FeedInfo = feedInfoResponse.view;
-              feed.Name = feed.FeedInfo.displayName;
-              feed.OnPropertyChanged("Name");
-            }
-            var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
-            {
-              limit = 60,
-              feed = feed.URI
-            });
-            feed.FeedItems = response?.feed;
-          }
-          OnPropertyChanged(nameof(Feeds));
-          feed.OnPropertyChanged("FeedItems");
-        }
-        catch (WebException ex)
-        {
-          HasError = true;
-          var webResponse = ex.Response as HttpWebResponse;
-          ErrorText = $"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}";
-        }
+        return;
       }
+      feedInlay.URI = feed.URI; // Preempt the binding cos that seems to happen later
+      await feedInlay.Refresh();
+    }
+
+    public void TriggerError(string error)
+    {
+      HasError = true;
+      ErrorText = error;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;
@@ -157,7 +129,6 @@ namespace BlueWP.Pages
       public string Name { get; set; }
       public string URI { get; set; } = null;
       public ATProto.Lexicons.App.BSky.Feed.Defs.GeneratorView FeedInfo { get; set; } = null;
-      public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get; set; }
 
       public event PropertyChangedEventHandler PropertyChanged;
 

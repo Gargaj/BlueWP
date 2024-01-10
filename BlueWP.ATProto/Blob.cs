@@ -8,6 +8,6 @@ namespace BlueWP.ATProto
     public object reference = null;
     public string mimeType = string.Empty;
     public uint size = 0;
-    public string cid = string.Empty;
+    public string cid = null;
   }
 }

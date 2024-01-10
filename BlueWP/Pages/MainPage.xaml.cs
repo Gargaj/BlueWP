@@ -136,8 +136,7 @@ namespace BlueWP.Pages
         {
           HasError = true;
           var webResponse = ex.Response as HttpWebResponse;
-          var error = ex.Response != null ? new StreamReader(ex.Response.GetResponseStream()).ReadToEnd() : ex.ToString();
-          ErrorText = $"HTTP ERROR {(int)webResponse.StatusCode}\n\n{error}";
+          ErrorText = $"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}";
         }
       }
     }

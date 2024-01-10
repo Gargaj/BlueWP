@@ -64,23 +64,6 @@ namespace BlueWP.ATProto
       // May throw exception
       var response = (HttpWebResponse)await _httpWReq.GetResponseAsync();
 
-      /*
-                  HttpWebResponse response = null;
-                  try
-                  {
-                      _responseHeaders = response.Headers;
-                  }
-                  catch (WebException ex)
-                  {
-                      var webResponse = ex.Response as HttpWebResponse;
-                      var error = ex.Response != null ? new StreamReader(ex.Response.GetResponseStream()).ReadToEnd() : ex.ToString();
-      #if DEBUG
-                      System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {webResponse.StatusCode}] {error}");
-      #endif
-                      return null;
-                  }
-      */
-
       int bytesRead;
       byte[] buffer = new byte[1024 * 1024];
       MemoryStream memoryStream = null;
@@ -151,6 +134,11 @@ namespace BlueWP.ATProto
     {
       byte[] data = Encoding.UTF8.GetBytes(_params);
       return await DoHTTPRequestAsync(_url, data, _headers, "POST");
+    }
+
+    public async Task<string> DoPOSTRequestAsync(string _url, byte[] _data, NameValueCollection _headers = null)
+    {
+      return await DoHTTPRequestAsync(_url, _data, _headers, "POST");
     }
 
     public async Task<string> DoGETRequestAsync(string _url, NameValueCollection _params = null, NameValueCollection _headers = null)

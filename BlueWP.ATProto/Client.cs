@@ -22,7 +22,7 @@ namespace BlueWP.ATProto
         MetadataPropertyHandling = Newtonsoft.Json.MetadataPropertyHandling.ReadAhead,
         NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
         SerializationBinder = new TypesBinder(),
-        TypeNameHandling = Newtonsoft.Json.TypeNameHandling.All,
+        TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects,
       };
     }
 
@@ -85,8 +85,13 @@ namespace BlueWP.ATProto
 
       var http = new HTTP();
 
+      var rawPost = input as IRawPost;
       var headers = new NameValueCollection();
       headers["Content-Type"] = "application/json";
+      if (rawPost != null)
+      {
+        headers["Content-Type"] = rawPost.MimeType;
+      }
       if (input.RequiresAuthorization)
       {
         headers["Authorization"] = $"Bearer {_credentials.accessToken}";
@@ -106,14 +111,21 @@ namespace BlueWP.ATProto
             break;
           case "POST":
             {
-              var inputType = input.GetType();
-              var fields = inputType.GetFields();
-              bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
-              if (bodyJson == "{}" || fields.Length == 0)
+              if (rawPost != null)
               {
-                bodyJson = string.Empty;
+                responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
               }
-              responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+              else
+              {
+                var inputType = input.GetType();
+                var fields = inputType.GetFields();
+                bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
+                if (bodyJson == "{}" || fields.Length == 0)
+                {
+                  bodyJson = string.Empty;
+                }
+                responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+              }
             }
             break;
         }
@@ -137,7 +149,14 @@ namespace BlueWP.ATProto
                 break;
               case "POST":
                 {
-                  responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                  if (rawPost != null)
+                  {
+                    responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
+                  }
+                  else
+                  {
+                    responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                  }
                 }
                 break;
             }
@@ -149,7 +168,10 @@ namespace BlueWP.ATProto
         }
         else
         {
-          throw ex;
+#if DEBUG
+          System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {webResponse.StatusCode}] {error}");
+#endif
+          throw new WebException(error, ex, ex.Status, ex.Response);
         }
       }
 

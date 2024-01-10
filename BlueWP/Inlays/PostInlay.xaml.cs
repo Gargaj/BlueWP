@@ -5,7 +5,11 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -54,28 +58,56 @@ namespace BlueWP.Inlays
       var file = await picker.PickSingleFileAsync();
       if (file != null)
       {
-        using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
+        using (var fileStream = await file.OpenAsync(FileAccessMode.Read))
         {
           const uint FileSizeLimit = 1000000;
           if (fileStream.Size > FileSizeLimit)
           {
             var dialog = new ContentDialog
             {
-              Content = new TextBlock { Text = $"The image is too big! Bluesky only supports images up to {FileSizeLimit} bytes!", TextWrapping = TextWrapping.WrapWholeWords },
+              Content = new TextBlock { Text = $"The image is too big! Do you want to resize it?", TextWrapping = TextWrapping.WrapWholeWords },
               Title = $"Image too big!",
-              IsSecondaryButtonEnabled = false,
-              PrimaryButtonText = "Ok :("
+              IsSecondaryButtonEnabled = true,
+              PrimaryButtonText = "Yes",
+              SecondaryButtonText = "No"
             };
-            await dialog.ShowAsync();
-            return;
-          }
+            if (await dialog.ShowAsync() == ContentDialogResult.Primary)
+            {
+              var resizedByteData = await ResizedImage(file, 1920, 1920);
 
-          var bitmapImage = new BitmapImage();
-          await bitmapImage.SetSourceAsync(fileStream);
-          ImageAttachments.Add(new ImageAttachment() {
-            File = file,
-            BitmapImage = bitmapImage
-          });
+              var bitmapImage = new BitmapImage();
+              bitmapImage.SetSource(fileStream);
+
+              ImageAttachments.Add(new ImageAttachment()
+              {
+                BitmapImage = bitmapImage,
+                MimeType = "image/jpeg",
+                ByteData = resizedByteData
+              });
+            }
+            else
+            {
+              return;
+            }
+          }
+          else
+          {
+            var buffer = await FileIO.ReadBufferAsync(file);
+            byte[] byteData = new byte[buffer.Length];
+            using (var dataReader = DataReader.FromBuffer(buffer))
+            {
+              dataReader.ReadBytes(byteData);
+            }
+
+            var bitmapImage = new BitmapImage();
+            bitmapImage.SetSource(fileStream);
+
+            ImageAttachments.Add(new ImageAttachment() {
+              BitmapImage = bitmapImage,
+              MimeType = file.ContentType,
+              ByteData = byteData
+            });
+          }
         }
       }
       OnPropertyChanged(nameof(ImageAttachments));
@@ -103,16 +135,10 @@ namespace BlueWP.Inlays
           };
           foreach (var imageAttachment in ImageAttachments)
           {
-            var buffer = await Windows.Storage.FileIO.ReadBufferAsync(imageAttachment.File);
-            byte[] byteData = new byte[buffer.Length];
-            using (var dataReader = Windows.Storage.Streams.DataReader.FromBuffer(buffer))
-            {
-              dataReader.ReadBytes(byteData);
-            }
             var blobResponse = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.UploadBlobResponse>(new ATProto.Lexicons.COM.ATProto.Repo.UploadBlob()
             {
-              MimeType = imageAttachment.File.ContentType,
-              PostData = byteData,
+              MimeType = imageAttachment.MimeType,
+              PostData = imageAttachment.ByteData,
             });
 
             var image = new ATProto.Lexicons.App.BSky.Embed.Images.Image()
@@ -185,6 +211,39 @@ namespace BlueWP.Inlays
       }
     }
 
+    public static async Task<byte[]> ResizedImage(StorageFile imageFile, int maxWidth, int maxHeight)
+    {
+      using (var stream = await imageFile.OpenAsync(FileAccessMode.Read))
+      {
+        // Create the decoder from the stream
+        var decoder = await BitmapDecoder.CreateAsync(stream);
+        var softwareBitmap = await decoder.GetSoftwareBitmapAsync();
+
+        var ratioX = maxWidth / (float)softwareBitmap.PixelWidth;
+        var ratioY = maxHeight / (float)softwareBitmap.PixelHeight;
+        var ratio = Math.Min(ratioX, ratioY);
+        var newWidth = (uint)(softwareBitmap.PixelWidth * ratio);
+        var newHeight = (uint)(softwareBitmap.PixelHeight * ratio);
+
+        var writeStream = new InMemoryRandomAccessStream();
+        var encoder = await BitmapEncoder.CreateAsync(BitmapEncoder.JpegEncoderId, writeStream);
+
+        encoder.SetSoftwareBitmap(softwareBitmap);
+        encoder.BitmapTransform.ScaledWidth = newWidth;
+        encoder.BitmapTransform.ScaledHeight = newHeight;
+        encoder.BitmapTransform.InterpolationMode = BitmapInterpolationMode.Fant;
+
+        await encoder.FlushAsync();
+
+        writeStream.Seek(0);
+        var readStream = writeStream.AsStreamForRead();
+        byte[] byteData = new byte[readStream.Length];
+        await readStream.ReadAsync(byteData, 0, (int)readStream.Length);
+
+        return byteData;
+      }
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>
@@ -198,8 +257,9 @@ namespace BlueWP.Inlays
 
     public class ImageAttachment : INotifyPropertyChanged
     {
-      public Windows.Storage.StorageFile File { get; set; }
       public BitmapImage BitmapImage { get; set; }
+      public byte[] ByteData { get; set; }
+      public string MimeType { get; set; }
       public string AltText { get; set; } = string.Empty;
       public bool IsLoading { get; set; } = false;
 

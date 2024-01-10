@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
@@ -55,6 +56,20 @@ namespace BlueWP.Inlays
       {
         using (var fileStream = await file.OpenAsync(Windows.Storage.FileAccessMode.Read))
         {
+          const uint FileSizeLimit = 1000000;
+          if (fileStream.Size > FileSizeLimit)
+          {
+            var dialog = new ContentDialog
+            {
+              Content = new TextBlock { Text = $"The image is too big! Bluesky only supports images up to {FileSizeLimit} bytes!", TextWrapping = TextWrapping.WrapWholeWords },
+              Title = $"Image too big!",
+              IsSecondaryButtonEnabled = false,
+              PrimaryButtonText = "Ok :("
+            };
+            await dialog.ShowAsync();
+            return;
+          }
+
           var bitmapImage = new BitmapImage();
           await bitmapImage.SetSourceAsync(fileStream);
           ImageAttachments.Add(new ImageAttachment() {
@@ -185,7 +200,6 @@ namespace BlueWP.Inlays
     {
       public Windows.Storage.StorageFile File { get; set; }
       public BitmapImage BitmapImage { get; set; }
-      public object Blob { get; set; }
       public string AltText { get; set; } = string.Empty;
       public bool IsLoading { get; set; } = false;
 

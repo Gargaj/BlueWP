@@ -160,6 +160,7 @@ namespace BlueWP.Inlays
         });
         if (response != null)
         {
+          PostText = string.Empty;
           ImageAttachments.Clear();
           OnPropertyChanged(nameof(ImageAttachments));
         }

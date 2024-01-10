@@ -141,6 +141,9 @@
     <Compile Include="Controls\Post\PostQuoted.xaml.cs">
       <DependentUpon>PostQuoted.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Inlays\FeedInlay.xaml.cs">
+      <DependentUpon>FeedInlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Inlays\PostInlay.xaml.cs">
       <DependentUpon>PostInlay.xaml</DependentUpon>
     </Compile>
@@ -193,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Post\PostQuoted.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inlays\FeedInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

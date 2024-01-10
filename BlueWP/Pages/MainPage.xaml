@@ -51,21 +51,7 @@
           </Pivot.ItemContainerStyle>
           <Pivot.ItemTemplate>
             <DataTemplate>
-              
-              <ListView ItemsSource="{Binding FeedItems}" HorizontalContentAlignment="Stretch">
-                <ListView.ItemContainerStyle>
-                  <Style TargetType="ListViewItem">
-                    <Setter Property="Padding" Value="0"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                  </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                  <DataTemplate>
-                    <bwpcp:Post PostData="{Binding}"/>
-                  </DataTemplate>
-                </ListView.ItemTemplate>
-              </ListView>
-              
+              <bwpi:FeedInlay FeedItems="{Binding FeedItems}"/>
             </DataTemplate>
           </Pivot.ItemTemplate>
         </Pivot>

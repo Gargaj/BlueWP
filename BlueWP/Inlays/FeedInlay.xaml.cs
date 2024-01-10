@@ -23,6 +23,8 @@ namespace BlueWP.Inlays
 
     public async Task Refresh()
     {
+      _mainPage.StartLoading();
+
       try
       {
         if (string.IsNullOrEmpty(URI))
@@ -48,6 +50,9 @@ namespace BlueWP.Inlays
         var webResponse = ex.Response as HttpWebResponse;
         _mainPage.TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
       }
+
+      _mainPage.EndLoading();
+
       OnPropertyChanged(nameof(FeedItems));
     }
 

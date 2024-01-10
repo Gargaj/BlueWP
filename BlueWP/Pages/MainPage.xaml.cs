@@ -12,7 +12,7 @@ namespace BlueWP.Pages
   public partial class MainPage : Page, INotifyPropertyChanged
   {
     private App _app;
-    private bool _isLoading = false;
+    private uint _isLoading = 0;
     private bool _hasError = false;
     private string _errorText = string.Empty;
     private int _unreadCount = 0;
@@ -27,33 +27,19 @@ namespace BlueWP.Pages
       DataContext = this;
     }
 
-    public bool IsLoading { get { return _isLoading; } set { _isLoading = value; OnPropertyChanged(nameof(IsLoading)); } }
+    public void StartLoading() { _isLoading++; OnPropertyChanged(nameof(IsLoading)); }
+    public void EndLoading() { _isLoading--; OnPropertyChanged(nameof(IsLoading)); }
+    public bool IsLoading { get { return _isLoading > 0; } }
+
     public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
     public int UnreadNotificationCount { get { return _unreadCount; } }
     public List<Feed> Feeds { get { return _feeds; } }
 
-    protected async Task RefreshFeed( string feedDID )
-    {
-      IsLoading = true;
-
-      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
-      if (unreadCountResponse != null)
-      {
-        _unreadCount = (int)unreadCountResponse.count;
-        OnPropertyChanged(nameof(UnreadNotificationCount));
-      }
-
-      IsLoading = false;
-    }
-
-    protected async void Refresh_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
-    {
-      await RefreshFeed(null);
-    }
-
     protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
     {
+      StartLoading();
+
       var preferences = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
       if (preferences != null)
       {
@@ -88,6 +74,15 @@ namespace BlueWP.Pages
             feed.OnPropertyChanged("Name");
           }
         }
+      }
+
+      EndLoading();
+
+      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+      if (unreadCountResponse != null)
+      {
+        _unreadCount = (int)unreadCountResponse.count;
+        OnPropertyChanged(nameof(UnreadNotificationCount));
       }
     }
 

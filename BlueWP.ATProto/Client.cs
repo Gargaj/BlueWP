@@ -68,79 +68,15 @@ namespace BlueWP.ATProto
 
     public async Task<T> GetAsync<T>(LexiconBase input) where T : LexiconBase
     {
-      if (string.IsNullOrEmpty(_credentials.serviceHost))
-      {
-        throw new ArgumentException();
-      }
-
-      var http = new HTTP();
-
-      var headers = new NameValueCollection();
-      headers["Content-Type"] = "application/json";
-      if (input.RequiresAuthorization)
-      {
-        headers["Authorization"] = $"Bearer {_credentials.accessToken}";
-      }
-      var inputType = input.GetType();
-      var url = $"https://{_credentials.serviceHost}/xrpc/{input.EndpointID}";
-      bool first = true;
-      foreach (var field in inputType.GetFields())
-      {
-        if (field.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) != null)
-        {
-          continue;
-        }
-        var value = inputType.GetField(field.Name).GetValue(input);
-        if (value != null)
-        {
-          if (value is IEnumerable<object>)
-          {
-            var a = value as IEnumerable<object>;
-            foreach (var i in a)
-            {
-              url += first ? "?" : "&";
-              url += $"{field.Name}[]={WebUtility.UrlEncode(i.ToString())}";
-              first = false;
-            }
-            continue;
-          }
-          url += first ? "?" : "&";
-          url += $"{field.Name}={WebUtility.UrlEncode(value.ToString())}";
-          first = false;
-        }
-      }
-      string responseJson = null;
-      try
-      {
-        responseJson = await http.DoGETRequestAsync(url, null, headers);
-      }
-      catch (WebException ex)
-      {
-        var webResponse = ex.Response as HttpWebResponse;
-        var error = ex.Response != null ? await new StreamReader(ex.Response.GetResponseStream()).ReadToEndAsync() : ex.ToString();
-        var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
-        if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
-        {
-          if (await RefreshCredentials())
-          {
-            headers["Authorization"] = $"Bearer {_credentials.accessToken}";
-            responseJson = await http.DoGETRequestAsync(url, null, headers);
-          }
-          else
-          {
-            throw ex;
-          }
-        }
-        else
-        {
-          throw ex;
-        }
-      }
-
-      return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson, _deserializerSettings) : null;
+      return await RequestAsync<T>("GET", input);
     }
 
     public async Task<T> PostAsync<T>(LexiconBase input) where T : LexiconBase
+    {
+      return await RequestAsync<T>("POST", input);
+    }
+
+    protected async Task<T> RequestAsync<T>(string method, LexiconBase input) where T : LexiconBase
     {
       if (string.IsNullOrEmpty(_credentials.serviceHost))
       {
@@ -155,18 +91,32 @@ namespace BlueWP.ATProto
       {
         headers["Authorization"] = $"Bearer {_credentials.accessToken}";
       }
-      var inputType = input.GetType();
-      var fields = inputType.GetFields();
-      var bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
-      if (bodyJson == "{}" || fields.Length == 0)
-      {
-        bodyJson = string.Empty;
-      }
       var url = $"https://{_credentials.serviceHost}/xrpc/{input.EndpointID}";
       string responseJson = null;
+      string bodyJson = string.Empty;
       try
       {
-        responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+        switch (method)
+        {
+          case "GET":
+            {
+              url += SerializeInputToQueryString(input);
+              responseJson = await http.DoGETRequestAsync(url, null, headers);
+            }
+            break;
+          case "POST":
+            {
+              var inputType = input.GetType();
+              var fields = inputType.GetFields();
+              bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
+              if (bodyJson == "{}" || fields.Length == 0)
+              {
+                bodyJson = string.Empty;
+              }
+              responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+            }
+            break;
+        }
       }
       catch (WebException ex)
       {
@@ -178,7 +128,19 @@ namespace BlueWP.ATProto
           if (await RefreshCredentials())
           {
             headers["Authorization"] = $"Bearer {_credentials.accessToken}";
-            responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+            switch (method)
+            {
+              case "GET":
+                {
+                  responseJson = await http.DoGETRequestAsync(url, null, headers);
+                }
+                break;
+              case "POST":
+                {
+                  responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                }
+                break;
+            }
           }
           else
           {
@@ -278,6 +240,39 @@ namespace BlueWP.ATProto
       {
         return false;
       }
+    }
+
+    private string SerializeInputToQueryString(LexiconBase input)
+    {
+      var inputType = input.GetType();
+      bool first = true;
+      var queryString = string.Empty;
+      foreach (var field in inputType.GetFields())
+      {
+        if (field.GetCustomAttribute(typeof(Newtonsoft.Json.JsonIgnoreAttribute)) != null)
+        {
+          continue;
+        }
+        var value = inputType.GetField(field.Name).GetValue(input);
+        if (value != null)
+        {
+          if (value is IEnumerable<object>)
+          {
+            var a = value as IEnumerable<object>;
+            foreach (var i in a)
+            {
+              queryString += first ? "?" : "&";
+              queryString += $"{field.Name}[]={WebUtility.UrlEncode(i.ToString())}";
+              first = false;
+            }
+            continue;
+          }
+          queryString += first ? "?" : "&";
+          queryString += $"{field.Name}={WebUtility.UrlEncode(value.ToString())}";
+          first = false;
+        }
+      }
+      return queryString;
     }
 
     private struct Credentials

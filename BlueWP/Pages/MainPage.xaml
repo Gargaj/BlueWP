@@ -22,7 +22,7 @@
   </Page.Resources>
 
   <Grid>
-    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}">
+    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading">
 
       <!-- Home -->
       <PivotItem>
@@ -81,6 +81,7 @@
 
           </Grid>
         </PivotItem.Header>
+        <bwpi:NotificationsInlay />
       </PivotItem>
 
       <!-- Post -->

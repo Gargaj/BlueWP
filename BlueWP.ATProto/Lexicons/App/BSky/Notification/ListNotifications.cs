@@ -33,6 +33,11 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public object record; // type: unknown
     public bool isRead;
     public DateTime? indexedAt;
-    public List<object> labels; // TODO
+    public List<COM.ATProto.Label.Defs.Label> labels;
+
+    public string TempString => 
+      $"Reason: {reason}\n"
+      + $"Author: {author?.DisplayName}\n"
+      + $"Subject: {reasonSubject}";
   }
 }

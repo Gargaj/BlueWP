@@ -86,6 +86,15 @@ namespace BlueWP.Pages
       }
     }
 
+    private async void Main_PivotItemLoading(Pivot sender, PivotItemEventArgs args)
+    {
+      var notificationsInlay = args.Item.ContentTemplateRoot as Inlays.NotificationsInlay;
+      if (notificationsInlay != null)
+      {
+        await notificationsInlay.Refresh();
+      }
+    }
+
     private async void Home_PivotItemLoading(Pivot sender, PivotItemEventArgs args)
     {
       var feed = args.Item.DataContext as Feed;

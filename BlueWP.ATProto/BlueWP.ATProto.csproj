@@ -137,8 +137,10 @@
     <Compile Include="Lexicons\App\BSky\Feed\GetFeedGenerators.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\GetFeedGenerator.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\GetTimeline.cs" />
+    <Compile Include="Lexicons\App\BSky\Feed\Like.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Threadgate.cs" />
+    <Compile Include="Lexicons\App\BSky\Graph\Follow.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />

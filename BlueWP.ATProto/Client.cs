@@ -336,16 +336,21 @@ namespace BlueWP.ATProto
               { "app.bsky.feed.defs#generatorView",        typeof(Lexicons.App.BSky.Feed.Defs.GeneratorView) },
               { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },
               { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
+              { "app.bsky.feed.like",                      typeof(Lexicons.App.BSky.Feed.Like) },
               { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
               { "app.bsky.feed.threadgate",                typeof(Lexicons.App.BSky.Feed.Threadgate) },
+              { "app.bsky.graph.follow",                   typeof(Lexicons.App.BSky.Graph.Follow) },
               { "app.bsky.richtext.facet",                 typeof(Lexicons.App.BSky.RichText.Facet) },
               { "app.bsky.richtext.facet#byteSlice",       typeof(Lexicons.App.BSky.RichText.Facet.ByteSlice) },
               { "app.bsky.richtext.facet#link",            typeof(Lexicons.App.BSky.RichText.Facet.Link) },
               { "app.bsky.richtext.facet#mention",         typeof(Lexicons.App.BSky.RichText.Facet.Mention) },
               { "app.bsky.richtext.facet#tag",             typeof(Lexicons.App.BSky.RichText.Facet.Tag) },
+              { "com.atproto.label.defs#selfLabels",       typeof(Lexicons.COM.ATProto.Label.Defs.SelfLabels) },
               { "com.atproto.repo.createRecord",           typeof(Lexicons.COM.ATProto.Repo.CreateRecord) },
               { "com.atproto.repo.strongRef",              typeof(Lexicons.COM.ATProto.Repo.StrongRef) },
-              { "com.atproto.label.defs#selfLabels",       typeof(Lexicons.COM.ATProto.Label.Defs.SelfLabels) },
+              { "com.atproto.repo.uploadBlob",             typeof(Lexicons.COM.ATProto.Repo.UploadBlob) },
+              { "com.atproto.server.createSession",        typeof(Lexicons.COM.ATProto.Server.CreateSession) },
+              { "com.atproto.server.refreshSession",       typeof(Lexicons.COM.ATProto.Server.RefreshSession) },
           };
       }
 

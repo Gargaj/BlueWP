@@ -88,7 +88,7 @@
         <PivotItem.Header>
           <bwpc:FeedPagePivotHeader Glyph="&#xE70F;" Label="Post"/>
         </PivotItem.Header>
-        <bwpi:PostInlay />
+        <bwpi:NewPostInlay />
       </PivotItem>
 
       <!-- Settings -->

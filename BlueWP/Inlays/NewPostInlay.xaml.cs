@@ -16,11 +16,11 @@ using Windows.UI.Xaml.Media.Imaging;
 
 namespace BlueWP.Inlays
 {
-  public partial class PostInlay : UserControl, INotifyPropertyChanged
+  public partial class NewPostInlay : UserControl, INotifyPropertyChanged
   {
     private App _app;
     public string _postText;
-    public PostInlay()
+    public NewPostInlay()
     {
       InitializeComponent();
       _app = (App)Application.Current;

@@ -144,8 +144,8 @@
     <Compile Include="Inlays\FeedInlay.xaml.cs">
       <DependentUpon>FeedInlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Inlays\PostInlay.xaml.cs">
-      <DependentUpon>PostInlay.xaml</DependentUpon>
+    <Compile Include="Inlays\NewPostInlay.xaml.cs">
+      <DependentUpon>NewPostInlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -203,7 +203,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Inlays\PostInlay.xaml">
+    <Page Include="Inlays\NewPostInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

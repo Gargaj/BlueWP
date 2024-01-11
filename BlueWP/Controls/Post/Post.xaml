@@ -28,7 +28,7 @@
             <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
-        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE72C;" Opacity="0.5" Margin="18,0,5,0"/>
+        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE895;" Opacity="0.5" Margin="18,0,5,0"/>
         <TextBlock Grid.Row="0" Text="{Binding PostData.PostReason}" Opacity="0.5" FontWeight="Bold"/>
       </StackPanel>
 

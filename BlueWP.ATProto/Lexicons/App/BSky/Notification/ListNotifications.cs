@@ -23,7 +23,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public List<Notification> notifications;
     public DateTime? seenAt;
   }
-  public class Notification
+  public class Notification : IPost
   {
     public string uri;
     public string cid;
@@ -35,9 +35,20 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public DateTime? indexedAt;
     public List<COM.ATProto.Label.Defs.Label> labels;
 
-    public string TempString => 
-      $"Reason: {reason}\n"
-      + $"Author: {author?.DisplayName}\n"
-      + $"Subject: {reasonSubject}";
+    public IPost Reply => record as IPost;
+
+    // To be clear, these MAY be true in actuality, but we don't know from just a view
+    public bool IsRepost => false;
+    public bool IsReply => false;
+    public bool HasQuotedPost => false;
+    public bool HasEmbedExternal => false;
+
+    public string PostAuthorAvatarURL => author?.avatar ?? "[ERROR]";
+    public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
+    public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
+    public string PostElapsedTime => indexedAt != null ? Helpers.ToElapsedTime(indexedAt.GetValueOrDefault()) : string.Empty;
+    public string PostText => (record as Feed.Post) == null ? "[ERROR]" : (record as Feed.Post).text;
+    public IEnumerable<Embed.Images.ViewImage> PostImages => null; // TODO
+
   }
 }

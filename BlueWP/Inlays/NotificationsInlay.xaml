@@ -3,26 +3,108 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BlueWP.Inlays"
+    xmlns:bwc="using:BlueWP.Controls"
+    xmlns:bwpcp="using:BlueWP.Controls.Post"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+  <UserControl.Resources>
+    <DataTemplate x:Key="templateLike">
+      <Grid BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="32"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <FontIcon Grid.Column="0" Glyph="&#xEB51;"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+          <Image Grid.Column="0" Width="20" Height="20" VerticalAlignment="Top" Margin="0,0,5,0">
+            <Image.Source>
+              <BitmapImage UriSource="{Binding PostAuthorAvatarURL}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock Text="{Binding PostAuthorDisplayName}" FontWeight="Bold"/>
+          <TextBlock Text="liked your post" Margin="5,0,0,0"/>
+          <TextBlock Opacity="0.5" Margin="5,0,5,0">·</TextBlock>
+          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
 
-    <Grid>
+    <DataTemplate x:Key="templateRepost">
+      <Grid BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="32"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <FontIcon Grid.Column="0" Glyph="&#xE895;"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+          <Image Grid.Column="0" Width="20" Height="20" VerticalAlignment="Top" Margin="0,0,5,0">
+            <Image.Source>
+              <BitmapImage UriSource="{Binding PostAuthorAvatarURL}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock Text="{Binding PostAuthorDisplayName}" FontWeight="Bold"/>
+          <TextBlock Text="reposted your post" Margin="5,0,0,0"/>
+          <TextBlock Opacity="0.5" Margin="5,0,5,0">·</TextBlock>
+          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
 
-    <ListView ItemsSource="{Binding Notifications}" HorizontalContentAlignment="Stretch">
+    <DataTemplate x:Key="templateFollow">
+      <Grid BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="32"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <FontIcon Grid.Column="0" Glyph="&#xE8FA;"/>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="5,0,0,0">
+          <Image Grid.Column="0" Width="20" Height="20" VerticalAlignment="Top" Margin="0,0,5,0">
+            <Image.Source>
+              <BitmapImage UriSource="{Binding PostAuthorAvatarURL}"/>
+            </Image.Source>
+          </Image>
+          <TextBlock Text="{Binding PostAuthorDisplayName}" FontWeight="Bold"/>
+          <TextBlock Text="followed you" Margin="5,0,0,0"/>
+          <TextBlock Opacity="0.5" Margin="5,0,5,0">·</TextBlock>
+          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        </StackPanel>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="templateMention">
+      <bwpcp:Post PostData="{Binding}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="templateReply">
+      <bwpcp:Post PostData="{Binding}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="templateQuote">
+      <bwpcp:Post PostData="{Binding}"/>
+    </DataTemplate>
+
+    <bwc:NotificationDataTemplateSelector x:Key="selector"
+      Like   ="{StaticResource templateLike   }"
+      Repost ="{StaticResource templateRepost }"
+      Follow ="{StaticResource templateFollow }"
+      Mention="{StaticResource templateMention}"
+      Reply  ="{StaticResource templateReply  }"
+      Quote  ="{StaticResource templateQuote  }" 
+     />
+  </UserControl.Resources>
+  <Grid>
+
+    <ListView ItemsSource="{Binding Notifications}" HorizontalContentAlignment="Stretch" ItemTemplateSelector="{StaticResource selector}">
       <ListView.ItemContainerStyle>
         <Style TargetType="ListViewItem">
+          <Setter Property="Margin" Value="0"/>
           <Setter Property="Padding" Value="0"/>
           <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         </Style>
       </ListView.ItemContainerStyle>
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <TextBlock Text="{Binding TempString}"/>
-        </DataTemplate>
-      </ListView.ItemTemplate>
     </ListView>
 
   </Grid>

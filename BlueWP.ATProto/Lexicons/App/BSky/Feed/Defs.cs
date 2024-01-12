@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using BlueWP.ATProto.Lexicons.App.BSky.Embed;
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/defs.json"/>
   public class Defs
   {
-    public class PostView
+    public class PostView : IPost
     {
       public string uri;
       public string cid;
@@ -21,18 +22,36 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public List<COM.ATProto.Label.Defs.Label> labels;
       public ThreadgateView threadgate;
 
-      public string AuthorDisplayName
+      public bool IsRepost => false;
+      public bool IsReply => false;
+      public bool HasQuotedPost => false;
+      public bool HasEmbedExternal => false;
+
+      public string PostAuthorAvatarURL => author?.avatar;
+      public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
+      public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
+      public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);
+      public string PostText => (record as Post)?.text ?? "[ERROR]";
+
+      public IEnumerable<Images.ViewImage> PostImages
       {
         get
         {
-          return author?.DisplayName ?? "[ERROR]";
-        }
-      }
-      public string AuthorHandle
-      {
-        get
-        {
-          return author?.Handle ?? "[ERROR]";
+          var imagesView = embed as Images.View;
+          if (imagesView != null)
+          {
+            return imagesView.images;
+          }
+          var rwmView = embed as RecordWithMedia.View;
+          if (rwmView != null)
+          {
+            imagesView = rwmView?.media as Images.View;
+            if (imagesView != null)
+            {
+              return imagesView.images;
+            }
+          }
+          return null;
         }
       }
     }
@@ -51,8 +70,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public ReasonRepost reason;
 
       public string PostAuthorAvatarURL => post?.author?.avatar;
-      public string PostAuthorDisplayName => post?.AuthorDisplayName ?? "[ERROR]";
-      public string PostAuthorHandle => post?.AuthorHandle ?? "[ERROR]";
+      public string PostAuthorDisplayName => post?.PostAuthorDisplayName ?? "[ERROR]";
+      public string PostAuthorHandle => post?.PostAuthorHandle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);
 
       public bool IsRepost => reason != null;
@@ -72,63 +91,33 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
           {
             return string.Empty;
           }
-          return $"Reply to {replyParentPostView.AuthorDisplayName}";
+          return $"Reply to {replyParentPostView.PostAuthorDisplayName}";
         }
       }
 
-      public bool HasQuotedPost => (post?.embed as Embed.Record.View) != null || (post?.embed as Embed.RecordWithMedia.View) != null;
-      public Embed.Record.ViewRecord QuotedPost
+      public bool HasQuotedPost => (post?.embed as Record.View) != null || (post?.embed as RecordWithMedia.View) != null;
+      public Record.ViewRecord QuotedPost
       {
         get
         {
-          var recordView = post?.embed as Embed.Record.View;
+          var recordView = post?.embed as Record.View;
           if (recordView != null)
           {
-            return recordView.record as Embed.Record.ViewRecord;
+            return recordView.record as Record.ViewRecord;
           }
-          var recordWithMediaView = post?.embed as Embed.RecordWithMedia.View;
+          var recordWithMediaView = post?.embed as RecordWithMedia.View;
           if (recordWithMediaView != null)
           {
-            return recordWithMediaView.record.record as Embed.Record.ViewRecord;
+            return recordWithMediaView.record.record as Record.ViewRecord;
           }
           return null;
         }
       }
-      public string PostText
-      {
-        get
-        {
-          var typedPost = post?.record as Post;
-          if (typedPost != null)
-          {
-            return typedPost.text;
-          }
-          return "[UNKNOWN]";
-        }
-      }
-      public IEnumerable<Embed.Images.ViewImage> PostImages
-      {
-        get
-        {
-          var imagesView = post?.embed as Embed.Images.View;
-          if (imagesView != null)
-          {
-            return imagesView.images;
-          }
-          var rwmView = post?.embed as Embed.RecordWithMedia.View;
-          if (rwmView != null)
-          {
-            imagesView = rwmView?.media as Embed.Images.View;
-            if (imagesView != null)
-            {
-              return imagesView.images;
-            }
-          }
-          return null;
-        }
-      }
-      public bool HasEmbedExternal => (post?.embed as Embed.External.View) != null;
-      public Embed.External.View PostEmbedExternal => post?.embed as Embed.External.View;
+      public string PostText => post.PostText;
+      public IEnumerable<Images.ViewImage> PostImages => post.PostImages;
+
+      public bool HasEmbedExternal => (post?.embed as External.View) != null;
+      public External.View PostEmbedExternal => post?.embed as External.View;
     }
 
     public class ReplyRef

@@ -103,11 +103,11 @@
       </PivotItem>
 
       <!-- Post -->
-      <PivotItem>
+      <PivotItem x:Name="PostPivotItem">
         <PivotItem.Header>
           <bwpc:FeedPagePivotHeader Glyph="&#xE70F;" Label="Post"/>
         </PivotItem.Header>
-        <bwpi:NewPostInlay />
+        <bwpi:NewPostInlay x:Name="PostInlay" />
       </PivotItem>
 
       <!-- Settings -->

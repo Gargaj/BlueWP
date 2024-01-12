@@ -20,8 +20,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 
     public class ReplyRef
     {
-      public object root; // union
-      public object parent; // union
+      public COM.ATProto.Repo.StrongRef root;
+      public COM.ATProto.Repo.StrongRef parent;
     }
 
     public class Entity

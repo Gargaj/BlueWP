@@ -44,6 +44,9 @@ namespace BlueWP.Inlays
     public int MaxLengthInGraphemes { get { return 300; } }
     public ObservableCollection<ImageAttachment> ImageAttachments { get; set; }
 
+    public bool IsReplying { get; set; }
+    public ATProto.Lexicons.App.BSky.Feed.Defs.PostView RepliedPost { get; set; }
+
     private async void Attach_Click(object sender, RoutedEventArgs e)
     {
       var picker = new Windows.Storage.Pickers.FileOpenPicker
@@ -122,6 +125,38 @@ namespace BlueWP.Inlays
           text = PostText,
           createdAt = DateTime.Now
         };
+
+        // Reply
+        if (IsReplying)
+        {
+          string repo = string.Empty, collection = string.Empty, rkey = string.Empty;
+          if (ATProto.Helpers.ParseATURI(RepliedPost.uri, ref repo, ref collection, ref rkey))
+          {
+            var recordResponse = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Repo.GetRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.GetRecord()
+            {
+              repo = repo,
+              collection = collection,
+              rkey = rkey
+            });
+
+            var root = (recordResponse?.value as ATProto.Lexicons.App.BSky.Feed.Post)?.reply?.root;
+            post.reply = new ATProto.Lexicons.App.BSky.Feed.Post.ReplyRef()
+            {
+              root = root ?? new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+              {
+                uri = recordResponse.uri,
+                cid = recordResponse.cid,
+              },
+              parent = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+              {
+                uri = recordResponse.uri,
+                cid = recordResponse.cid,
+              },
+            };
+          }
+        }
+
+        // Image attachment
         if (ImageAttachments != null && ImageAttachments.Count > 0)
         {
           foreach (var imageAttachment in ImageAttachments)
@@ -152,6 +187,7 @@ namespace BlueWP.Inlays
           }
           post.embed = images;
         }
+
         var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
         {
           repo = _app.Client.DID,

@@ -37,16 +37,16 @@
           <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        
+
         <!-- big avatar -->
         <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
           <Image.Source>
             <BitmapImage UriSource="{Binding PostData.PostAuthorAvatarURL}"/>
           </Image.Source>
         </Image>
-        
+
         <StackPanel Grid.Column="1" Orientation="Vertical" Width="Auto">
-          
+
           <!-- byline -->
           <StackPanel Orientation="Horizontal">
             <Button Margin="0,0,5,0" Click="ViewProfile_Click">
@@ -122,10 +122,16 @@
               <ColumnDefinition Width="0.3*"/>
               <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Orientation="Horizontal">
-              <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
-              <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="12"/>
-            </StackPanel>
+            <Button Margin="0,0,5,0" Click="Reply_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="12"/>
+                  </StackPanel>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
               <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0"/>
               <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12"/>

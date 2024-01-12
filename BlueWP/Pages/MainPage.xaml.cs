@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using BlueWP.ATProto.Lexicons.App.BSky.Feed;
 using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Pages
@@ -156,6 +157,19 @@ namespace BlueWP.Pages
     {
       _profileActorDID = actorDID;
       MainMenu.SelectedItem = ProfilePivotItem;
+    }
+
+    public void Reply(Defs.PostView post)
+    {
+      var postInlay = PostInlay as Inlays.NewPostInlay;
+      if (postInlay != null)
+      {
+        postInlay.IsReplying = true;
+        postInlay.OnPropertyChanged(nameof(postInlay.IsReplying));
+        postInlay.RepliedPost = post;
+        postInlay.OnPropertyChanged(nameof(postInlay.RepliedPost));
+      }
+      MainMenu.SelectedItem = PostPivotItem;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

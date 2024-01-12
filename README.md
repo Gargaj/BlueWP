@@ -16,7 +16,6 @@ If someone knows how to build a... thing? App package? Idk? Something I can uplo
 
 ## Todo
 - Posting
-  - Replies
   - Quoting
   - Facets / URL embeds
 - Viewing

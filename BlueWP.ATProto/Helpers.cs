@@ -8,6 +8,19 @@ namespace BlueWP.ATProto
 {
   public class Helpers
   {
+    public static bool ParseATURI(string atUri, ref string repo, ref string collection, ref string rkey)
+    {
+      var regex = new System.Text.RegularExpressions.Regex("at://(.*)/(.*)/(.*)");
+      var result = regex.Match(atUri);
+      if (!result.Success)
+      {
+        return false;
+      }
+      repo = result.Groups[1].Value;
+      collection = result.Groups[2].Value;
+      rkey = result.Groups[3].Value;
+      return true;
+    }
     public static string ToElapsedTime(DateTime dateTime)
     {
       var timespan = DateTime.Now - dateTime;

@@ -147,6 +147,7 @@
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />
     <Compile Include="Lexicons\COM\ATProto\Label\Defs.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\CreateRecord.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Repo\GetRecord.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\StrongRef.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\UploadBlob.cs" />
     <Compile Include="Lexicons\COM\ATProto\Server\CreateSession.cs" />

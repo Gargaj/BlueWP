@@ -128,6 +128,7 @@
     <Compile Include="LexiconBase.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetPreferences.cs" />
+    <Compile Include="Lexicons\App\BSky\Actor\GetProfile.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\External.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\Images.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\Record.cs" />

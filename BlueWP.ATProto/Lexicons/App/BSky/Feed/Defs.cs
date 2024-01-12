@@ -58,6 +58,10 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool IsRepost => reason != null;
       public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
 
+      public uint ReplyCount => post?.replyCount ?? 0;
+      public uint RepostCount => post?.repostCount ?? 0;
+      public uint LikeCount => post?.likeCount ?? 0;
+
       public bool IsReply => (reply?.parent as PostView) != null;
       public string PostReplyTo
       {

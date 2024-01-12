@@ -20,8 +20,6 @@ If someone knows how to build a... thing? App package? Idk? Something I can uplo
   - Quoting
   - Facets / URL embeds
 - Viewing
-  - Profiles
   - Single post / threads
-  - Like/reply/repost counts
 - Context-menu stuff (copy URL etc)
 - Multiaccounting?

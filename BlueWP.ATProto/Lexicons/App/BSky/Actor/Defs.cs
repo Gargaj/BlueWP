@@ -58,6 +58,37 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       }
     }
 
+    public class ProfileViewDetailed
+    {
+      public string did;
+      public string handle;
+      public string displayName;
+      public string description;
+      public string avatar;
+      public string banned;
+      public uint followersCount;
+      public uint followsCount;
+      public uint postsCount;
+      public DateTime indexedAt;
+      public object viewer;
+      public object labels;
+
+      public string DisplayName
+      {
+        get
+        {
+          return displayName ?? handle ?? "[ERROR]";
+        }
+      }
+      public string Handle
+      {
+        get
+        {
+          return $"@{handle}";
+        }
+      }
+    }
+
     public class ViewerState
     {
       public bool muted;

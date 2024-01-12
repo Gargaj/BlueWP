@@ -107,6 +107,7 @@
             <local:PostQuoted PostData="{Binding PostData.QuotedPost}"/>
           </Border>
 
+          <!-- engagement counters -->
           <Grid Opacity="0.5" Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="0.3*"/>
@@ -114,16 +115,16 @@
               <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-              <FontIcon Glyph="&#xE8F2;" FontSize="10"/>
-              <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="10"/>
+              <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
+              <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="12"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Orientation="Horizontal">
-              <FontIcon Glyph="&#xE895;" FontSize="10"/>
-              <TextBlock Text="{Binding PostData.RepostCount}" FontSize="10"/>
+              <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0"/>
+              <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12"/>
             </StackPanel>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
-              <FontIcon Glyph="&#xEB51;" FontSize="10"/>
-              <TextBlock Text="{Binding PostData.LikeCount}" FontSize="10"/>
+              <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0"/>
+              <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12"/>
             </StackPanel>
           </Grid>
 

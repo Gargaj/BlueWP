@@ -27,11 +27,11 @@ namespace BlueWP.ATProto
       {
         return timespan.ToString("%d") + "d";
       }
-      if (dateTime.Year != DateTime.Now.Year)
+      if (dateTime.Year == DateTime.Now.Year)
       {
         return dateTime.ToString("MMM d");
       }
-      return dateTime.ToString("'yy MMM d");
+      return "'" + dateTime.ToString("yy MMM d");
     }
   }
 }

@@ -1,0 +1,59 @@
+﻿<UserControl
+    x:Class="BlueWP.Inlays.ProfileInlay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BlueWP.Inlays"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="500"
+    d:DesignWidth="400">
+
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="130"/>
+      <RowDefinition Height="60"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="100"/>
+        <RowDefinition Height="*"/>
+      </Grid.RowDefinitions>
+      <Image Grid.Row="0" Stretch="UniformToFill" Height="100">
+        <Image.Source>
+          <BitmapImage UriSource="{Binding CoverImageURL}"/>
+        </Image.Source>
+      </Image>
+      <Canvas Grid.Row="1">
+        <Border Width="64" Height="64" Canvas.Left="16" Canvas.Top="-30" BorderThickness="2" BorderBrush="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+          <Image>
+            <Image.Source>
+              <BitmapImage UriSource="{Binding AvatarURL}"/>
+            </Image.Source>
+          </Image>
+        </Border>
+      </Canvas>
+    </Grid>
+    <StackPanel Grid.Row="1" Orientation="Vertical" Margin="15,5,0,0">
+      <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" FontSize="24"/>
+      <TextBlock Text="{Binding Handle}" Opacity="0.5"/>
+    </StackPanel>
+    <Pivot Grid.Row="2" FontSize="12">
+      <Pivot.HeaderTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding}" FontSize="14" FontWeight="Bold"/>
+        </DataTemplate>
+      </Pivot.HeaderTemplate>
+      <Pivot.ItemContainerStyle>
+        <Style TargetType="PivotItem">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0"/>
+        </Style>
+      </Pivot.ItemContainerStyle>
+      <PivotItem Header="Posts">
+        <local:FeedInlay x:Name="feed" Grid.Row="2" ActorDID="{Binding ActorDID}"/>
+      </PivotItem>
+    </Pivot>
+  </Grid>
+</UserControl>

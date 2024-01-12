@@ -22,7 +22,7 @@
   </Page.Resources>
 
   <Grid>
-    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading">
+    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading" PivotItemUnloaded="Main_PivotItemUnloading">
 
       <!-- Home -->
       <PivotItem>
@@ -51,7 +51,7 @@
           </Pivot.ItemContainerStyle>
           <Pivot.ItemTemplate>
             <DataTemplate>
-              <bwpi:FeedInlay URI="{Binding URI}"/>
+              <bwpi:FeedInlay FeedURI="{Binding URI}"/>
             </DataTemplate>
           </Pivot.ItemTemplate>
         </Pivot>
@@ -104,6 +104,20 @@
           <bwpc:FeedPagePivotHeader Glyph="&#xE713;" Label="Settings"/>
         </PivotItem.Header>
         <bwpi:SettingsInlay />
+      </PivotItem>
+
+      <!-- Custom inlay for viewing a profile -->
+      <PivotItem x:Name="ProfilePivotItem">
+        <PivotItem.Header> <!-- TODO: hide this -->
+          <TextBlock Text="" Width="0" Margin="0"/>
+        </PivotItem.Header>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
+        <bwpi:ProfileInlay />
       </PivotItem>
     </Pivot>
 

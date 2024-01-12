@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Net;
 using System.Threading.Tasks;
@@ -18,53 +19,80 @@ namespace BlueWP.Inlays
       InitializeComponent();
       _app = (App)Application.Current;
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
+      Loaded += FeedInlay_Loaded;
       DataContext = this;
+    }
+
+    private void FeedInlay_Loaded(object sender, RoutedEventArgs e)
+    {
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
     public async Task Refresh()
     {
-      _mainPage.StartLoading();
+      _mainPage?.StartLoading();
 
       try
       {
-        if (string.IsNullOrEmpty(URI))
+        if (!string.IsNullOrEmpty(FeedURI))
+        {
+          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
+          {
+            limit = 60,
+            feed = FeedURI
+          });
+          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+        }
+        else if (!string.IsNullOrEmpty(ActorDID))
+        {
+          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetAuthorFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed()
+          {
+            limit = 60,
+            actor = ActorDID
+          });
+          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+        }
+        else
         {
           var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
           {
             limit = 60
           });
-          FeedItems = response?.feed;
-        }
-        else
-        {
-          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
-          {
-            limit = 60,
-            feed = URI
-          });
-          FeedItems = response?.feed;
+          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
         }
       }
       catch (WebException ex)
       {
         var webResponse = ex.Response as HttpWebResponse;
-        _mainPage.TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        _mainPage?.TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
       }
 
-      _mainPage.EndLoading();
+      _mainPage?.EndLoading();
 
       OnPropertyChanged(nameof(FeedItems));
     }
 
-    public string URI
+    public void Flush()
     {
-      get { return (string)GetValue(URIProperty); }
-      set { SetValue(URIProperty, value); }
+      FeedItems.Clear();
+      OnPropertyChanged(nameof(FeedItems));
     }
 
-    public static readonly DependencyProperty URIProperty = DependencyProperty.Register("URI", typeof(string), typeof(FeedInlay), new PropertyMetadata(string.Empty));
+    public string FeedURI
+    {
+      get { return (string)GetValue(FeedURIProperty); }
+      set { SetValue(FeedURIProperty, value); }
+    }
+    public static readonly DependencyProperty FeedURIProperty = DependencyProperty.Register("FeedURI", typeof(string), typeof(FeedInlay), new PropertyMetadata(string.Empty));
 
-    public List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get; set; }
+    public string ActorDID
+    {
+      get { return (string)GetValue(ActorDIDProperty); }
+      set { SetValue(ActorDIDProperty, value); }
+    }
+    public static readonly DependencyProperty ActorDIDProperty = DependencyProperty.Register("ActorDID", typeof(string), typeof(FeedInlay), new PropertyMetadata(string.Empty));
+
+    public ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get; set; }
 
     public event PropertyChangedEventHandler PropertyChanged;
 

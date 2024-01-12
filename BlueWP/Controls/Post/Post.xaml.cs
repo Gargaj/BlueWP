@@ -1,6 +1,4 @@
-﻿using Windows.UI.Xaml.Controls;
-
-namespace BlueWP.Controls.Post
+﻿namespace BlueWP.Controls.Post
 {
   public partial class Post : PostBase
   {
@@ -12,7 +10,8 @@ namespace BlueWP.Controls.Post
 
     private void ViewProfile_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-      // TODO
+      var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
+      _mainPage.SwitchToProfileInlay(postData?.post?.author?.did);
     }
   }
 }

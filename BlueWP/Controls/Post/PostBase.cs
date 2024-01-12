@@ -7,8 +7,12 @@ namespace BlueWP.Controls.Post
 {
   public class PostBase : UserControl, INotifyPropertyChanged
   {
+    protected App _app;
+    protected Pages.MainPage _mainPage;
     public PostBase()
     {
+      _app = (App)Application.Current;
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
     public bool IsRepost

@@ -65,13 +65,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string displayName;
       public string description;
       public string avatar;
-      public string banned;
+      public string banner;
       public uint followersCount;
       public uint followsCount;
       public uint postsCount;
       public DateTime indexedAt;
-      public object viewer;
-      public object labels;
+      public ViewerState viewer;
+      public List<COM.ATProto.Label.Defs.Label> labels;
 
       public string DisplayName
       {

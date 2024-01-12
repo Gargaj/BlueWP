@@ -13,7 +13,7 @@ namespace BlueWP
   /// <summary>
   /// Provides application-specific behavior to supplement the default Application class.
   /// </summary>
-  sealed partial class App : Application
+  public partial class App : Application
   {
     private ATProto.Client _client;
     private Frame _rootFrame;

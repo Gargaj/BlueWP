@@ -2,12 +2,10 @@
 
 namespace BlueWP.ATProto
 {
-  public abstract class LexiconBase
+  public interface ILexicon
   {
     [JsonIgnore]
-    public abstract string EndpointID { get; }
-    [JsonIgnore]
-    public virtual bool RequiresAuthorization { get { return true; } }
+    string EndpointID { get; }
   }
 
   public interface IRawPost
@@ -16,5 +14,10 @@ namespace BlueWP.ATProto
     byte[] PostData { get; set; }
     [JsonIgnore]
     string MimeType { get; set; }
+  }
+
+  public interface ICustomAuthorizationHeaderProvider
+  {
+    string GetAuthorizationHeader(Client.Credentials credentials);
   }
 }

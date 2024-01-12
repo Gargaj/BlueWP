@@ -18,6 +18,7 @@ namespace BlueWP.Pages
     private int _unreadCount = 0;
     private List<Feed> _feeds = null;
     private List<object> _preferences;
+    private string _profileActorDID;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
 
     public MainPage()
@@ -111,6 +112,22 @@ namespace BlueWP.Pages
       {
         await notificationsInlay.Refresh();
       }
+
+      var profileInlay = args.Item.ContentTemplateRoot as Inlays.ProfileInlay;
+      if (profileInlay != null)
+      {
+        profileInlay.ActorDID = _profileActorDID;
+        await profileInlay.Refresh();
+      }
+    }
+
+    private void Main_PivotItemUnloading(Pivot sender, PivotItemEventArgs args)
+    {
+      var profileInlay = args.Item.ContentTemplateRoot as Inlays.ProfileInlay;
+      if (profileInlay != null)
+      {
+        profileInlay.Flush();
+      }
     }
 
     private async void Home_PivotItemLoading(Pivot sender, PivotItemEventArgs args)
@@ -125,7 +142,7 @@ namespace BlueWP.Pages
       {
         return;
       }
-      feedInlay.URI = feed.URI; // Preempt the binding cos that seems to happen later
+      feedInlay.FeedURI = feed.URI; // Preempt the binding cos that seems to happen later
       await feedInlay.Refresh();
     }
 
@@ -133,6 +150,12 @@ namespace BlueWP.Pages
     {
       HasError = true;
       ErrorText = error;
+    }
+
+    public void SwitchToProfileInlay( string actorDID )
+    {
+      _profileActorDID = actorDID;
+      MainMenu.SelectedItem = ProfilePivotItem;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json"/>
-  public class Post : LexiconBase
+  public class Post : ILexicon
   {
-    public override string EndpointID => "app.bsky.feed.post";
+    public string EndpointID => "app.bsky.feed.post";
 
     public string text;
     public List<Entity> entities;

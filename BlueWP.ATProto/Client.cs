@@ -66,17 +66,17 @@ namespace BlueWP.ATProto
     public string Handle { get { return _credentials.handle; } }
     public string DID { get { return _credentials.did; } }
 
-    public async Task<T> GetAsync<T>(LexiconBase input) where T : LexiconBase
+    public async Task<T> GetAsync<T>(ILexicon input) where T : ILexicon
     {
       return await RequestAsync<T>("GET", input);
     }
 
-    public async Task<T> PostAsync<T>(LexiconBase input) where T : LexiconBase
+    public async Task<T> PostAsync<T>(ILexicon input) where T : ILexicon
     {
       return await RequestAsync<T>("POST", input);
     }
 
-    protected async Task<T> RequestAsync<T>(string method, LexiconBase input) where T : LexiconBase
+    protected async Task<T> RequestAsync<T>(string method, ILexicon input) where T : ILexicon
     {
       if (string.IsNullOrEmpty(_credentials.serviceHost))
       {
@@ -92,7 +92,15 @@ namespace BlueWP.ATProto
       {
         headers["Content-Type"] = rawPost.MimeType;
       }
-      if (input.RequiresAuthorization)
+      if (input as ICustomAuthorizationHeaderProvider != null)
+      {
+        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_credentials);
+        if (!string.IsNullOrEmpty(header))
+        {
+          headers["Authorization"] = header;
+        }
+      }
+      else
       {
         headers["Authorization"] = $"Bearer {_credentials.accessToken}";
       }
@@ -182,12 +190,11 @@ namespace BlueWP.ATProto
         }
       }
 
-      return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson, _deserializerSettings) : null;
+      return responseJson != null ? Newtonsoft.Json.JsonConvert.DeserializeObject<T>(responseJson, _deserializerSettings) : default(T);
     }
 
     private async Task<bool> RefreshCredentials()
     {
-      _credentials.accessToken = _credentials.refreshToken;
       var body = new Lexicons.COM.ATProto.Server.RefreshSession();
       var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSessionResponse>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
@@ -271,7 +278,7 @@ namespace BlueWP.ATProto
       }
     }
 
-    private string SerializeInputToQueryString(LexiconBase input)
+    private string SerializeInputToQueryString(ILexicon input)
     {
       var inputType = input.GetType();
       bool first = true;
@@ -304,7 +311,7 @@ namespace BlueWP.ATProto
       return queryString;
     }
 
-    private struct Credentials
+    public struct Credentials
     {
       public string serviceHost;
       public string did;

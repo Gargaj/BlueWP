@@ -2,10 +2,10 @@
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
 {
-  /// <see cref="  /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/getAuthorFeed.json"/>
+  /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/getProfile.json"/>
   public class GetProfile : LexiconBase
   {
-    public override string EndpointID => "app.bsky.feed.getAuthorFeed";
+    public override string EndpointID => "app.bsky.actor.getProfile";
 
     public string actor;
   }

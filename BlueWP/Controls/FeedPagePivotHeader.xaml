@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-  <StackPanel Orientation="Vertical">
+  <StackPanel Orientation="Vertical" Padding="12,0,12,0">
     <FontIcon HorizontalAlignment="Center" Margin="0,12,0,0" Glyph="{Binding Glyph}" FontSize="16" />
     <TextBlock Text="{Binding Label}" Style="{StaticResource CaptionTextBlockStyle}" TextAlignment="Center" HorizontalAlignment="Center" Margin="2,5,2,7" />
   </StackPanel>

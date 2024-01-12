@@ -23,7 +23,13 @@
 
   <Grid>
     <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading" PivotItemUnloaded="Main_PivotItemUnloading">
-
+      <Pivot.Resources>
+        <Style TargetType="PivotHeaderItem">
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="Padding" Value="0"/>
+        </Style>
+      </Pivot.Resources>
+      
       <!-- Home -->
       <PivotItem>
         <PivotItem.Header>

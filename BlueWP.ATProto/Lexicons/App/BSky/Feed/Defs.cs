@@ -50,7 +50,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public ReplyRef reply;
       public ReasonRepost reason;
 
-      public string PostAuthorAvatarURL => post?.author?.avatar ?? null;
+      public string PostAuthorAvatarURL => post?.author?.avatar;
       public string PostAuthorDisplayName => post?.AuthorDisplayName ?? "[ERROR]";
       public string PostAuthorHandle => post?.AuthorHandle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);

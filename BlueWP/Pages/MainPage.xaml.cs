@@ -40,50 +40,68 @@ namespace BlueWP.Pages
     {
       StartLoading();
 
-      var preferences = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
-      if (preferences != null)
+      try
       {
-        _preferences = preferences.preferences;
-        _savedFeedsPref = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref;
-
-        var req = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
-        req.feeds = new List<string>();
-
-        _feeds = new List<Feed>();
-        _feeds.Add(new Feed() { Name = "Following" });
-        foreach (var feed in _savedFeedsPref.pinned)
+        var preferences = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
+        if (preferences != null)
         {
-          var name = feed.Substring(feed.LastIndexOf("/") + 1); // temp
-          _feeds.Add(new Feed() { Name = name, URI = feed });
-          req.feeds.Add(feed);
-        }
-        OnPropertyChanged(nameof(Feeds));
+          _preferences = preferences.preferences;
+          _savedFeedsPref = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref;
 
-        var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(req);
-        if (feedInfoResponse?.feeds != null)
-        {
-          foreach (var feedInfo in feedInfoResponse.feeds)
+          var req = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
+          req.feeds = new List<string>();
+
+          _feeds = new List<Feed>();
+          _feeds.Add(new Feed() { Name = "Following" });
+          foreach (var feed in _savedFeedsPref.pinned)
           {
-            var feed = _feeds.FirstOrDefault(s => s.URI == feedInfo.uri);
-            if (feed == null)
+            var name = feed.Substring(feed.LastIndexOf("/") + 1); // temp
+            _feeds.Add(new Feed() { Name = name, URI = feed });
+            req.feeds.Add(feed);
+          }
+          OnPropertyChanged(nameof(Feeds));
+
+          var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(req);
+          if (feedInfoResponse?.feeds != null)
+          {
+            foreach (var feedInfo in feedInfoResponse.feeds)
             {
-              continue;
+              var feed = _feeds.FirstOrDefault(s => s.URI == feedInfo.uri);
+              if (feed == null)
+              {
+                continue;
+              }
+              feed.FeedInfo = feedInfo;
+              feed.Name = feedInfo.displayName;
+              feed.OnPropertyChanged("Name");
             }
-            feed.FeedInfo = feedInfo;
-            feed.Name = feedInfo.displayName;
-            feed.OnPropertyChanged("Name");
           }
         }
+        var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+        if (unreadCountResponse != null)
+        {
+          _unreadCount = (int)unreadCountResponse.count;
+          OnPropertyChanged(nameof(UnreadNotificationCount));
+        }
+      }
+      catch (WebException ex)
+      {
+        var webResponse = ex.Response as HttpWebResponse;
+        if (webResponse != null)
+        {
+          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        }
+        else
+        {
+          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
+        }
+      }
+      catch (Exception ex)
+      {
+        TriggerError($"ERROR\n{ex.InnerException.Message ?? ex?.Message}");
       }
 
       EndLoading();
-
-      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
-      if (unreadCountResponse != null)
-      {
-        _unreadCount = (int)unreadCountResponse.count;
-        OnPropertyChanged(nameof(UnreadNotificationCount));
-      }
     }
 
     private async void Main_PivotItemLoading(Pivot sender, PivotItemEventArgs args)

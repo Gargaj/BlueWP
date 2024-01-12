@@ -27,7 +27,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
       public bool HasQuotedPost => false;
       public bool HasEmbedExternal => false;
 
-      public string PostAuthorAvatarURL => author?.avatar ?? "[ERROR]";
+      public string PostAuthorAvatarURL => author?.avatar;
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
       public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime((value as Feed.Post).createdAt);

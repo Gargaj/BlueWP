@@ -134,43 +134,50 @@ namespace BlueWP.ATProto
       {
         var webResponse = ex.Response as HttpWebResponse;
         var error = ex.Response != null ? await new StreamReader(ex.Response.GetResponseStream()).ReadToEndAsync() : ex.ToString();
-        var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
-        if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
+        if (ex?.Response?.Headers != null && ex.Response.Headers["content-type"].ToLower().StartsWith("application/json"))
         {
-          if (await RefreshCredentials())
+          var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
+          if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
           {
-            headers["Authorization"] = $"Bearer {_credentials.accessToken}";
-            switch (method)
+            if (await RefreshCredentials())
             {
-              case "GET":
-                {
-                  responseJson = await http.DoGETRequestAsync(url, null, headers);
-                }
-                break;
-              case "POST":
-                {
-                  if (rawPost != null)
+              headers["Authorization"] = $"Bearer {_credentials.accessToken}";
+              switch (method)
+              {
+                case "GET":
                   {
-                    responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
+                    responseJson = await http.DoGETRequestAsync(url, null, headers);
                   }
-                  else
+                  break;
+                case "POST":
                   {
-                    responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                    if (rawPost != null)
+                    {
+                      responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
+                    }
+                    else
+                    {
+                      responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                    }
                   }
-                }
-                break;
+                  break;
+              }
+            }
+            else
+            {
+              throw ex;
             }
           }
           else
           {
-            throw ex;
+#if DEBUG
+            System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {webResponse.StatusCode}] {error}");
+#endif
+            throw new WebException(error, ex, ex.Status, ex.Response);
           }
         }
         else
         {
-#if DEBUG
-          System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {webResponse.StatusCode}] {error}");
-#endif
           throw new WebException(error, ex, ex.Status, ex.Response);
         }
       }

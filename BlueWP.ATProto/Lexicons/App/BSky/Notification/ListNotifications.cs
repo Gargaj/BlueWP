@@ -35,15 +35,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public DateTime? indexedAt;
     public List<COM.ATProto.Label.Defs.Label> labels;
 
-    public IPost Reply => record as IPost;
-
     // To be clear, these MAY be true in actuality, but we don't know from just a view
     public bool IsRepost => false;
     public bool IsReply => false;
     public bool HasQuotedPost => false;
     public bool HasEmbedExternal => false;
 
-    public string PostAuthorAvatarURL => author?.avatar ?? "[ERROR]";
+    public string PostAuthorAvatarURL => author?.avatar;
     public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
     public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
     public string PostElapsedTime => indexedAt != null ? Helpers.ToElapsedTime(indexedAt.GetValueOrDefault()) : string.Empty;

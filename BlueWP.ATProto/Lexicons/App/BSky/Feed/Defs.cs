@@ -38,6 +38,9 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public uint RepostCount => repostCount ?? 0;
       public uint LikeCount => likeCount ?? 0;
 
+      public bool PostReposted => !string.IsNullOrEmpty(viewer?.repost);
+      public bool PostLiked => !string.IsNullOrEmpty(viewer?.like);
+
       public External.View PostEmbedExternal => embed as External.View;
 
       public Record.ViewRecord QuotedPost
@@ -106,6 +109,9 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public uint ReplyCount => post?.ReplyCount ?? 0;
       public uint RepostCount => post?.RepostCount ?? 0;
       public uint LikeCount => post?.LikeCount ?? 0;
+
+      public bool PostReposted => post?.PostReposted ?? false;
+      public bool PostLiked => post?.PostLiked ?? false;
 
       public bool IsReply => (reply?.parent as PostView) != null;
       public string PostReplyTo

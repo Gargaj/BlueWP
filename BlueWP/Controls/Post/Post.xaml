@@ -142,14 +142,40 @@
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12"/>
+                    <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0">
+                      <i:Interaction.Behaviors>
+                        <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
+                        </c:DataTriggerBehavior>
+                        <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                        </c:DataTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </FontIcon>
+                    <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12">
+                      <i:Interaction.Behaviors>
+                        <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
+                        </c:DataTriggerBehavior>
+                        <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                        </c:DataTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </TextBlock>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>
               <FlyoutBase.AttachedFlyout>
                 <MenuFlyout>
                   <MenuFlyoutItem Text="Repost" Click="Repost_Click">
+                    <i:Interaction.Behaviors>
+                      <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
+                        <c:ChangePropertyAction PropertyName="Text" Value="Undo repost" />
+                      </c:DataTriggerBehavior>
+                      <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
+                        <c:ChangePropertyAction PropertyName="Text" Value="Repost" />
+                      </c:DataTriggerBehavior>
+                    </i:Interaction.Behaviors>
                     <MenuFlyoutItem.Icon>
                       <FontIcon Glyph="&#xE895;" />
                     </MenuFlyoutItem.Icon>
@@ -166,8 +192,28 @@
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12"/>
+                    <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0">
+                      <i:Interaction.Behaviors>
+                        <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="True">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />
+                          <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB52;" />
+                        </c:DataTriggerBehavior>
+                        <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB51;" />
+                        </c:DataTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </FontIcon>
+                    <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12">
+                      <i:Interaction.Behaviors>
+                        <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="True">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />
+                        </c:DataTriggerBehavior>
+                        <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                        </c:DataTriggerBehavior>
+                      </i:Interaction.Behaviors>
+                    </TextBlock>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>

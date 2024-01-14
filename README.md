@@ -4,6 +4,8 @@
 
 Bluesky client for Windows Phone
 
+![image](https://raw.githubusercontent.com/Gargaj/BlueWP/main/screenshot.jpg)
+
 Don't ask why.
 
 ## Building / running

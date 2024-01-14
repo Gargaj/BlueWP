@@ -84,6 +84,31 @@
           <bwpcp:PostQuoted PostData="{Binding RepliedPost}"/>
         </StackPanel>
       </Border>
+
+      <!-- quoted post -->
+      <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+        <i:Interaction.Behaviors>
+          <c:DataTriggerBehavior Binding="{Binding IsQuoting}" Value="True">
+            <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+          </c:DataTriggerBehavior>
+          <c:DataTriggerBehavior Binding="{Binding IsQuoting}" Value="False">
+            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+          </c:DataTriggerBehavior>
+        </i:Interaction.Behaviors>
+        <StackPanel Orientation="Vertical">
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Quoting:" FontStyle="Italic" Margin="0,0,0,10"/>
+            <Button Grid.Column="1" Click="RemoveQuote_Click" Background="Transparent">
+              <FontIcon Glyph="&#xE711;" FontSize="12"/>
+            </Button>
+          </Grid>
+          <bwpcp:PostQuoted PostData="{Binding QuotedPost}"/>
+        </StackPanel>
+      </Border>
     </StackPanel>
 
   </Grid>

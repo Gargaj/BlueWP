@@ -202,6 +202,29 @@ namespace BlueWP.Pages
         postInlay.OnPropertyChanged(nameof(postInlay.IsReplying));
         postInlay.RepliedPost = post;
         postInlay.OnPropertyChanged(nameof(postInlay.RepliedPost));
+
+        postInlay.IsQuoting = false;
+        postInlay.OnPropertyChanged(nameof(postInlay.IsQuoting));
+        postInlay.QuotedPost = null;
+        postInlay.OnPropertyChanged(nameof(postInlay.QuotedPost));
+      }
+      MainMenu.SelectedItem = PostPivotItem;
+    }
+
+    public void Quote(Defs.PostView post)
+    {
+      var postInlay = PostInlay as Inlays.NewPostInlay;
+      if (postInlay != null)
+      {
+        postInlay.IsReplying = false;
+        postInlay.OnPropertyChanged(nameof(postInlay.IsReplying));
+        postInlay.RepliedPost = null;
+        postInlay.OnPropertyChanged(nameof(postInlay.RepliedPost));
+
+        postInlay.IsQuoting = true;
+        postInlay.OnPropertyChanged(nameof(postInlay.IsQuoting));
+        postInlay.QuotedPost = post;
+        postInlay.OnPropertyChanged(nameof(postInlay.QuotedPost));
       }
       MainMenu.SelectedItem = PostPivotItem;
     }

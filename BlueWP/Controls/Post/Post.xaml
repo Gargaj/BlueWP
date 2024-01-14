@@ -128,7 +128,7 @@
               <ColumnDefinition Width="0.3*"/>
               <ColumnDefinition Width="0.3*"/>
             </Grid.ColumnDefinitions>
-            <Button Margin="0,0,5,0" Click="Reply_Click">
+            <Button Grid.Column="0" Margin="0,0,5,0" Click="Reply_Click">
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
@@ -138,10 +138,30 @@
                 </ControlTemplate>
               </Button.Template>
             </Button>
-            <StackPanel Grid.Column="1" Orientation="Horizontal">
-              <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0"/>
-              <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12"/>
-            </StackPanel>
+            <Button Grid.Column="1" Margin="0,0,5,0" Click="RepostMenu_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12"/>
+                  </StackPanel>
+                </ControlTemplate>
+              </Button.Template>
+              <FlyoutBase.AttachedFlyout>
+                <MenuFlyout>
+                  <MenuFlyoutItem Text="Repost" Click="Repost_Click">
+                    <MenuFlyoutItem.Icon>
+                      <FontIcon Glyph="&#xE895;" />
+                    </MenuFlyoutItem.Icon>
+                  </MenuFlyoutItem>
+                  <MenuFlyoutItem Text="Quote post" Click="Quote_Click">
+                    <MenuFlyoutItem.Icon>
+                      <FontIcon Glyph="&#xE9B1;" />
+                    </MenuFlyoutItem.Icon>
+                  </MenuFlyoutItem>
+                </MenuFlyout>
+              </FlyoutBase.AttachedFlyout>
+            </Button>
             <StackPanel Grid.Column="2" Orientation="Horizontal">
               <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0"/>
               <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12"/>

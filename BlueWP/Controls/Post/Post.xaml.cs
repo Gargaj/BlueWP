@@ -1,4 +1,7 @@
-﻿namespace BlueWP.Controls.Post
+﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
+
+namespace BlueWP.Controls.Post
 {
   public partial class Post : PostBase
   {
@@ -8,13 +11,13 @@
       LayoutRoot.DataContext = this;
     }
 
-    private void ViewProfile_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    private void ViewProfile_Click(object sender, RoutedEventArgs e)
     {
       var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
       _mainPage.SwitchToProfileInlay(postData?.post?.author?.did);
     }
 
-    private void ViewThread_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    private void ViewThread_Click(object sender, RoutedEventArgs e)
     {
       var feedViewPost = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
       if (feedViewPost != null)
@@ -30,10 +33,29 @@
       }
     }
 
-    private void Reply_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    private void Reply_Click(object sender, RoutedEventArgs e)
     {
       var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
       _mainPage.Reply(postData?.post);
+    }
+
+    private void RepostMenu_Click(object sender, RoutedEventArgs e)
+    {
+      var element = sender as FrameworkElement;
+      if (element != null)
+      {
+        FlyoutBase.ShowAttachedFlyout(element);
+      }
+    }
+
+    private void Repost_Click(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void Quote_Click(object sender, RoutedEventArgs e)
+    {
+      var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
+      _mainPage.Quote(postData?.post);
     }
   }
 }

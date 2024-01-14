@@ -46,6 +46,8 @@ namespace BlueWP.Inlays
 
     public bool IsReplying { get; set; }
     public ATProto.Lexicons.App.BSky.Feed.Defs.PostView RepliedPost { get; set; }
+    public bool IsQuoting { get; set; }
+    public ATProto.Lexicons.App.BSky.Feed.Defs.PostView QuotedPost { get; set; }
 
     private async void Attach_Click(object sender, RoutedEventArgs e)
     {
@@ -156,6 +158,19 @@ namespace BlueWP.Inlays
           }
         }
 
+        // Quote
+        if (IsQuoting)
+        {
+          post.embed = new ATProto.Lexicons.App.BSky.Embed.Record()
+          {
+            record = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+            {
+              uri = QuotedPost.uri,
+              cid = QuotedPost.cid,
+            }
+          };
+        }
+
         // Image attachment
         if (ImageAttachments != null && ImageAttachments.Count > 0)
         {
@@ -197,8 +212,12 @@ namespace BlueWP.Inlays
         if (response != null)
         {
           PostText = string.Empty;
+
           ImageAttachments.Clear();
           OnPropertyChanged(nameof(ImageAttachments));
+
+          RemoveReply();
+          RemoveQuote();
         }
       }
       catch (WebException ex)
@@ -225,10 +244,28 @@ namespace BlueWP.Inlays
 
     private void RemoveReply_Click(object sender, RoutedEventArgs e)
     {
+      RemoveReply();
+    }
+
+    private void RemoveReply()
+    {
       RepliedPost = null;
       IsReplying = false;
       OnPropertyChanged(nameof(RepliedPost));
       OnPropertyChanged(nameof(IsReplying));
+    }
+
+    private void RemoveQuote_Click(object sender, RoutedEventArgs e)
+    {
+      RemoveQuote();
+    }
+
+    private void RemoveQuote()
+    {
+      QuotedPost = null;
+      IsQuoting = false;
+      OnPropertyChanged(nameof(QuotedPost));
+      OnPropertyChanged(nameof(IsQuoting));
     }
 
     private async void EditAltText_Click(object sender, RoutedEventArgs e)

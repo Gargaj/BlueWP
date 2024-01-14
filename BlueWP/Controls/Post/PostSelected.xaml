@@ -57,7 +57,7 @@
       <StackPanel Grid.Row="1" Orientation="Vertical" Width="Auto">
 
         <!-- post contents -->
-        <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords" FontSize="16"/>
+        <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords" FontSize="20" Margin="0,5,0,0"/>
 
         <!-- image block -->
         <local:ImageGallery Images="{Binding PostData.PostImages}">

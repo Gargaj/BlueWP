@@ -24,7 +24,7 @@ namespace BlueWP.Inlays
     }
 
     public string PostURI { get; set; }
-    public ObservableCollection<ATProto.IPost> Posts { get; set; }
+    public ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.PostView> Posts { get; set; }
 
     public async Task Refresh()
     {
@@ -40,7 +40,7 @@ namespace BlueWP.Inlays
       var thread = response.thread as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
 
       // main post
-      Posts = new ObservableCollection<ATProto.IPost>();
+      Posts = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.PostView>();
       Posts.Add(thread.post);
 
       // previous posts

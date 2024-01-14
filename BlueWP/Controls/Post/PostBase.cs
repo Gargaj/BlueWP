@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -22,12 +23,31 @@ namespace BlueWP.Controls.Post
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
-    public bool IsRepost => PostData?.IsRepost ?? false;
-    public bool IsReply => PostData?.IsReply ?? false;
+    public bool IsRepost => FeedViewPost?.IsRepost ?? false;
+    public bool IsReply => FeedViewPost?.IsReply ?? false;
     public bool HasQuotedPost => PostData?.HasQuotedPost ?? false;
     public bool HasEmbedExternal => PostData?.HasEmbedExternal ?? false;
-    public bool PostLiked => PostView?.PostLiked ?? false;
+
+    public string PostAuthorAvatarURL => PostView?.PostAuthorAvatarURL;
+    public string PostAuthorDisplayName => PostView?.PostAuthorDisplayName;
+    public string PostAuthorHandle => PostView?.PostAuthorHandle;
+    public string PostElapsedTime => PostView?.PostElapsedTime;
+    public string PostText => PostView?.PostText;
+    public string PostDateTime => PostView?.PostDateTime;
+
+    public uint ReplyCount => PostView?.ReplyCount ?? 0;
+    public uint RepostCount => PostView?.RepostCount ?? 0;
+    public uint LikeCount => PostView?.LikeCount ?? 0;
+
     public bool PostReposted => PostView?.PostReposted ?? false;
+    public bool PostLiked => PostView?.PostLiked ?? false;
+
+    public IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> PostImages => PostView?.PostImages;
+    public ATProto.Lexicons.App.BSky.Embed.External.View PostEmbedExternal => PostView?.PostEmbedExternal;
+    public ATProto.Lexicons.App.BSky.Embed.Record.ViewRecord QuotedPost => PostView?.QuotedPost;
+
+    public string PostReason => FeedViewPost?.PostReason;
+    public string PostReplyTo => FeedViewPost?.PostReplyTo;
 
     public ATProto.IPost PostData
     {
@@ -36,6 +56,7 @@ namespace BlueWP.Controls.Post
     }
     public static readonly DependencyProperty PostDataProperty = DependencyProperty.Register("PostData", typeof(ATProto.IPost), typeof(PostBase), new PropertyMetadata(null, OnPostDataChanged));
 
+    public ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost FeedViewPost => PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
     public ATProto.Lexicons.App.BSky.Feed.Defs.PostView PostView
     {
       get
@@ -59,6 +80,28 @@ namespace BlueWP.Controls.Post
         post.OnPropertyChanged(nameof(IsReply));
         post.OnPropertyChanged(nameof(HasQuotedPost));
         post.OnPropertyChanged(nameof(HasEmbedExternal));
+        post.OnPropertyChanged(nameof(PostText));
+
+        post.OnPropertyChanged(nameof(PostAuthorAvatarURL));
+        post.OnPropertyChanged(nameof(PostAuthorDisplayName));
+        post.OnPropertyChanged(nameof(PostAuthorHandle));
+        post.OnPropertyChanged(nameof(PostElapsedTime));
+        post.OnPropertyChanged(nameof(PostText));
+        post.OnPropertyChanged(nameof(PostDateTime));
+
+        post.OnPropertyChanged(nameof(ReplyCount));
+        post.OnPropertyChanged(nameof(RepostCount));
+        post.OnPropertyChanged(nameof(LikeCount));
+
+        post.OnPropertyChanged(nameof(PostReposted));
+        post.OnPropertyChanged(nameof(PostLiked));
+
+        post.OnPropertyChanged(nameof(PostImages));
+        post.OnPropertyChanged(nameof(PostEmbedExternal));
+        post.OnPropertyChanged(nameof(QuotedPost));
+
+        post.OnPropertyChanged(nameof(PostReason));
+        post.OnPropertyChanged(nameof(PostReplyTo));
       }
     }
 
@@ -118,6 +161,7 @@ namespace BlueWP.Controls.Post
           }
         });
         PostView.repostCount++;
+        OnPropertyChanged(nameof(RepostCount));
         PostView.viewer.repost = response.uri;
         OnPropertyChanged(nameof(PostReposted));
       }
@@ -136,6 +180,7 @@ namespace BlueWP.Controls.Post
             rkey = rkey
           });
           PostView.repostCount--;
+          OnPropertyChanged(nameof(RepostCount));
           PostView.viewer.repost = null;
           OnPropertyChanged(nameof(PostReposted));
         }
@@ -162,6 +207,7 @@ namespace BlueWP.Controls.Post
           }
         });
         PostView.likeCount++;
+        OnPropertyChanged(nameof(LikeCount));
         PostView.viewer.like = response.uri;
         OnPropertyChanged(nameof(PostLiked));
       }
@@ -180,6 +226,7 @@ namespace BlueWP.Controls.Post
             rkey = rkey
           });
           PostView.likeCount--;
+          OnPropertyChanged(nameof(LikeCount));
           PostView.viewer.like = null;
           OnPropertyChanged(nameof(PostLiked));
         }

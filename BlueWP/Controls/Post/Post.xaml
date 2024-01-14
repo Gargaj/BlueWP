@@ -29,7 +29,7 @@
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
         <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE895;" Opacity="0.5" Margin="18,0,5,0"/>
-        <TextBlock Grid.Row="0" Text="{Binding PostData.PostReason}" Opacity="0.5" FontWeight="Bold"/>
+        <TextBlock Grid.Row="0" Text="{Binding PostReason}" Opacity="0.5" FontWeight="Bold"/>
       </StackPanel>
 
       <Grid Grid.Row="1">
@@ -41,7 +41,7 @@
         <!-- big avatar -->
         <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
           <Image.Source>
-            <BitmapImage UriSource="{Binding PostData.PostAuthorAvatarURL}"/>
+            <BitmapImage UriSource="{Binding PostAuthorAvatarURL}"/>
           </Image.Source>
         </Image>
 
@@ -53,14 +53,14 @@
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding PostData.PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                    <TextBlock Text="{Binding PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>
             </Button>
             <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-            <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+            <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
           </StackPanel>
 
           <!-- reply to -->
@@ -74,22 +74,22 @@
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
             <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE97A;" Opacity="0.5" Margin="0,0,5,0"/>
-            <TextBlock Text="{Binding PostData.PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5"/>
+            <TextBlock Text="{Binding PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5"/>
           </StackPanel>
 
           <!-- post contents -->
           <Button Margin="0,0,0,0" Click="ViewThread_Click">
             <Button.Template>
               <ControlTemplate>
-                <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
+                <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
               </ControlTemplate>
             </Button.Template>
           </Button>
 
           <!-- image block -->
-          <local:ImageGallery Images="{Binding PostData.PostImages}">
+          <local:ImageGallery Images="{Binding PostImages}">
             <i:Interaction.Behaviors>
-              <c:DataTriggerBehavior Binding="{Binding PostData.PostImages.Count}" Value="0">
+              <c:DataTriggerBehavior Binding="{Binding PostImages.Count}" Value="0">
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
@@ -105,7 +105,7 @@
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
-            <local:EmbedExternal External="{Binding PostData.PostEmbedExternal}"/>
+            <local:EmbedExternal External="{Binding PostEmbedExternal}"/>
           </Border>
 
           <!-- quote post -->
@@ -118,7 +118,7 @@
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
-            <local:PostQuoted PostData="{Binding PostData.QuotedPost}"/>
+            <local:PostQuoted PostData="{Binding QuotedPost}"/>
           </Border>
 
           <!-- engagement counters -->
@@ -133,7 +133,7 @@
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
                     <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="12"/>
+                    <TextBlock Text="{Binding ReplyCount}" FontSize="12"/>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>
@@ -152,7 +152,7 @@
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </FontIcon>
-                    <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12">
+                    <TextBlock Text="{Binding RepostCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
@@ -204,7 +204,7 @@
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </FontIcon>
-                    <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12">
+                    <TextBlock Text="{Binding LikeCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />

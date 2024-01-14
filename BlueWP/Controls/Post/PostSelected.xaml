@@ -31,7 +31,7 @@
         <!-- big avatar -->
         <Image Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
           <Image.Source>
-            <BitmapImage UriSource="{Binding PostData.PostAuthorAvatarURL}"/>
+            <BitmapImage UriSource="{Binding PostAuthorAvatarURL}"/>
           </Image.Source>
         </Image>
 
@@ -41,28 +41,28 @@
             <Button.Template>
               <ControlTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <TextBlock Text="{Binding PostData.PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
+                  <TextBlock Text="{Binding PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
                 </StackPanel>
               </ControlTemplate>
             </Button.Template>
           </Button>
           <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-          <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
         </StackPanel>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
 
       </Grid>
 
       <StackPanel Grid.Row="1" Orientation="Vertical" Width="Auto">
 
         <!-- post contents -->
-        <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords" FontSize="20" Margin="0,5,0,0"/>
+        <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords" FontSize="20" Margin="0,5,0,0"/>
 
         <!-- image block -->
-        <local:ImageGallery Images="{Binding PostData.PostImages}">
+        <local:ImageGallery Images="{Binding PostImages}">
           <i:Interaction.Behaviors>
-            <c:DataTriggerBehavior Binding="{Binding PostData.PostImages.Count}" Value="0">
+            <c:DataTriggerBehavior Binding="{Binding PostImages.Count}" Value="0">
               <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
             </c:DataTriggerBehavior>
           </i:Interaction.Behaviors>
@@ -78,7 +78,7 @@
               <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
             </c:DataTriggerBehavior>
           </i:Interaction.Behaviors>
-          <local:EmbedExternal External="{Binding PostData.PostEmbedExternal}"/>
+          <local:EmbedExternal External="{Binding PostEmbedExternal}"/>
         </Border>
 
         <!-- quote post -->
@@ -91,17 +91,17 @@
               <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
             </c:DataTriggerBehavior>
           </i:Interaction.Behaviors>
-          <local:PostQuoted PostData="{Binding PostData.QuotedPost}"/>
+          <local:PostQuoted PostData="{Binding QuotedPost}"/>
         </Border>
 
-        <TextBlock Grid.Row="2" Text="{Binding PostData.PostDateTime}" TextWrapping="WrapWholeWords" Margin="0,10,0,10" Opacity="0.5"/>
+        <TextBlock Grid.Row="2" Text="{Binding PostDateTime}" TextWrapping="WrapWholeWords" Margin="0,10,0,10" Opacity="0.5"/>
 
         <!-- engagement counters 1: text -->
         <Border BorderThickness="0,1,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
           <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding PostData.RepostCount}" FontWeight="Bold" Margin="0,0,5,0"/>
+            <TextBlock Text="{Binding RepostCount}" FontWeight="Bold" Margin="0,0,5,0"/>
             <TextBlock Text="reposts" Margin="0,0,25,0"/>
-            <TextBlock Text="{Binding PostData.LikeCount}" FontWeight="Bold" Margin="0,0,5,0"/>
+            <TextBlock Text="{Binding LikeCount}" FontWeight="Bold" Margin="0,0,5,0"/>
             <TextBlock Text="likes"/>
           </StackPanel>
         </Border>
@@ -118,7 +118,7 @@
               <ControlTemplate>
                 <StackPanel Orientation="Horizontal">
                   <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
-                  <TextBlock Text="{Binding PostData.ReplyCount}" FontSize="12"/>
+                  <TextBlock Text="{Binding ReplyCount}" FontSize="12"/>
                 </StackPanel>
               </ControlTemplate>
             </Button.Template>
@@ -137,7 +137,7 @@
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                   </FontIcon>
-                  <TextBlock Text="{Binding PostData.RepostCount}" FontSize="12">
+                  <TextBlock Text="{Binding RepostCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
@@ -181,7 +181,7 @@
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                   </FontIcon>
-                  <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12">
+                  <TextBlock Text="{Binding LikeCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />

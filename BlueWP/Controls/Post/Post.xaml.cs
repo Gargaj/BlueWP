@@ -16,8 +16,18 @@
 
     private void ViewThread_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-      var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
-      _mainPage.SwitchToThreadViewInlay(postData?.post?.uri);
+      var feedViewPost = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
+      if (feedViewPost != null)
+      {
+        _mainPage.SwitchToThreadViewInlay(feedViewPost?.post?.uri);
+        return;
+      }
+      var postView = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.PostView;
+      if (postView != null)
+      {
+        _mainPage.SwitchToThreadViewInlay(postView?.uri);
+        return;
+      }
     }
 
     private void Reply_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)

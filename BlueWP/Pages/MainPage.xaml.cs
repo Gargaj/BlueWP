@@ -175,10 +175,22 @@ namespace BlueWP.Pages
       MainMenu.SelectedItem = ProfilePivotItem;
     }
 
-    public void SwitchToThreadViewInlay(string postURI)
+    public async void SwitchToThreadViewInlay(string postURI)
     {
       _threadPostURI = postURI;
-      MainMenu.SelectedItem = ThreadPivotItem;
+      if (MainMenu.SelectedItem == ThreadPivotItem)
+      {
+        var threadInlay = ThreadPivotItem.ContentTemplateRoot as Inlays.ThreadInlay;
+        if (threadInlay != null)
+        {
+          threadInlay.PostURI = _threadPostURI;
+          await threadInlay.Refresh();
+        }
+      }
+      else
+      {
+        MainMenu.SelectedItem = ThreadPivotItem;
+      }
     }
 
     public void Reply(Defs.PostView post)

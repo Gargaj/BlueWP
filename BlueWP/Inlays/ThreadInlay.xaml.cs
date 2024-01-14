@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -23,10 +24,13 @@ namespace BlueWP.Inlays
     }
 
     public string PostURI { get; set; }
-    public ATProto.IPost PostData { get; set; }
+    public ObservableCollection<ATProto.IPost> Posts { get; set; }
 
     public async Task Refresh()
     {
+      var selector = Resources["selector"] as Controls.ThreadPostTemplateSelector;
+      selector.SelectedPostURI = PostURI;
+
       _mainPage?.StartLoading();
 
       var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetPostThreadResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPostThread()
@@ -35,14 +39,34 @@ namespace BlueWP.Inlays
       });
       var thread = response.thread as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
 
-      PostData = thread.post;
-      OnPropertyChanged(nameof(PostData));
+      // main post
+      Posts = new ObservableCollection<ATProto.IPost>();
+      Posts.Add(thread.post);
+
+      // previous posts
+      var post = thread.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+      while (post != null)
+      {
+        Posts.Insert(0, post.post);
+        post = post?.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+      }
+
+      // replies
+      foreach (var reply in thread.replies)
+      {
+        var replyPost = reply as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+        Posts.Add(replyPost?.post);
+      }
+
+      OnPropertyChanged(nameof(Posts));
 
       _mainPage?.EndLoading();
     }
 
     public void Flush()
     {
+      Posts.Clear();
+      OnPropertyChanged(nameof(Posts));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

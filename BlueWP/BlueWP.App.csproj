@@ -145,6 +145,7 @@
     <Compile Include="Controls\Post\PostQuoted.xaml.cs">
       <DependentUpon>PostQuoted.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ThreadPostTemplateSelector.cs" />
     <Compile Include="Inlays\FeedInlay.xaml.cs">
       <DependentUpon>FeedInlay.xaml</DependentUpon>
     </Compile>

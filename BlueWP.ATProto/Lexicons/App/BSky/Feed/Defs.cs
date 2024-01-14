@@ -24,18 +24,39 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 
       public bool IsRepost => false;
       public bool IsReply => false;
-      public bool HasQuotedPost => false;
-      public bool HasEmbedExternal => false;
+      public bool HasQuotedPost => QuotedPost != null;
+      public bool HasEmbedExternal => PostEmbedExternal != null;
 
       public string PostAuthorAvatarURL => author?.avatar;
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
       public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);
       public string PostText => (record as Post)?.text ?? "[ERROR]";
+      public string PostDateTime => indexedAt.ToString("MMM d, yyyy") + " at " + indexedAt.ToString("HH:mm");
 
       public uint ReplyCount => replyCount ?? 0;
       public uint RepostCount => repostCount ?? 0;
       public uint LikeCount => likeCount ?? 0;
+
+      public External.View PostEmbedExternal => embed as External.View;
+
+      public Record.ViewRecord QuotedPost
+      {
+        get
+        {
+          var recordView = embed as Record.View;
+          if (recordView != null)
+          {
+            return recordView.record as Record.ViewRecord;
+          }
+          var recordWithMediaView = embed as RecordWithMedia.View;
+          if (recordWithMediaView != null)
+          {
+            return recordWithMediaView.record.record as Record.ViewRecord;
+          }
+          return null;
+        }
+      }
 
       public IEnumerable<Images.ViewImage> PostImages
       {
@@ -73,18 +94,18 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public ReplyRef reply;
       public ReasonRepost reason;
 
-      public string PostAuthorAvatarURL => post?.author?.avatar;
+      public string PostAuthorAvatarURL => post?.PostAuthorAvatarURL;
       public string PostAuthorDisplayName => post?.PostAuthorDisplayName ?? "[ERROR]";
       public string PostAuthorHandle => post?.PostAuthorHandle ?? "[ERROR]";
-      public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);
-      public string PostDateTime => post.indexedAt.ToString("MMM d, yyyy") + " at " + post.indexedAt.ToString("HH:mm");
+      public string PostElapsedTime => post?.PostElapsedTime;
+      public string PostDateTime => post?.PostDateTime;
 
       public bool IsRepost => reason != null;
       public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
 
-      public uint ReplyCount => post?.replyCount ?? 0;
-      public uint RepostCount => post?.repostCount ?? 0;
-      public uint LikeCount => post?.likeCount ?? 0;
+      public uint ReplyCount => post?.ReplyCount ?? 0;
+      public uint RepostCount => post?.RepostCount ?? 0;
+      public uint LikeCount => post?.LikeCount ?? 0;
 
       public bool IsReply => (reply?.parent as PostView) != null;
       public string PostReplyTo
@@ -100,29 +121,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
         }
       }
 
-      public bool HasQuotedPost => (post?.embed as Record.View) != null || (post?.embed as RecordWithMedia.View) != null;
-      public Record.ViewRecord QuotedPost
-      {
-        get
-        {
-          var recordView = post?.embed as Record.View;
-          if (recordView != null)
-          {
-            return recordView.record as Record.ViewRecord;
-          }
-          var recordWithMediaView = post?.embed as RecordWithMedia.View;
-          if (recordWithMediaView != null)
-          {
-            return recordWithMediaView.record.record as Record.ViewRecord;
-          }
-          return null;
-        }
-      }
+      public bool HasQuotedPost => post?.HasQuotedPost ?? false;
+      public Record.ViewRecord QuotedPost => post?.QuotedPost;
       public string PostText => post.PostText;
       public IEnumerable<Images.ViewImage> PostImages => post.PostImages;
 
-      public bool HasEmbedExternal => (post?.embed as External.View) != null;
-      public External.View PostEmbedExternal => post?.embed as External.View;
+      public bool HasEmbedExternal => post?.HasEmbedExternal ?? false;
+      public External.View PostEmbedExternal => post?.PostEmbedExternal;
     }
 
     public class ReplyRef

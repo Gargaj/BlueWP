@@ -223,6 +223,14 @@ namespace BlueWP.Inlays
       OnPropertyChanged(nameof(ImageAttachments));
     }
 
+    private void RemoveReply_Click(object sender, RoutedEventArgs e)
+    {
+      RepliedPost = null;
+      IsReplying = false;
+      OnPropertyChanged(nameof(RepliedPost));
+      OnPropertyChanged(nameof(IsReplying));
+    }
+
     private async void EditAltText_Click(object sender, RoutedEventArgs e)
     {
       var b = sender as Button;

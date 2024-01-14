@@ -18,8 +18,6 @@
       <RowDefinition Height="35"/>
       <RowDefinition Height="Auto"/>
     </Grid.RowDefinitions>
-    <Grid.ColumnDefinitions>
-    </Grid.ColumnDefinitions>
 
     <!-- post text -->
     <TextBox Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PostText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="200" BorderThickness="1,1,1,1" AcceptsReturn="True" BorderBrush="{ThemeResource TextBoxBorderThemeBrush}"/>
@@ -73,7 +71,16 @@
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
         <StackPanel Orientation="Vertical">
-          <TextBlock Text="Replying to:" FontStyle="Italic" Margin="0,0,0,10"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Replying to:" FontStyle="Italic" Margin="0,0,0,10"/>
+            <Button Grid.Column="1" Click="RemoveReply_Click" Background="Transparent">
+              <FontIcon Glyph="&#xE711;" FontSize="12"/>
+            </Button>
+          </Grid>
           <bwpcp:PostQuoted PostData="{Binding RepliedPost}"/>
         </StackPanel>
       </Border>

@@ -135,6 +135,9 @@
     <Compile Include="Controls\Post\ImageGallery.xaml.cs">
       <DependentUpon>ImageGallery.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Post\PostSelected.xaml.cs">
+      <DependentUpon>PostSelected.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Post\PostBase.cs" />
     <Compile Include="Controls\Post\Post.xaml.cs">
       <DependentUpon>Post.xaml</DependentUpon>
@@ -150,6 +153,9 @@
     </Compile>
     <Compile Include="Inlays\NotificationsInlay.xaml.cs">
       <DependentUpon>NotificationsInlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Inlays\ThreadInlay.xaml.cs">
+      <DependentUpon>ThreadInlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Inlays\ProfileInlay.xaml.cs">
       <DependentUpon>ProfileInlay.xaml</DependentUpon>
@@ -198,6 +204,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\Post\PostSelected.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Post\Post.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -217,6 +227,10 @@
     <Page Include="Inlays\NotificationsInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inlays\ThreadInlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Inlays\ProfileInlay.xaml">
       <SubType>Designer</SubType>

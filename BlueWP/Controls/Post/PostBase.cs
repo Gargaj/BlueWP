@@ -13,6 +13,12 @@ namespace BlueWP.Controls.Post
     {
       _app = (App)Application.Current;
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
+      Loaded += PostBase_Loaded;
+    }
+
+    private void PostBase_Loaded(object sender, RoutedEventArgs e)
+    {
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
     public bool IsRepost

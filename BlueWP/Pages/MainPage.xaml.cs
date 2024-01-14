@@ -21,6 +21,7 @@ namespace BlueWP.Pages
     private List<Feed> _feeds = null;
     private List<object> _preferences;
     private string _profileActorDID;
+    private string _threadPostURI;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
 
     public MainPage()
@@ -123,6 +124,13 @@ namespace BlueWP.Pages
         profileInlay.ActorDID = _profileActorDID;
         await profileInlay.Refresh();
       }
+
+      var threadInlay = args.Item.ContentTemplateRoot as Inlays.ThreadInlay;
+      if (threadInlay != null)
+      {
+        threadInlay.PostURI = _threadPostURI;
+        await threadInlay.Refresh();
+      }
     }
 
     private void Main_PivotItemUnloading(Pivot sender, PivotItemEventArgs args)
@@ -131,6 +139,11 @@ namespace BlueWP.Pages
       if (profileInlay != null)
       {
         profileInlay.Flush();
+      }
+      var threadInlay = args.Item.ContentTemplateRoot as Inlays.ThreadInlay;
+      if (threadInlay != null)
+      {
+        threadInlay.Flush();
       }
     }
 
@@ -160,6 +173,12 @@ namespace BlueWP.Pages
     {
       _profileActorDID = actorDID;
       MainMenu.SelectedItem = ProfilePivotItem;
+    }
+
+    public void SwitchToThreadViewInlay(string postURI)
+    {
+      _threadPostURI = postURI;
+      MainMenu.SelectedItem = ThreadPivotItem;
     }
 
     public void Reply(Defs.PostView post)

@@ -124,7 +124,7 @@
 
       <!-- Custom inlay for viewing a profile -->
       <PivotItem x:Name="ProfilePivotItem">
-        <PivotItem.Header> <!-- TODO: hide this -->
+        <PivotItem.Header>
           <TextBlock Text="" Width="0" Margin="0"/>
         </PivotItem.Header>
         <PivotItem.Style>
@@ -133,7 +133,21 @@
             <Setter Property="Margin" Value="0"/>
           </Style>
         </PivotItem.Style>
-        <bwpi:ProfileInlay />
+        <bwpi:ThreadInlay />
+      </PivotItem>
+
+      <!-- Custom inlay for viewing a single post / thread -->
+      <PivotItem x:Name="ThreadPivotItem">
+        <PivotItem.Header>
+          <TextBlock Text="" Width="0" Margin="0"/>
+        </PivotItem.Header>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
+        <bwpi:ThreadInlay />
       </PivotItem>
     </Pivot>
 

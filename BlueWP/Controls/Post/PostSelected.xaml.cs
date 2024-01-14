@@ -1,8 +1,8 @@
 ﻿namespace BlueWP.Controls.Post
 {
-  public partial class Post : PostBase
+  public partial class PostSelected : PostBase
   {
-    public Post() : base()
+    public PostSelected() : base()
     {
       InitializeComponent();
       LayoutRoot.DataContext = this;
@@ -22,8 +22,19 @@
 
     private void Reply_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
     {
-      var postData = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
-      _mainPage.Reply(postData?.post);
+      var feedViewPost = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost;
+      if (feedViewPost != null)
+      {
+        _mainPage.Reply(feedViewPost?.post);
+        return;
+      }
+
+      var postView = PostData as ATProto.Lexicons.App.BSky.Feed.Defs.PostView;
+      if (postView != null)
+      {
+        _mainPage.Reply(postView);
+        return;
+      }
     }
   }
 }

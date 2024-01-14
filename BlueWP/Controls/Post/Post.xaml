@@ -78,7 +78,13 @@
           </StackPanel>
 
           <!-- post contents -->
-          <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
+          <Button Margin="0,0,0,0" Click="ViewThread_Click">
+            <Button.Template>
+              <ControlTemplate>
+                <TextBlock Text="{Binding PostData.PostText}" TextWrapping="WrapWholeWords"/>
+              </ControlTemplate>
+            </Button.Template>
+          </Button>
 
           <!-- image block -->
           <local:ImageGallery Images="{Binding PostData.PostImages}">

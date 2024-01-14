@@ -33,6 +33,10 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);
       public string PostText => (record as Post)?.text ?? "[ERROR]";
 
+      public uint ReplyCount => replyCount ?? 0;
+      public uint RepostCount => repostCount ?? 0;
+      public uint LikeCount => likeCount ?? 0;
+
       public IEnumerable<Images.ViewImage> PostImages
       {
         get
@@ -73,6 +77,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public string PostAuthorDisplayName => post?.PostAuthorDisplayName ?? "[ERROR]";
       public string PostAuthorHandle => post?.PostAuthorHandle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(post.indexedAt);
+      public string PostDateTime => post.indexedAt.ToString("MMM d, yyyy") + " at " + post.indexedAt.ToString("HH:mm");
 
       public bool IsRepost => reason != null;
       public string PostReason => reason == null ? string.Empty : $"Reposted by {reason?.by?.DisplayName}";
@@ -124,6 +129,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
     {
       public object root; // union
       public object parent; // union
+    }
+
+    public class ThreadViewPost
+    {
+      public PostView post;
+      public object parent;
+      public List<object> replies;
     }
 
     public class ReasonRepost

@@ -162,10 +162,16 @@
                 </MenuFlyout>
               </FlyoutBase.AttachedFlyout>
             </Button>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-              <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0"/>
-              <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12"/>
-            </StackPanel>
+            <Button Grid.Column="2" Margin="0,0,5,0" Click="Like_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xEB51;" FontSize="12" Margin="0,0,5,0"/>
+                    <TextBlock Text="{Binding PostData.LikeCount}" FontSize="12"/>
+                  </StackPanel>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
           </Grid>
 
           <!-- end -->

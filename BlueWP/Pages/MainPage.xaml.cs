@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using BlueWP.ATProto.Lexicons.App.BSky.Feed;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Pages
@@ -36,6 +37,7 @@ namespace BlueWP.Pages
     public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
     public int UnreadNotificationCount { get { return _unreadCount; } }
+    public Visibility UnreadCountVisibility { get { return _unreadCount > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     public List<Feed> Feeds { get { return _feeds; } }
 
     protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -84,6 +86,7 @@ namespace BlueWP.Pages
         {
           _unreadCount = (int)unreadCountResponse.count;
           OnPropertyChanged(nameof(UnreadNotificationCount));
+          OnPropertyChanged(nameof(UnreadCountVisibility));
         }
       }
       catch (WebException ex)

@@ -13,19 +13,23 @@ namespace BlueWP.Controls.Post
       LayoutRoot.DataContext = this;
     }
 
-    public IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> Images
+    public ImageGalleryProvider Gallery { get; set; }
+
+    public List<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> Images
     {
-      get { return GetValue(ImagesProperty) as IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage>; }
+      get { return GetValue(ImagesProperty) as List<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage>; }
       set { SetValue(ImagesProperty, value); }
     }
-    public static readonly DependencyProperty ImagesProperty = DependencyProperty.Register("Images", typeof(IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage>), typeof(ImageGallery), new PropertyMetadata(null, ImagesChanged));
+    public static readonly DependencyProperty ImagesProperty = DependencyProperty.Register("Images", typeof(List<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage>), typeof(ImageGallery), new PropertyMetadata(null, ImagesChanged));
 
     private static void ImagesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
       var imageGallery = d as ImageGallery;
       if (imageGallery != null)
       {
+        imageGallery.Gallery = new ImageGalleryProvider(imageGallery.Images);
         imageGallery.OnPropertyChanged(nameof(Images));
+        imageGallery.OnPropertyChanged(nameof(Gallery));
       }
     }
 
@@ -38,6 +42,20 @@ namespace BlueWP.Controls.Post
     protected virtual void OnPropertyChanged(string propertyName)
     {
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public class ImageGalleryProvider
+    {
+      private List<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> _images;
+      public ImageGalleryProvider(List<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> images)
+      {
+        _images = images;
+      }
+      public int ImageCount => _images?.Count ?? 0;
+      public string Image1ThumbURL => _images != null && _images.Count > 0 ? _images[0]?.ThumbURL : null;
+      public string Image2ThumbURL => _images != null && _images.Count > 1 ? _images[1]?.ThumbURL : null;
+      public string Image3ThumbURL => _images != null && _images.Count > 2 ? _images[2]?.ThumbURL : null;
+      public string Image4ThumbURL => _images != null && _images.Count > 3 ? _images[3]?.ThumbURL : null;
     }
   }
 }

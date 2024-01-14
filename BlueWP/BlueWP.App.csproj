@@ -125,6 +125,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ImageGalleryTemplateSelector.cs" />
     <Compile Include="Controls\NotificationDataTemplateSelector.cs" />
     <Compile Include="Controls\Post\EmbedExternal.xaml.cs">
       <DependentUpon>EmbedExternal.xaml</DependentUpon>

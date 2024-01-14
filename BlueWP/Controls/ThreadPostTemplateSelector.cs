@@ -15,5 +15,4 @@ namespace BlueWP.Controls
       return post?.uri == SelectedPostURI ? SelectedPost : NormalPost;
     }
   }
-
 }

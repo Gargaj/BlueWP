@@ -3,6 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:BlueWP.Controls.Post"
+    xmlns:bwc="using:BlueWP.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -10,23 +11,109 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+  <UserControl.Resources>
 
+    <DataTemplate x:Key="image0">
+    </DataTemplate>
+
+    <DataTemplate x:Key="image1">
+      <Image>
+        <Image.Source>
+          <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
+        </Image.Source>
+      </Image>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="image2">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.5*"/>
+          <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
+          </Image.Source>
+        </Image>
+      </Grid>
+    </DataTemplate>
+    
+    <DataTemplate x:Key="image3">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.5*"/>
+          <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="100"/>
+          <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image3ThumbURL}"/>
+          </Image.Source>
+        </Image>
+      </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="image4">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="0.5*"/>
+          <ColumnDefinition Width="0.5*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="100"/>
+          <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="1" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image3ThumbURL}"/>
+          </Image.Source>
+        </Image>
+        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+          <Image.Source>
+            <BitmapImage UriSource="{Binding Image4ThumbURL}"/>
+          </Image.Source>
+        </Image>
+      </Grid>
+    </DataTemplate>
+    
+    <bwc:ImageGalleryTemplateSelector x:Name="selector"
+      Image0="{StaticResource image0}"
+      Image1="{StaticResource image1}"
+      Image2="{StaticResource image2}"
+      Image3="{StaticResource image3}"
+      Image4="{StaticResource image4}"
+      />
+  </UserControl.Resources>
+  
   <Grid x:Name="LayoutRoot">
-    <ListView ItemsSource="{Binding Images}">
-      <ListView.ItemContainerStyle>
-        <Style TargetType="ListViewItem">
-          <Setter Property="Padding" Value="0"/>
-        </Style>
-      </ListView.ItemContainerStyle>
-      <ListView.ItemTemplate>
-        <DataTemplate>
-          <Image>
-            <Image.Source>
-              <BitmapImage UriSource="{Binding ThumbURL}"/>
-            </Image.Source>
-          </Image>
-        </DataTemplate>
-      </ListView.ItemTemplate>
-    </ListView>
+    <ContentControl ContentTemplateSelector="{StaticResource selector}" Content="{Binding Gallery}"/>
   </Grid>
 </UserControl>

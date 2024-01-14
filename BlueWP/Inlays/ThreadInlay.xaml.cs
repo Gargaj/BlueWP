@@ -61,6 +61,8 @@ namespace BlueWP.Inlays
       OnPropertyChanged(nameof(Posts));
 
       _mainPage?.EndLoading();
+
+      listView.ScrollIntoView(thread.post);
     }
 
     public void Flush()

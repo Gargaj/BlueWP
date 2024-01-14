@@ -28,7 +28,7 @@
 
   <Grid>
 
-    <ListView ItemsSource="{Binding Posts}" HorizontalContentAlignment="Stretch" ItemTemplateSelector="{StaticResource selector}">
+    <ListView x:Name="listView" ItemsSource="{Binding Posts}" HorizontalContentAlignment="Stretch" ItemTemplateSelector="{StaticResource selector}">
       <ListView.ItemContainerStyle>
         <Style TargetType="ListViewItem">
           <Setter Property="Margin" Value="0"/>

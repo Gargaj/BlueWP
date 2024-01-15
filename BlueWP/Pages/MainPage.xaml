@@ -133,7 +133,7 @@
             <Setter Property="Margin" Value="0"/>
           </Style>
         </PivotItem.Style>
-        <bwpi:ThreadInlay />
+        <bwpi:ProfileInlay />
       </PivotItem>
 
       <!-- Custom inlay for viewing a single post / thread -->

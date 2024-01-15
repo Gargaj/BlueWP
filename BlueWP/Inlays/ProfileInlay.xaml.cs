@@ -30,6 +30,11 @@ namespace BlueWP.Inlays
 
     public async Task Refresh()
     {
+      if (string.IsNullOrEmpty(ActorDID))
+      {
+        return;
+      }
+
       _mainPage?.StartLoading();
       var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetProfileResponse>(new ATProto.Lexicons.App.BSky.Actor.GetProfile()
       {

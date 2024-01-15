@@ -28,6 +28,11 @@ namespace BlueWP.Inlays
 
     public async Task Refresh()
     {
+      if (string.IsNullOrEmpty(PostURI))
+      {
+        return;
+      }
+
       var selector = Resources["selector"] as Controls.ThreadPostTemplateSelector;
       selector.SelectedPostURI = PostURI;
 
@@ -67,7 +72,7 @@ namespace BlueWP.Inlays
 
     public void Flush()
     {
-      Posts.Clear();
+      Posts?.Clear();
       OnPropertyChanged(nameof(Posts));
     }
 

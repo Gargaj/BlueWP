@@ -17,7 +17,6 @@ I'm not that far in understanding all of this just yet.
 If someone knows how to build a... thing? App package? Idk? Something I can upload, let me know.
 
 ## Todo
-- Viewing: Clickable facets
 - Posting: Autocomplete handles
 - Search
 - Context-menu stuff (copy URL etc)

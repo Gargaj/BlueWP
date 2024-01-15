@@ -169,10 +169,23 @@ namespace BlueWP.Pages
       ErrorText = error;
     }
 
-    public void SwitchToProfileInlay( string actorDID )
+    public async void SwitchToProfileInlay( string actorDID )
     {
       _profileActorDID = actorDID;
-      MainMenu.SelectedItem = ProfilePivotItem;
+      if (MainMenu.SelectedItem == ProfilePivotItem)
+      {
+        var profileInlay = ProfilePivotItem.ContentTemplateRoot as Inlays.ProfileInlay;
+        if (profileInlay != null)
+        {
+          profileInlay.Flush();
+          profileInlay.ActorDID = actorDID;
+          await profileInlay.Refresh();
+        }
+      }
+      else
+      {
+        MainMenu.SelectedItem = ProfilePivotItem;
+      }
     }
 
     public async void SwitchToThreadViewInlay(string postURI)
@@ -183,7 +196,8 @@ namespace BlueWP.Pages
         var threadInlay = ThreadPivotItem.ContentTemplateRoot as Inlays.ThreadInlay;
         if (threadInlay != null)
         {
-          threadInlay.PostURI = _threadPostURI;
+          threadInlay.Flush();
+          threadInlay.PostURI = postURI;
           await threadInlay.Refresh();
         }
       }

@@ -1,7 +1,4 @@
-﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Primitives;
-
-namespace BlueWP.Controls.Post
+﻿namespace BlueWP.Controls.Post
 {
   public partial class Post : PostBase
   {
@@ -9,6 +6,12 @@ namespace BlueWP.Controls.Post
     {
       InitializeComponent();
       LayoutRoot.DataContext = this;
+    }
+
+    protected override void UpdateText()
+    {
+      postText.Inlines.Clear();
+      GenerateInlines().ForEach(s => postText.Inlines.Add(s));
     }
   }
 }

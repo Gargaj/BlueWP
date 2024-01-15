@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Documents;
 
 namespace BlueWP.Controls.Post
 {
@@ -11,6 +13,7 @@ namespace BlueWP.Controls.Post
   {
     protected App _app;
     protected Pages.MainPage _mainPage;
+    protected Dictionary<Hyperlink, string> _atURIs = new Dictionary<Hyperlink, string>();
     public PostBase()
     {
       _app = (App)Application.Current;
@@ -102,7 +105,13 @@ namespace BlueWP.Controls.Post
 
         post.OnPropertyChanged(nameof(PostReason));
         post.OnPropertyChanged(nameof(PostReplyTo));
+
+        post.UpdateText();
       }
+    }
+
+    protected virtual void UpdateText()
+    {
     }
 
     protected void ViewProfile_Click(object sender, RoutedEventArgs e)
@@ -236,6 +245,78 @@ namespace BlueWP.Controls.Post
     protected void Quote_Click(object sender, RoutedEventArgs e)
     {
       _mainPage.Quote(PostView);
+    }
+
+    protected List<Inline> GenerateInlines()
+    {
+      _atURIs.Clear();
+      var result = new List<Inline>();
+      var text = PostText;
+      var facets = (PostView?.record as ATProto.Lexicons.App.BSky.Feed.Post)?.facets;
+      if (facets == null || facets.Count == 0)
+      {
+        result.Add(new Run() { Text = text ?? string.Empty });
+        return result;
+      }
+
+      var bytes = System.Text.Encoding.UTF8.GetBytes(text);
+      var indices = facets.Select(s => s.index).OrderBy(s=>s.byteStart);
+      var current = 0U;
+      foreach (var index in indices)
+      {
+        if (current < index.byteStart)
+        {
+          var textFragment = System.Text.Encoding.UTF8.GetString(bytes, (int)current, (int)(index.byteStart - current));
+          result.Add(new Run() { Text = textFragment });
+        }
+
+        var facet = facets.FirstOrDefault(s => s.index.byteStart == index.byteStart);
+        if (facet == null || facet.features == null || facet.features.Count == 0)
+        {
+          continue;
+        }
+
+        var linkText = System.Text.Encoding.UTF8.GetString(bytes, (int)index.byteStart, (int)(index.byteEnd - index.byteStart));
+        if (facet.features[0] as ATProto.Lexicons.App.BSky.RichText.Facet.Link != null)
+        {
+          var link = facet.features[0] as ATProto.Lexicons.App.BSky.RichText.Facet.Link;
+          var hyperlink = new Hyperlink();
+          hyperlink.NavigateUri = new Uri(link.uri);
+          hyperlink.Inlines.Add(new Run() { Text = linkText });
+          result.Add(hyperlink);
+        }
+        else if (facet.features[0] as ATProto.Lexicons.App.BSky.RichText.Facet.Mention != null)
+        {
+          var mention = facet.features[0] as ATProto.Lexicons.App.BSky.RichText.Facet.Mention;
+          var hyperlink = new Hyperlink();
+          _atURIs.Add(hyperlink, mention.did);
+          hyperlink.Inlines.Add(new Run() { Text = linkText });
+          hyperlink.Click += Hyperlink_Click;
+          result.Add(hyperlink);
+        }
+        else
+        {
+          result.Add(new Run() { Text = linkText });
+        }
+
+        current = index.byteEnd;
+      }
+      if (current < (uint)bytes.Length)
+      {
+        var textFragment = System.Text.Encoding.UTF8.GetString(bytes, (int)current, bytes.Length - (int)current);
+        result.Add(new Run() { Text = textFragment });
+      }
+
+      return result;
+    }
+
+    protected void Hyperlink_Click(Hyperlink sender, HyperlinkClickEventArgs args)
+    {
+      if (!_atURIs.ContainsKey(sender))
+      {
+        return;
+      }
+      _mainPage.SwitchToProfileInlay(_atURIs[sender]);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

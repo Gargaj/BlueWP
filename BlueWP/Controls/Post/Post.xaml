@@ -60,7 +60,13 @@
               </Button.Template>
             </Button>
             <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-            <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+            <Button Margin="0,0,0,0" Click="ViewThread_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                </ControlTemplate>
+              </Button.Template>
+            </Button>
           </StackPanel>
 
           <!-- reply to -->
@@ -78,13 +84,16 @@
           </StackPanel>
 
           <!-- post contents -->
+          <TextBlock x:Name="postText" TextWrapping="WrapWholeWords"/>
+          <!--
           <Button Margin="0,0,0,0" Click="ViewThread_Click">
             <Button.Template>
               <ControlTemplate>
-                <TextBlock Text="{Binding PostText}" TextWrapping="WrapWholeWords"/>
+                <TextBlock TextWrapping="WrapWholeWords"/>
               </ControlTemplate>
             </Button.Template>
           </Button>
+          -->
 
           <!-- image block -->
           <local:ImageGallery Images="{Binding PostImages}">

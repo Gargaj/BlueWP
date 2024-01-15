@@ -32,6 +32,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);
       public string PostText => (record as Post)?.text ?? "[ERROR]";
+      public string PostURI => uri;
       public string PostDateTime => indexedAt.ToString("MMM d, yyyy") + " at " + indexedAt.ToString("HH:mm");
 
       public uint ReplyCount => replyCount ?? 0;
@@ -130,6 +131,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool HasQuotedPost => post?.HasQuotedPost ?? false;
       public Record.ViewRecord QuotedPost => post?.QuotedPost;
       public string PostText => post.PostText;
+      public string PostURI => post.PostURI;
       public IEnumerable<Images.ViewImage> PostImages => post.PostImages;
 
       public bool HasEmbedExternal => post?.HasEmbedExternal ?? false;

@@ -21,7 +21,7 @@
       </ListView.ItemContainerStyle>
       <ListView.ItemTemplate>
         <DataTemplate>
-          <bwpcp:Post PostData="{Binding}"/>
+          <bwpcp:Post PostData="{Binding}" PointerReleased="Post_PointerReleased"/>
         </DataTemplate>
       </ListView.ItemTemplate>
     </ListView>

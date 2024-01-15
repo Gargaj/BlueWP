@@ -75,15 +75,15 @@
     </DataTemplate>
 
     <DataTemplate x:Key="templateMention">
-      <bwpcp:Post PostData="{Binding}"/>
+      <bwpcp:Post PostData="{Binding}" PointerReleased="Post_PointerReleased"/>
     </DataTemplate>
 
     <DataTemplate x:Key="templateReply">
-      <bwpcp:Post PostData="{Binding}"/>
+      <bwpcp:Post PostData="{Binding}" PointerReleased="Post_PointerReleased"/>
     </DataTemplate>
 
     <DataTemplate x:Key="templateQuote">
-      <bwpcp:Post PostData="{Binding}"/>
+      <bwpcp:Post PostData="{Binding}" PointerReleased="Post_PointerReleased"/>
     </DataTemplate>
 
     <bwc:NotificationDataTemplateSelector x:Key="selector"

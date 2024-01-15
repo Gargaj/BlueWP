@@ -17,7 +17,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="templateNormal">
-      <bwpcp:Post PostData="{Binding}"/>
+      <bwpcp:Post PostData="{Binding}" PointerReleased="Post_PointerReleased"/>
     </DataTemplate>
 
     <bwc:ThreadPostTemplateSelector x:Key="selector"

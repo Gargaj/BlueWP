@@ -17,6 +17,7 @@ namespace BlueWP.ATProto
     string PostAuthorHandle { get; }
     string PostElapsedTime { get; }
     string PostText { get; }
+    string PostURI { get; }
     IEnumerable<Lexicons.App.BSky.Embed.Images.ViewImage> PostImages { get; }
   }
 }

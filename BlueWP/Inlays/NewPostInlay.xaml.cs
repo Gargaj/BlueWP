@@ -19,14 +19,22 @@ namespace BlueWP.Inlays
   public partial class NewPostInlay : UserControl, INotifyPropertyChanged
   {
     private App _app;
+    private Pages.MainPage _mainPage;
     public string _postText;
     public NewPostInlay()
     {
       InitializeComponent();
       _app = (App)Application.Current;
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
       DataContext = this;
+      Loaded += NewPostInlay_Loaded;
 
       ImageAttachments = new ObservableCollection<ImageAttachment>();
+    }
+
+    private void NewPostInlay_Loaded(object sender, RoutedEventArgs e)
+    {
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
     public string PostText
@@ -218,6 +226,8 @@ namespace BlueWP.Inlays
 
           RemoveReply();
           RemoveQuote();
+
+          _mainPage.SwitchToThreadViewInlay(response.uri);
         }
       }
       catch (WebException ex)

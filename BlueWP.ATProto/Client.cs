@@ -353,6 +353,7 @@ namespace BlueWP.ATProto
               { "app.bsky.feed.defs#threadViewPost",       typeof(Lexicons.App.BSky.Feed.Defs.ThreadViewPost) },
               { "app.bsky.feed.like",                      typeof(Lexicons.App.BSky.Feed.Like) },
               { "app.bsky.feed.post",                      typeof(Lexicons.App.BSky.Feed.Post) },
+              { "app.bsky.feed.post#replyRef",             typeof(Lexicons.App.BSky.Feed.Post.ReplyRef) },
               { "app.bsky.feed.repost",                    typeof(Lexicons.App.BSky.Feed.Repost) },
               { "app.bsky.feed.threadgate",                typeof(Lexicons.App.BSky.Feed.Threadgate) },
               { "app.bsky.graph.follow",                   typeof(Lexicons.App.BSky.Graph.Follow) },

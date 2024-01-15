@@ -144,11 +144,13 @@
     <Compile Include="Lexicons\App\BSky\Feed\Repost.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Like.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
+    <Compile Include="Lexicons\App\BSky\Feed\SearchPosts.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Threadgate.cs" />
     <Compile Include="Lexicons\App\BSky\Graph\Follow.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />
+    <Compile Include="Lexicons\COM\ATProto\Identity\ResolveHandle.cs" />
     <Compile Include="Lexicons\COM\ATProto\Label\Defs.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\DeleteRecord.cs" />
     <Compile Include="Lexicons\COM\ATProto\Repo\CreateRecord.cs" />
@@ -171,6 +173,7 @@
   <ItemGroup>
     <Compile Include="Lexicons\App\BSky\Feed\GetAuthorFeed.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

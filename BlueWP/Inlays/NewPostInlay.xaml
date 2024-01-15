@@ -20,7 +20,7 @@
     </Grid.RowDefinitions>
 
     <!-- post text -->
-    <TextBox Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PostText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="200" BorderThickness="1,1,1,1" AcceptsReturn="True" BorderBrush="{ThemeResource TextBoxBorderThemeBrush}"/>
+    <TextBox Grid.Row="0" Grid.ColumnSpan="2" Text="{Binding PostText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="200" BorderThickness="1,1,1,1" AcceptsReturn="True" BorderBrush="{ThemeResource TextBoxBorderThemeBrush}" TextWrapping="Wrap"/>
 
     <!-- buttons -->
     <Button Grid.Row="1" Grid.Column="0" Click="Attach_Click">

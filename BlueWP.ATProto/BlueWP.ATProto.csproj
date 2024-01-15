@@ -127,6 +127,8 @@
     <Compile Include="IPost.cs" />
     <Compile Include="ILexicon.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Actor\SearchActorsTypeahead.cs" />
+    <Compile Include="Lexicons\App\BSky\Actor\SearchActors.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetPreferences.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetProfile.cs" />
     <Compile Include="Lexicons\App\BSky\Embed\External.cs" />

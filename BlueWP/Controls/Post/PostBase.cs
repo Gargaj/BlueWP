@@ -28,11 +28,11 @@ namespace BlueWP.Controls.Post
     public bool HasQuotedPost => PostData?.HasQuotedPost ?? false;
     public bool HasEmbedExternal => PostData?.HasEmbedExternal ?? false;
 
-    public string PostAuthorAvatarURL => PostView?.PostAuthorAvatarURL;
-    public string PostAuthorDisplayName => PostView?.PostAuthorDisplayName;
-    public string PostAuthorHandle => PostView?.PostAuthorHandle;
-    public string PostElapsedTime => PostView?.PostElapsedTime;
-    public string PostText => PostView?.PostText;
+    public string PostAuthorAvatarURL => PostData?.PostAuthorAvatarURL;
+    public string PostAuthorDisplayName => PostData?.PostAuthorDisplayName;
+    public string PostAuthorHandle => PostData?.PostAuthorHandle;
+    public string PostElapsedTime => PostData?.PostElapsedTime;
+    public string PostText => PostData?.PostText;
     public string PostDateTime => PostView?.PostDateTime;
 
     public uint ReplyCount => PostView?.ReplyCount ?? 0;

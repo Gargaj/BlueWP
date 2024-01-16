@@ -11,24 +11,27 @@ namespace BlueWP.ATProto
 {
   public class Client
   {
-    private const string _credentialsFilename = "credentials.dat";
-    private string _appPassword;
-    private Credentials _credentials;
-    private Newtonsoft.Json.JsonSerializerSettings _deserializerSettings;
-    public Client()
-    {
-      _deserializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
+    private Settings _settings = new Settings();
+    private Newtonsoft.Json.JsonSerializerSettings _deserializerSettings = new Newtonsoft.Json.JsonSerializerSettings()
       {
         MetadataPropertyHandling = Newtonsoft.Json.MetadataPropertyHandling.ReadAhead,
         NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
         SerializationBinder = new TypesBinder(),
         TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Objects,
       };
+    private string _hostOverride = null;
+
+    public Client()
+    {
     }
+
+    public Settings Settings => _settings;
+    public Settings.Credential CurrentCredential => Settings.CurrentCredential;
+    private string CurrentHost { get { return _hostOverride ?? CurrentCredential?.ServiceHost; } }
 
     public async Task<bool> Authenticate()
     {
-      return await ReadCredentials();
+      return await _settings.ReadCredentials();
     }
 
     public async Task<bool> AuthenticateWithPassword(string host, string handle, string appPassword)
@@ -40,31 +43,43 @@ namespace BlueWP.ATProto
         throw new ArgumentException();
       }
 
-      _credentials.serviceHost = host;
-      _credentials.handle = handle;
-      _appPassword = appPassword;
-
-      var body = new Lexicons.COM.ATProto.Server.CreateSession()
+      _hostOverride = host;
+      Lexicons.COM.ATProto.Server.CreateSessionResponse response = null;
+      try
       {
-        identifier = _credentials.handle,
-        password = _appPassword,
-      };
-      var response = await PostAsync<Lexicons.COM.ATProto.Server.CreateSessionResponse>(body);
-      if (response != null && !string.IsNullOrEmpty(response.accessJwt))
-      {
-        _credentials.did = response.did;
-        _credentials.handle = response.handle;
-        _credentials.accessToken = response.accessJwt;
-        _credentials.refreshToken = response.refreshJwt;
-        await WriteCredentials();
+        response = await PostAsync<Lexicons.COM.ATProto.Server.CreateSessionResponse>(new Lexicons.COM.ATProto.Server.CreateSession()
+        {
+          identifier = handle,
+          password = appPassword,
+        });
       }
+      catch (WebException)
+      {
+        return false;
+      }
+      if (response == null || string.IsNullOrEmpty(response.accessJwt))
+      {
+        return false;
+      }
+      _hostOverride = null;
 
-      return true;
+      var credentials = new Settings.Credential()
+      {
+        ServiceHost = host,
+        DID = response.did,
+        Handle = response.handle,
+        AccessToken = response.accessJwt,
+        RefreshToken = response.refreshJwt,
+      };
+
+      _settings.SelectedDID = credentials.DID;
+      _settings.Credentials.Add(credentials);
+      return await _settings.WriteCredentials();
     }
 
-    public bool IsAuthenticated { get { return _credentials.accessToken != null; } }
-    public string Handle { get { return _credentials.handle; } }
-    public string DID { get { return _credentials.did; } }
+    public bool IsAuthenticated { get { return CurrentCredential?.AccessToken != null; } }
+    public string Handle { get { return CurrentCredential?.Handle; } }
+    public string DID { get { return CurrentCredential?.DID; } }
 
     public async Task<T> GetAsync<T>(ILexicon input) where T : ILexicon
     {
@@ -78,7 +93,7 @@ namespace BlueWP.ATProto
 
     protected async Task<T> RequestAsync<T>(string method, ILexicon input) where T : ILexicon
     {
-      if (string.IsNullOrEmpty(_credentials.serviceHost))
+      if (string.IsNullOrEmpty(CurrentHost))
       {
         throw new ArgumentException();
       }
@@ -94,7 +109,7 @@ namespace BlueWP.ATProto
       }
       if (input as ICustomAuthorizationHeaderProvider != null)
       {
-        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_credentials);
+        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_settings.CurrentCredential);
         if (!string.IsNullOrEmpty(header))
         {
           headers["Authorization"] = header;
@@ -102,9 +117,9 @@ namespace BlueWP.ATProto
       }
       else
       {
-        headers["Authorization"] = $"Bearer {_credentials.accessToken}";
+        headers["Authorization"] = $"Bearer {CurrentCredential.AccessToken}";
       }
-      var url = $"https://{_credentials.serviceHost}/xrpc/{input.EndpointID}";
+      var url = $"https://{CurrentHost}/xrpc/{input.EndpointID}";
       string responseJson = null;
       string bodyJson = string.Empty;
       try
@@ -149,7 +164,7 @@ namespace BlueWP.ATProto
           {
             if (await RefreshCredentials())
             {
-              headers["Authorization"] = $"Bearer {_credentials.accessToken}";
+              headers["Authorization"] = $"Bearer {CurrentCredential.AccessToken}";
               switch (method)
               {
                 case "GET":
@@ -199,83 +214,14 @@ namespace BlueWP.ATProto
       var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSessionResponse>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
       {
-        _credentials.did = response.did;
-        _credentials.handle = response.handle;
-        _credentials.accessToken = response.accessJwt;
-        _credentials.refreshToken = response.refreshJwt;
-        await WriteCredentials();
+        CurrentCredential.DID = response.did;
+        CurrentCredential.Handle = response.handle;
+        CurrentCredential.AccessToken = response.accessJwt;
+        CurrentCredential.RefreshToken = response.refreshJwt;
+        await _settings.WriteCredentials();
       }
 
       return true;
-    }
-
-    private async Task<bool> ReadCredentials()
-    {
-      try
-      {
-        var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-        var provider = new Windows.Security.Cryptography.DataProtection.DataProtectionProvider();
-
-        var file = await localFolder.GetFileAsync(_credentialsFilename);
-        var buffProtected = await Windows.Storage.FileIO.ReadBufferAsync(file);
-
-        var buffUnprotected = await provider.UnprotectAsync(buffProtected);
-        var strClearText = Windows.Security.Cryptography.CryptographicBuffer.ConvertBinaryToString(Windows.Security.Cryptography.BinaryStringEncoding.Utf8, buffUnprotected);
-
-        _credentials = Newtonsoft.Json.JsonConvert.DeserializeObject<Credentials>(strClearText);
-
-        return IsAuthenticated;
-      }
-      catch (Exception)
-      {
-        return false;
-      }
-    }
-
-    private async Task<bool> WriteCredentials()
-    {
-      try
-      {
-        var str = Newtonsoft.Json.JsonConvert.SerializeObject(_credentials);
-
-        var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-        var provider = new Windows.Security.Cryptography.DataProtection.DataProtectionProvider("LOCAL=user");
-
-        var buffMsg = Windows.Security.Cryptography.CryptographicBuffer.ConvertStringToBinary(str, Windows.Security.Cryptography.BinaryStringEncoding.Utf8);
-        var buffProtected = await provider.ProtectAsync(buffMsg);
-
-        var file = await localFolder.CreateFileAsync(_credentialsFilename, Windows.Storage.CreationCollisionOption.ReplaceExisting);
-        await Windows.Storage.FileIO.WriteBufferAsync(file, buffProtected);
-
-        return true;
-      }
-      catch (Exception)
-      {
-        return false;
-      }
-    }
-
-    public async Task<bool> DeleteCredentials()
-    {
-      try
-      {
-        var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-
-        var file = await localFolder.GetFileAsync(_credentialsFilename);
-        await file.DeleteAsync();
-
-        _credentials.serviceHost = string.Empty;
-        _credentials.did = string.Empty;
-        _credentials.handle = string.Empty;
-        _credentials.accessToken = string.Empty;
-        _credentials.refreshToken = string.Empty;
-
-        return true;
-      }
-      catch (Exception)
-      {
-        return false;
-      }
     }
 
     private string SerializeInputToQueryString(ILexicon input)
@@ -310,16 +256,7 @@ namespace BlueWP.ATProto
       }
       return queryString;
     }
-
-    public struct Credentials
-    {
-      public string serviceHost;
-      public string did;
-      public string handle;
-      public string accessToken;
-      public string refreshToken;
-    }
-
+    
     private class TypesBinder : Newtonsoft.Json.Serialization.ISerializationBinder
     {
       private Dictionary<string, Type> _atprotoTypes;

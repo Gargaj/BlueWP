@@ -160,6 +160,7 @@
     <Compile Include="Lexicons\COM\ATProto\Server\CreateSession.cs" />
     <Compile Include="Lexicons\COM\ATProto\Server\RefreshSession.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Settings.cs" />
     <EmbeddedResource Include="Properties\BlueWP.ATProto.rd.xml" />
   </ItemGroup>
   <ItemGroup>

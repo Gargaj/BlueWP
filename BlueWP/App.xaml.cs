@@ -105,7 +105,7 @@ namespace BlueWP
         return;
       }
 
-      await _client.DeleteCredentials();
+      //await _client.DeleteCredentials();
       _rootFrame.Navigate(typeof(Pages.LoginPage));
     }
 

@@ -18,6 +18,6 @@ namespace BlueWP.ATProto
 
   public interface ICustomAuthorizationHeaderProvider
   {
-    string GetAuthorizationHeader(Client.Credentials credentials);
+    string GetAuthorizationHeader(Settings.Credential credentials);
   }
 }

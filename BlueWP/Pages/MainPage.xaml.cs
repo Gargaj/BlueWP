@@ -37,7 +37,7 @@ namespace BlueWP.Pages
 
     public bool HasError { get { return _hasError; } set { _hasError = value; OnPropertyChanged(nameof(HasError)); } }
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
-    public int UnreadNotificationCount { get { return _unreadCount; } }
+    public int UnreadNotificationCount { get { return _unreadCount; } set { _unreadCount = value; OnPropertyChanged(nameof(UnreadNotificationCount)); OnPropertyChanged(nameof(UnreadCountVisibility)); } }
     public Visibility UnreadCountVisibility { get { return _unreadCount > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     public List<Feed> Feeds { get { return _feeds; } }
 
@@ -86,8 +86,6 @@ namespace BlueWP.Pages
         if (unreadCountResponse != null)
         {
           _unreadCount = (int)unreadCountResponse.count;
-          OnPropertyChanged(nameof(UnreadNotificationCount));
-          OnPropertyChanged(nameof(UnreadCountVisibility));
         }
       }
       catch (WebException ex)

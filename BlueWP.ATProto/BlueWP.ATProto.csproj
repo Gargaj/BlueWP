@@ -147,6 +147,7 @@
     <Compile Include="Lexicons\App\BSky\Feed\SearchPosts.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Threadgate.cs" />
     <Compile Include="Lexicons\App\BSky\Graph\Follow.cs" />
+    <Compile Include="Lexicons\App\BSky\Notification\UpdateSeen.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />

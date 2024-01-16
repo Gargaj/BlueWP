@@ -47,6 +47,16 @@ namespace BlueWP.Inlays
       _mainPage?.EndLoading();
 
       OnPropertyChanged(nameof(Notifications));
+
+      if (_mainPage.UnreadNotificationCount > 0)
+      {
+        // Reset notification counter
+        await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
+        {
+          seenAt = System.DateTime.Now
+        });
+        _mainPage.UnreadNotificationCount = 0;
+      }
     }
 
     public List<ATProto.Lexicons.App.BSky.Notification.Notification> Notifications { get; set; }

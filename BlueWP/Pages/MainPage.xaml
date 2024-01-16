@@ -169,7 +169,7 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Canvas.ZIndex="10">
-        <Border Width="300" Height="100" Background="Red" CornerRadius="10,10,10,10">
+        <Border Width="300" Height="200" Background="Red" CornerRadius="10" Padding="10">
           <i:Interaction.Behaviors>
             <c:DataTriggerBehavior Binding="{Binding HasError}" Value="True">
               <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />

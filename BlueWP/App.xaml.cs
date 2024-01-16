@@ -98,7 +98,7 @@ namespace BlueWP
       return false;
     }
 
-    public async void Logout()
+    public void Logout()
     {
       if (_rootFrame == null)
       {

@@ -85,7 +85,7 @@ namespace BlueWP.Pages
         var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
         if (unreadCountResponse != null)
         {
-          _unreadCount = (int)unreadCountResponse.count;
+          UnreadNotificationCount = (int)unreadCountResponse.count;
         }
       }
       catch (WebException ex)

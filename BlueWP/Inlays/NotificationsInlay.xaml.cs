@@ -51,7 +51,7 @@ namespace BlueWP.Inlays
       if (_mainPage.UnreadNotificationCount > 0)
       {
         // Reset notification counter
-        await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
+        await _app.Client.PostAsync<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
         {
           seenAt = System.DateTime.Now
         });

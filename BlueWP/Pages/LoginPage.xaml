@@ -12,14 +12,14 @@
     <StackPanel Orientation="Vertical" Width="300" Height="270">
       <TextBlock FontWeight="Bold" FontSize="32" Margin="0,0,0,20" HorizontalAlignment="Center">BlueWP</TextBlock>
       <TextBlock>Service host</TextBlock>
-      <TextBox Text="{Binding ServiceHost, Mode=TwoWay}"/>
+      <TextBox Text="{Binding ServiceHost, Mode=TwoWay}" InputScope="Url"/>
       <TextBlock>Username or email address</TextBlock>
-      <TextBox Text="{Binding Handle, Mode=TwoWay}"/>
+      <TextBox Text="{Binding Handle, Mode=TwoWay}" InputScope="Url"/>
       <StackPanel Orientation="Horizontal">
         <TextBlock>App password</TextBlock>
         <HyperlinkButton Content="Generate" NavigateUri="https://bsky.app/settings/app-passwords" Padding="0" Margin="10,0,0,0"></HyperlinkButton>
       </StackPanel>
-      <TextBox Text="{Binding AppPassword, Mode=TwoWay}"/>
+      <TextBox Text="{Binding AppPassword, Mode=TwoWay}" IsTextPredictionEnabled="False"/>
       <Button Click="Login_Click" Margin="0,20,0,0">Log in</Button>
     </StackPanel>
   </Grid>

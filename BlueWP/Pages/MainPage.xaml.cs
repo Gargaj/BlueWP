@@ -23,12 +23,16 @@ namespace BlueWP.Pages
     private string _profileActorDID;
     private string _threadPostURI;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
+    private DispatcherTimer _notificationsTimer = new DispatcherTimer();
 
     public MainPage()
     {
       InitializeComponent();
-      _app = (App)Windows.UI.Xaml.Application.Current;
+      _app = (App)Application.Current;
       DataContext = this;
+
+      _notificationsTimer.Tick += RefreshNotifications_Timer;
+      _notificationsTimer.Interval = TimeSpan.FromSeconds(60);
     }
 
     public void StartLoading() { _isLoading++; OnPropertyChanged(nameof(IsLoading)); }
@@ -44,6 +48,9 @@ namespace BlueWP.Pages
     protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
     {
       StartLoading();
+
+      _notificationsTimer.Start();
+      RefreshNotifications_Timer(null, null); // Start() doesn't trigger immediately
 
       try
       {
@@ -82,11 +89,6 @@ namespace BlueWP.Pages
             }
           }
         }
-        var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
-        if (unreadCountResponse != null)
-        {
-          UnreadNotificationCount = (int)unreadCountResponse.count;
-        }
       }
       catch (WebException ex)
       {
@@ -106,6 +108,20 @@ namespace BlueWP.Pages
       }
 
       EndLoading();
+    }
+
+    protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+    {
+      _notificationsTimer.Stop();
+    }
+
+    private async void RefreshNotifications_Timer(object sender, object o)
+    {
+      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+      if (unreadCountResponse != null)
+      {
+        UnreadNotificationCount = (int)unreadCountResponse.count;
+      }
     }
 
     private async void Main_PivotItemLoading(Pivot sender, PivotItemEventArgs args)

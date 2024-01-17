@@ -17,42 +17,42 @@
           <ColumnDefinition Width="32"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <FontIcon Grid.Column="0" Glyph="{Binding Icon}" VerticalAlignment="Top"/>
-        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="5,0,0,0">
-          <ListView ItemsSource="{Binding Avatars}">
-            <ListView.ItemContainerStyle>
-              <Style TargetType="ListViewItem">
-                <Setter Property="Margin" Value="0,0,5,0"/>
-                <Setter Property="Padding" Value="0"/>
-                <Setter Property="MinHeight" Value="0"/>
-                <Setter Property="MinWidth" Value="0"/>
-              </Style>
-            </ListView.ItemContainerStyle>
-            <ListView.ItemsPanel>
-              <ItemsPanelTemplate>
-                <StackPanel Orientation="Horizontal"></StackPanel>
-              </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-              <DataTemplate>
-                <Image Width="20" Height="20" VerticalAlignment="Top">
-                  <Image.Source>
-                    <BitmapImage UriSource="{Binding}"/>
-                  </Image.Source>
-                </Image>
-              </DataTemplate>
-            </ListView.ItemTemplate>
-          </ListView>
-          <StackPanel Orientation="Horizontal">
-            <TextBlock>
-              <Run Text="{Binding FirstName}" FontWeight="Bold"/>
-              <Run Text="{Binding AdditionalNames}"/>
-              <Run Text="{Binding Verb}"/>
-            </TextBlock>
-            <TextBlock Opacity="0.5" Margin="5,0,5,0">·</TextBlock>
-            <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
-          </StackPanel>
-        </StackPanel>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="32"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <FontIcon Grid.Column="0" Grid.RowSpan="2" Glyph="{Binding Icon}" VerticalAlignment="Top"/>
+        <ListView Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Avatars}">
+          <ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+              <Setter Property="Margin" Value="0,0,5,0"/>
+              <Setter Property="Padding" Value="0"/>
+              <Setter Property="MinHeight" Value="0"/>
+              <Setter Property="MinWidth" Value="0"/>
+            </Style>
+          </ListView.ItemContainerStyle>
+          <ListView.ItemsPanel>
+            <ItemsPanelTemplate>
+              <StackPanel Orientation="Horizontal"></StackPanel>
+            </ItemsPanelTemplate>
+          </ListView.ItemsPanel>
+          <ListView.ItemTemplate>
+            <DataTemplate>
+              <Image Width="20" Height="20" VerticalAlignment="Top">
+                <Image.Source>
+                  <BitmapImage UriSource="{Binding}"/>
+                </Image.Source>
+              </Image>
+            </DataTemplate>
+          </ListView.ItemTemplate>
+        </ListView>
+        <TextBlock TextWrapping="WrapWholeWords" Grid.Column="1" Grid.Row="1">
+          <Run Text="{Binding FirstName}" FontWeight="Bold"/>
+          <Run Text="{Binding AdditionalNames}"/>
+          <Run Text="{Binding Verb}"/>
+          <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="·"/>
+          <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="{Binding PostElapsedTime}"/>
+        </TextBlock>
       </Grid>
     </DataTemplate>
 

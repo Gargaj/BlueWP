@@ -46,11 +46,11 @@
               </ControlTemplate>
             </Button.Template>
           </Button>
-          <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+          <TextBlock Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="0,0,5,0">·</TextBlock>
+          <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
         </StackPanel>
 
-        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
 
       </Grid>
 
@@ -94,7 +94,7 @@
           <local:PostQuoted PostData="{Binding QuotedPost}"/>
         </Border>
 
-        <TextBlock Grid.Row="2" Text="{Binding PostDateTime}" TextWrapping="WrapWholeWords" Margin="0,10,0,10" Opacity="0.5"/>
+        <TextBlock Grid.Row="2" Text="{Binding PostDateTime}" TextWrapping="WrapWholeWords" Margin="0,10,0,10" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
 
         <!-- engagement counters 1: text -->
         <Border BorderThickness="0,1,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
@@ -107,7 +107,7 @@
         </Border>
         
         <!-- engagement counters 2: icons -->
-        <Grid Opacity="0.5" Margin="0,10,0,0">
+        <Grid Margin="0,10,0,0">
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition Width="0.3*"/>
@@ -117,8 +117,8 @@
             <Button.Template>
               <ControlTemplate>
                 <StackPanel Orientation="Horizontal">
-                  <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
-                  <TextBlock Text="{Binding ReplyCount}" FontSize="12"/>
+                  <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+                  <TextBlock Text="{Binding ReplyCount}" FontSize="12" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
                 </StackPanel>
               </ControlTemplate>
             </Button.Template>
@@ -133,7 +133,7 @@
                         <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
                       </c:DataTriggerBehavior>
                       <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
-                        <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                        <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                   </FontIcon>
@@ -143,7 +143,7 @@
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                   </TextBlock>
@@ -176,7 +176,7 @@
                         <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB52;" />
                       </c:DataTriggerBehavior>
                       <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
-                        <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                        <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB51;" />
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
@@ -187,7 +187,7 @@
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                   </TextBlock>

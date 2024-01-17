@@ -37,7 +37,7 @@
     </Grid>
     <StackPanel Grid.Row="1" Orientation="Vertical" Margin="15,5,0,0">
       <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" FontSize="24"/>
-      <TextBlock Text="{Binding Handle}" Opacity="0.5"/>
+      <TextBlock Text="{Binding Handle}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
     </StackPanel>
     <Pivot Grid.Row="2" FontSize="12">
       <Pivot.HeaderTemplate>

@@ -22,9 +22,9 @@
           </Image.Source>
         </Image>
         <TextBlock Text="{Binding PostData.PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
-        <TextBlock Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5" Margin="0,0,5,0"/>
-        <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
-        <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+        <TextBlock Text="{Binding PostData.PostAuthorHandle}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="0,0,5,0"/>
+        <TextBlock Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="0,0,5,0">·</TextBlock>
+        <TextBlock Text="{Binding PostData.PostElapsedTime}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
       </StackPanel>
 
       <!-- post contents -->

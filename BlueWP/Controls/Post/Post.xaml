@@ -28,8 +28,8 @@
             <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
-        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE895;" Opacity="0.5" Margin="18,0,5,0"/>
-        <TextBlock Grid.Row="0" Text="{Binding PostReason}" Opacity="0.5" FontWeight="Bold"/>
+        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE895;" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="18,0,5,0"/>
+        <TextBlock Grid.Row="0" Text="{Binding PostReason}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" FontWeight="Bold"/>
       </StackPanel>
 
       <Grid Grid.Row="1">
@@ -54,16 +54,16 @@
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
                     <TextBlock Text="{Binding PostAuthorDisplayName}" TextWrapping="WrapWholeWords" FontWeight="Bold" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                    <TextBlock Text="{Binding PostAuthorHandle}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>
             </Button>
-            <TextBlock Opacity="0.5" Margin="0,0,5,0">·</TextBlock>
+            <TextBlock Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="0,0,5,0">·</TextBlock>
             <Button Margin="0,0,0,0" Click="ViewThread_Click">
               <Button.Template>
                 <ControlTemplate>
-                  <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+                  <TextBlock Text="{Binding PostElapsedTime}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
                 </ControlTemplate>
               </Button.Template>
             </Button>
@@ -79,8 +79,8 @@
                 <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
               </c:DataTriggerBehavior>
             </i:Interaction.Behaviors>
-            <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE97A;" Opacity="0.5" Margin="0,0,5,0"/>
-            <TextBlock Text="{Binding PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Opacity="0.5"/>
+            <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE97A;" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="0,0,5,0"/>
+            <TextBlock Text="{Binding PostReplyTo}" TextWrapping="WrapWholeWords" FontWeight="Bold" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
           </StackPanel>
 
           <!-- post contents -->
@@ -131,7 +131,7 @@
           </Border>
 
           <!-- engagement counters -->
-          <Grid Opacity="0.5" Margin="0,10,0,0">
+          <Grid Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="0.3*"/>
               <ColumnDefinition Width="0.3*"/>
@@ -141,8 +141,8 @@
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0"/>
-                    <TextBlock Text="{Binding ReplyCount}" FontSize="12"/>
+                    <FontIcon Glyph="&#xE8F2;" FontSize="12" Margin="0,0,5,0" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+                    <TextBlock Text="{Binding ReplyCount}" FontSize="12" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
                   </StackPanel>
                 </ControlTemplate>
               </Button.Template>
@@ -157,7 +157,7 @@
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </FontIcon>
@@ -167,7 +167,7 @@
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </TextBlock>
@@ -208,7 +208,7 @@
                           <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB52;" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                           <c:ChangePropertyAction PropertyName="Glyph" Value="&#xEB51;" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
@@ -219,7 +219,7 @@
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#EC4899" />
                         </c:DataTriggerBehavior>
                         <c:DataTriggerBehavior Binding="{Binding PostLiked}" Value="False">
-                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource AppBarItemForegroundThemeBrush}" />
+                          <c:ChangePropertyAction PropertyName="Foreground" Value="{ThemeResource TextBoxDisabledForegroundThemeBrush}" />
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </TextBlock>

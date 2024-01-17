@@ -31,7 +31,7 @@
               </Image.Source>
             </Image>
             <StackPanel Orientation="Vertical" Padding="5">
-              <TextBlock Text="{Binding External.Hostname}" TextWrapping="WrapWholeWords" Opacity="0.5"/>
+              <TextBlock Text="{Binding External.Hostname}" TextWrapping="WrapWholeWords" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
               <TextBlock Text="{Binding External.Title}" TextWrapping="WrapWholeWords" MaxHeight="20" FontWeight="Bold"/>
               <TextBlock Text="{Binding External.Description}" TextWrapping="WrapWholeWords" MaxHeight="60"/>
             </StackPanel>

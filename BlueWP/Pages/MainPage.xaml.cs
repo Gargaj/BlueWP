@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using BlueWP.ATProto.Lexicons.App.BSky.Feed;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -241,7 +240,7 @@ namespace BlueWP.Pages
       }
     }
 
-    public void Reply(Defs.PostView post)
+    public void Reply(ATProto.Lexicons.App.BSky.Feed.Defs.PostView post)
     {
       var postInlay = PostInlay as Inlays.NewPostInlay;
       if (postInlay != null)
@@ -259,7 +258,7 @@ namespace BlueWP.Pages
       MainMenu.SelectedItem = PostPivotItem;
     }
 
-    public void Quote(Defs.PostView post)
+    public void Quote(ATProto.Lexicons.App.BSky.Feed.Defs.PostView post)
     {
       var postInlay = PostInlay as Inlays.NewPostInlay;
       if (postInlay != null)

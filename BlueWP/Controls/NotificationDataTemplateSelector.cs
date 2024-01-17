@@ -14,8 +14,8 @@ namespace BlueWP.Controls
 
     protected override DataTemplate SelectTemplateCore(object item)
     {
-      var notification = item as ATProto.Lexicons.App.BSky.Notification.Notification;
-      switch (notification.reason)
+      var notification = item as Inlays.NotificationsInlay.NotificationGroup;
+      switch (notification.Type)
       {
         case "like": return Like;
         case "repost": return Repost;

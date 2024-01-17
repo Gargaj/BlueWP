@@ -36,7 +36,17 @@ namespace BlueWP.Inlays
         {
           limit = 60
         });
-        Notifications = response?.notifications;
+        NotificationGroups = response?.notifications.GroupBy(
+          s => {
+            if (s.reason == "like" || s.reason == "repost" || s.reason == "follow")
+            {
+              return $"{s.reason}|{s.reasonSubject}"; // only group these three types
+            }
+            return $"{s.reason}|{s.cid}";
+          },
+          s => s,
+          (k, v) => new NotificationGroup(k, v)
+        ).ToList();
       }
       catch (WebException ex)
       {
@@ -46,7 +56,7 @@ namespace BlueWP.Inlays
 
       _mainPage?.EndLoading();
 
-      OnPropertyChanged(nameof(Notifications));
+      OnPropertyChanged(nameof(NotificationGroups));
 
       if (_mainPage.UnreadNotificationCount > 0)
       {
@@ -59,7 +69,16 @@ namespace BlueWP.Inlays
       }
     }
 
-    public List<ATProto.Lexicons.App.BSky.Notification.Notification> Notifications { get; set; }
+    public List<NotificationGroup> NotificationGroups { get; set; }
+
+    private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+    {
+      var post = sender as Controls.Post.PostBase;
+      if (post != null)
+      {
+        _mainPage.SwitchToThreadViewInlay(post.PostData.PostURI);
+      }
+    }
 
     public event PropertyChangedEventHandler PropertyChanged;
 
@@ -72,13 +91,52 @@ namespace BlueWP.Inlays
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+    public class NotificationGroup
     {
-      var post = sender as Controls.Post.PostBase;
-      if (post != null)
+      public NotificationGroup(string type, IEnumerable<ATProto.Lexicons.App.BSky.Notification.Notification> notifications)
       {
-        _mainPage.SwitchToThreadViewInlay(post.PostData.PostURI);
+        var s = type.Split('|');
+        Type = s[0];
+        UID = s[1];
+        Notifications = notifications;
       }
+      public string Type { get; set; }
+      public string UID { get; set; }
+      public IEnumerable<ATProto.Lexicons.App.BSky.Notification.Notification> Notifications { get; set; }
+      public IEnumerable<string> Avatars { get { return Notifications.Select(s => s.PostAuthorAvatarURL); } }
+      public string Verb
+      {
+        get
+        {
+          switch (Type)
+          {
+            case "like": return "liked your post";
+            case "repost": return "reposted your post";
+            case "follow": return "followed you";
+            case "mention": return "mentioned you";
+            case "reply": return "replied to your post";
+            case "quote": return "quoted your post";
+            default: return null;
+          }
+        }
+      }
+      public string Icon
+      {
+        get
+        {
+          switch (Type)
+          {
+            case "like": return "\xEB51";
+            case "repost": return "\xE895";
+            case "follow": return "\xE8FA";
+            default: return null;
+          }
+        }
+      }
+      public string FirstName { get { return Notifications.First().PostAuthorDisplayName; } }
+      public string PostElapsedTime { get { return Notifications.First().PostElapsedTime; } }
+      public string AdditionalNames { get { return Notifications.Count() > 1 ? $"and {Notifications.Count() - 1} others" : string.Empty; } }
+      public object FirstPost { get { return Notifications.First(); } }
     }
   }
 }

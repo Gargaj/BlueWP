@@ -49,9 +49,6 @@ namespace BlueWP.Pages
     {
       StartLoading();
 
-      _notificationsTimer.Start();
-      RefreshNotifications_Timer(null, null); // Start() doesn't trigger immediately
-
       try
       {
         var preferences = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
@@ -104,10 +101,13 @@ namespace BlueWP.Pages
       }
       catch (Exception ex)
       {
-        TriggerError($"ERROR\n{ex.InnerException.Message ?? ex?.Message}");
+        TriggerError($"ERROR\n{ex?.InnerException?.Message ?? ex?.Message}");
       }
 
       EndLoading();
+
+      _notificationsTimer.Start();
+      await RefreshNotificationCounter(); // Start() doesn't trigger immediately
     }
 
     protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -117,10 +117,30 @@ namespace BlueWP.Pages
 
     private async void RefreshNotifications_Timer(object sender, object o)
     {
-      var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
-      if (unreadCountResponse != null)
+      await RefreshNotificationCounter();
+    }
+
+    private async Task RefreshNotificationCounter()
+    {
+      try
       {
-        UnreadNotificationCount = (int)unreadCountResponse.count;
+        var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+        if (unreadCountResponse != null)
+        {
+          UnreadNotificationCount = (int)unreadCountResponse.count;
+        }
+      }
+      catch (WebException ex)
+      {
+        var webResponse = ex.Response as HttpWebResponse;
+        if (webResponse != null)
+        {
+          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        }
+        else
+        {
+          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
+        }
       }
     }
 

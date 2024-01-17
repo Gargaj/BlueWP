@@ -14,14 +14,14 @@
     <DataTemplate x:Key="templateLikeRepostFollow">
       <Grid BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
         <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="32"/>
+          <ColumnDefinition Width="Auto"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="32"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <FontIcon Grid.Column="0" Grid.RowSpan="2" Glyph="{Binding Icon}" VerticalAlignment="Top"/>
+        <FontIcon Grid.Column="0" Grid.RowSpan="2" Glyph="{Binding Icon}" VerticalAlignment="Top" HorizontalAlignment="Center" Width="32" Margin="0,5,5,0"/>
         <ListView Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Avatars}">
           <ListView.ItemContainerStyle>
             <Style TargetType="ListViewItem">

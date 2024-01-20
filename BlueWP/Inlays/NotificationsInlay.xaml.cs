@@ -127,7 +127,7 @@ namespace BlueWP.Inlays
           switch (Type)
           {
             case "like": return "\xEB51";
-            case "repost": return "\xE895";
+            case "repost": return "\xE8EB";
             case "follow": return "\xE8FA";
             default: return null;
           }

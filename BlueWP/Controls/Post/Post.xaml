@@ -28,7 +28,7 @@
             <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
-        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE895;" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="18,0,5,0"/>
+        <FontIcon FontSize="12" FontWeight="Bold" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE8EB;" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Margin="18,0,5,0"/>
         <TextBlock Grid.Row="0" Text="{Binding PostReason}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" FontWeight="Bold"/>
       </StackPanel>
 
@@ -151,7 +151,7 @@
               <Button.Template>
                 <ControlTemplate>
                   <StackPanel Orientation="Horizontal">
-                    <FontIcon Glyph="&#xE895;" FontSize="12" Margin="0,0,5,0">
+                    <FontIcon Glyph="&#xE8EB;" FontSize="12" Margin="0,0,5,0">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />
@@ -186,7 +186,7 @@
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                     <MenuFlyoutItem.Icon>
-                      <FontIcon Glyph="&#xE895;" />
+                      <FontIcon Glyph="&#xE8EB;" />
                     </MenuFlyoutItem.Icon>
                   </MenuFlyoutItem>
                   <MenuFlyoutItem Text="Quote post" Click="Quote_Click">

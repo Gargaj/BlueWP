@@ -12,7 +12,7 @@
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="130"/>
-      <RowDefinition Height="60"/>
+      <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
     </Grid.RowDefinitions>
     <Grid>
@@ -38,6 +38,19 @@
     <StackPanel Grid.Row="1" Orientation="Vertical" Margin="15,5,0,0">
       <TextBlock Text="{Binding DisplayName}" FontWeight="Bold" FontSize="24"/>
       <TextBlock Text="{Binding Handle}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+      <ScrollViewer MaxHeight="55" VerticalScrollBarVisibility="Visible">
+        <TextBlock Text="{Binding Description}" Margin="0,5,0,5" TextWrapping="WrapWholeWords"/>
+      </ScrollViewer>
+      <StackPanel Orientation="Horizontal">
+        <TextBlock>
+          <Run Text="{Binding FollowerCount}" FontWeight="Bold"/>
+          <Run Text="followers" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+        </TextBlock>
+        <TextBlock Margin="10,0,0,0">
+          <Run Text="{Binding FollowCount}" FontWeight="Bold"/>
+          <Run Text="following" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+        </TextBlock>
+      </StackPanel>
     </StackPanel>
     <Pivot Grid.Row="2" FontSize="12">
       <Pivot.HeaderTemplate>

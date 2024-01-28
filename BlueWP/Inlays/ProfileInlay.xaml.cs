@@ -22,6 +22,9 @@ namespace BlueWP.Inlays
     public string AvatarURL { get; set; }
     public string DisplayName { get; set; }
     public string Handle { get; set; }
+    public string Description { get; set; }
+    public uint FollowerCount { get; set; }
+    public uint FollowCount { get; set; }
 
     private void ProfileInlay_Loaded(object sender, RoutedEventArgs e)
     {
@@ -46,10 +49,16 @@ namespace BlueWP.Inlays
         AvatarURL = response.avatar;
         DisplayName = response.displayName;
         Handle = $"@{response.handle}";
+        Description = response.description;
+        FollowerCount = response.followersCount;
+        FollowCount = response.followsCount;
         OnPropertyChanged(nameof(CoverImageURL));
         OnPropertyChanged(nameof(AvatarURL));
         OnPropertyChanged(nameof(DisplayName));
         OnPropertyChanged(nameof(Handle));
+        OnPropertyChanged(nameof(Description));
+        OnPropertyChanged(nameof(FollowerCount));
+        OnPropertyChanged(nameof(FollowCount));
       }
       
       if (feed != null)
@@ -66,10 +75,16 @@ namespace BlueWP.Inlays
       AvatarURL = null;
       DisplayName = string.Empty;
       Handle = string.Empty;
+      Description = string.Empty;
+      FollowerCount = 0;
+      FollowCount = 0;
       OnPropertyChanged(nameof(CoverImageURL));
       OnPropertyChanged(nameof(AvatarURL));
       OnPropertyChanged(nameof(DisplayName));
       OnPropertyChanged(nameof(Handle));
+      OnPropertyChanged(nameof(Description));
+      OnPropertyChanged(nameof(FollowerCount));
+      OnPropertyChanged(nameof(FollowCount));
 
       feed.Flush();
     }

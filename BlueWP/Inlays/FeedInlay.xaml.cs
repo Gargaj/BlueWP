@@ -74,7 +74,7 @@ namespace BlueWP.Inlays
 
     public void Flush()
     {
-      FeedItems.Clear();
+      FeedItems?.Clear();
       OnPropertyChanged(nameof(FeedItems));
     }
 

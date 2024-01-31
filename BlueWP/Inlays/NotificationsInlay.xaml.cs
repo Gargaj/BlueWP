@@ -56,7 +56,7 @@ namespace BlueWP.Inlays
         {
           uris = subjectUris.ToList()
         });
-        responsePosts?.posts.ForEach(s => PostCache.Add(s.uri, s));
+        responsePosts?.posts.ForEach(s => { if (!PostCache.ContainsKey(s.uri)) { PostCache.Add(s.uri, s); } });
       }
       catch (WebException ex)
       {

@@ -204,6 +204,10 @@ namespace BlueWP.Pages
 
     public async void SwitchToProfileInlay( string actorDID )
     {
+      if (string.IsNullOrEmpty(actorDID))
+      {
+        return;
+      }
       _profileActorDID = actorDID;
       if (MainMenu.SelectedItem == ProfilePivotItem)
       {
@@ -223,6 +227,10 @@ namespace BlueWP.Pages
 
     public async void SwitchToThreadViewInlay(string postURI)
     {
+      if (string.IsNullOrEmpty(postURI))
+      {
+        return;
+      }
       _threadPostURI = postURI;
       if (MainMenu.SelectedItem == ThreadPivotItem)
       {

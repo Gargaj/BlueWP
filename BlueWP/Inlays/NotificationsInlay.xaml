@@ -19,6 +19,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
           <RowDefinition Height="32"/>
+          <RowDefinition Height="Auto"/>
           <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <FontIcon Grid.Column="0" Grid.RowSpan="2" Glyph="{Binding Icon}" VerticalAlignment="Top" HorizontalAlignment="Center" Width="32" Margin="0,5,5,0"/>
@@ -53,6 +54,7 @@
           <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="·"/>
           <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="{Binding PostElapsedTime}"/>
         </TextBlock>
+        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding SubjectPostText}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" TextWrapping="WrapWholeWords"/>
       </Grid>
     </DataTemplate>
 

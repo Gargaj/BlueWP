@@ -26,6 +26,9 @@ namespace BlueWP.Inlays
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
+    public List<NotificationGroup> NotificationGroups { get; set; }
+    public Dictionary<string,ATProto.Lexicons.App.BSky.Feed.Defs.PostView> PostCache { get; set; } = new Dictionary<string,ATProto.Lexicons.App.BSky.Feed.Defs.PostView>();
+
     public async Task Refresh()
     {
       _mainPage?.StartLoading();
@@ -45,8 +48,15 @@ namespace BlueWP.Inlays
             return $"{s.reason}|{s.cid}";
           },
           s => s,
-          (k, v) => new NotificationGroup(k, v)
+          (k, v) => new NotificationGroup(this, k, v)
         ).ToList();
+
+        var subjectUris = response?.notifications.Select(s => s.reasonSubject).Where(s => !string.IsNullOrEmpty(s)).Distinct().Take(25);
+        var responsePosts = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetPostsResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
+        {
+          uris = subjectUris.ToList()
+        });
+        responsePosts?.posts.ForEach(s => PostCache.Add(s.uri, s));
       }
       catch (WebException ex)
       {
@@ -68,8 +78,6 @@ namespace BlueWP.Inlays
         _mainPage.UnreadNotificationCount = 0;
       }
     }
-
-    public List<NotificationGroup> NotificationGroups { get; set; }
 
     private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
@@ -93,8 +101,10 @@ namespace BlueWP.Inlays
 
     public class NotificationGroup
     {
-      public NotificationGroup(string type, IEnumerable<ATProto.Lexicons.App.BSky.Notification.Notification> notifications)
+      NotificationsInlay _parent;
+      public NotificationGroup(NotificationsInlay parent, string type, IEnumerable<ATProto.Lexicons.App.BSky.Notification.Notification> notifications)
       {
+        _parent = parent;
         var s = type.Split('|');
         Type = s[0];
         UID = s[1];
@@ -133,10 +143,11 @@ namespace BlueWP.Inlays
           }
         }
       }
-      public string FirstName { get { return Notifications.First().PostAuthorDisplayName; } }
-      public string PostElapsedTime { get { return Notifications.First().PostElapsedTime; } }
-      public string AdditionalNames { get { return Notifications.Count() > 1 ? $"and {Notifications.Count() - 1} others" : string.Empty; } }
-      public object FirstPost { get { return Notifications.First(); } }
+      public string FirstName => Notifications.First().PostAuthorDisplayName;
+      public string PostElapsedTime => Notifications.First().PostElapsedTime;
+      public string AdditionalNames => Notifications.Count() > 1 ? $"and {Notifications.Count() - 1} others" : string.Empty;
+      public string SubjectPostText => FirstPost.reasonSubject != null && _parent.PostCache.ContainsKey(FirstPost.reasonSubject) ? _parent?.PostCache[FirstPost.reasonSubject]?.PostText : null;
+      public ATProto.Lexicons.App.BSky.Notification.Notification FirstPost => Notifications.First();
     }
   }
 }

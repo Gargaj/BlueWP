@@ -88,6 +88,16 @@ namespace BlueWP.Inlays
       }
     }
 
+    private void LikedPost_Click(object sender, RoutedEventArgs e)
+    {
+      var button = sender as Button;
+      var post = button.DataContext as NotificationGroup;
+      if (post?.FirstPost != null)
+      {
+        _mainPage.SwitchToThreadViewInlay(post?.FirstPost.reasonSubject);
+      }
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>

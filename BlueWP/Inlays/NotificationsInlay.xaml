@@ -54,7 +54,13 @@
           <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="·"/>
           <Run Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" Text="{Binding PostElapsedTime}"/>
         </TextBlock>
-        <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding SubjectPostText}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" TextWrapping="WrapWholeWords"/>
+        <Button Grid.Column="1" Grid.Row="2" Click="LikedPost_Click">
+          <Button.Template>
+            <ControlTemplate>
+              <TextBlock Text="{Binding SubjectPostText}" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}" TextWrapping="WrapWholeWords"/>
+            </ControlTemplate>
+          </Button.Template>
+        </Button>
       </Grid>
     </DataTemplate>
 

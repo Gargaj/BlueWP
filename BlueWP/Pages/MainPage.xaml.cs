@@ -299,7 +299,7 @@ namespace BlueWP.Pages
 
     private void CloseZoomedImage_Click(object sender, RoutedEventArgs e)
     {
-      ZoomedImageURL = string.Empty;
+      ZoomedImageURL = null;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

@@ -7,9 +7,13 @@ namespace BlueWP.Controls.Post
 {
   public partial class ImageGallery : UserControl, INotifyPropertyChanged
   {
+    protected App _app;
+    protected Pages.MainPage _mainPage;
     public ImageGallery()
     {
       InitializeComponent();
+      _app = (App)Application.Current;
+      _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
       LayoutRoot.DataContext = this;
     }
 
@@ -31,6 +35,15 @@ namespace BlueWP.Controls.Post
         imageGallery.OnPropertyChanged(nameof(Images));
         imageGallery.OnPropertyChanged(nameof(Gallery));
       }
+    }
+
+    private void Image_Tapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
+    {
+      e.Handled = true;
+
+      var image = sender as Image;
+      var source = image?.Source as Windows.UI.Xaml.Media.Imaging.BitmapImage;
+      _mainPage.ZoomedImageURL = source?.UriSource?.AbsoluteUri;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

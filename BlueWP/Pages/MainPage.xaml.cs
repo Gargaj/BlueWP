@@ -23,6 +23,7 @@ namespace BlueWP.Pages
     private string _threadPostURI;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
     private DispatcherTimer _notificationsTimer = new DispatcherTimer();
+    private string _zoomedImageURL;
 
     public MainPage()
     {
@@ -43,6 +44,18 @@ namespace BlueWP.Pages
     public int UnreadNotificationCount { get { return _unreadCount; } set { _unreadCount = value; OnPropertyChanged(nameof(UnreadNotificationCount)); OnPropertyChanged(nameof(UnreadCountVisibility)); } }
     public Visibility UnreadCountVisibility { get { return _unreadCount > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     public List<Feed> Feeds { get { return _feeds; } }
+
+    public string ZoomedImageURL
+    {
+      get => _zoomedImageURL;
+      set
+      {
+        _zoomedImageURL = value;
+        OnPropertyChanged(nameof(ZoomedImageURL));
+        OnPropertyChanged(nameof(IsZoomedImageValid));
+      }
+    }
+    public bool IsZoomedImageValid => !string.IsNullOrEmpty(ZoomedImageURL);
 
     protected async override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
     {
@@ -202,7 +215,7 @@ namespace BlueWP.Pages
       ErrorText = error;
     }
 
-    public async void SwitchToProfileInlay( string actorDID )
+    public async void SwitchToProfileInlay(string actorDID)
     {
       if (string.IsNullOrEmpty(actorDID))
       {
@@ -282,6 +295,11 @@ namespace BlueWP.Pages
         postInlay.OnPropertyChanged(nameof(postInlay.QuotedPost));
       }
       MainMenu.SelectedItem = PostPivotItem;
+    }
+
+    private void CloseZoomedImage_Click(object sender, RoutedEventArgs e)
+    {
+      ZoomedImageURL = string.Empty;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

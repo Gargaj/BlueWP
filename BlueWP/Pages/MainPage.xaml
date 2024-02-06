@@ -156,6 +156,41 @@
 
       <!-- progress spinner -->
       <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
+            Height="{Binding ActualHeight, ElementName=RootCanvas}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Canvas.ZIndex="5">
+        <Border Background="#7F000000">
+          <i:Interaction.Behaviors>
+            <c:DataTriggerBehavior Binding="{Binding IsZoomedImageValid}" Value="True">
+              <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+            </c:DataTriggerBehavior>
+            <c:DataTriggerBehavior Binding="{Binding IsZoomedImageValid}" Value="False">
+              <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+            </c:DataTriggerBehavior>
+          </i:Interaction.Behaviors>
+          <Canvas>
+            <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
+                  Height="{Binding ActualHeight, ElementName=RootCanvas}"
+                  HorizontalAlignment="Center"
+                  VerticalAlignment="Center">
+              <ScrollViewer ZoomMode="Enabled">
+                <Image>
+                  <Image.Source>
+                    <BitmapImage UriSource="{Binding ZoomedImageURL}"/>
+                  </Image.Source>
+                </Image>
+              </ScrollViewer>
+            </Grid>
+            <Button Click="CloseZoomedImage_Click" Margin="5" Padding="5,3" Background="Black" Foreground="White">
+              <FontIcon Glyph="&#xE711;" FontSize="20"/>
+            </Button>
+          </Canvas>
+        </Border>
+      </Grid>
+
+      <!-- progress spinner -->
+      <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
                 Height="{Binding ActualHeight, ElementName=RootCanvas}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"

@@ -17,7 +17,7 @@
     </DataTemplate>
 
     <DataTemplate x:Key="image1">
-      <Image>
+      <Image Tapped="Image_Tapped">
         <Image.Source>
           <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
         </Image.Source>
@@ -30,12 +30,12 @@
           <ColumnDefinition Width="0.5*"/>
           <ColumnDefinition Width="0.5*"/>
         </Grid.ColumnDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
           </Image.Source>
@@ -53,17 +53,17 @@
           <RowDefinition Height="100"/>
           <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image3ThumbURL}"/>
           </Image.Source>
@@ -81,22 +81,22 @@
           <RowDefinition Height="100"/>
           <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image1ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="0" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image2ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="1" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="1" Grid.Column="0" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image3ThumbURL}"/>
           </Image.Source>
         </Image>
-        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5">
+        <Image Grid.Row="1" Grid.Column="1" Stretch="UniformToFill" Margin="0,0,5,5" Tapped="Image_Tapped">
           <Image.Source>
             <BitmapImage UriSource="{Binding Image4ThumbURL}"/>
           </Image.Source>

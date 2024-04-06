@@ -57,10 +57,13 @@ namespace BlueWP.Inlays
       }
 
       // replies
-      foreach (var reply in thread.replies)
+      if (thread.replies != null)
       {
-        var replyPost = reply as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
-        Posts.Add(replyPost?.post);
+        foreach (var reply in thread.replies)
+        {
+          var replyPost = reply as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+          Posts.Add(replyPost?.post);
+        }
       }
 
       OnPropertyChanged(nameof(Posts));

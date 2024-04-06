@@ -107,6 +107,11 @@ namespace BlueWP.Inlays
       }
     }
 
+    private async void Refresh_Click(object sender, RoutedEventArgs e)
+    {
+      await Refresh();
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>

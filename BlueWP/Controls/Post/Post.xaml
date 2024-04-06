@@ -13,6 +13,15 @@
 
   <Grid x:Name="LayoutRoot">
     <Grid HorizontalAlignment="Stretch" BorderThickness="0,0,0,1" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+      <i:Interaction.Behaviors>
+        <c:DataTriggerBehavior Binding="{Binding IsDeleted}" Value="True">
+          <c:ChangePropertyAction PropertyName="Opacity" Value="0.3" />
+        </c:DataTriggerBehavior>
+        <c:DataTriggerBehavior Binding="{Binding IsDeleted}" Value="False">
+          <c:ChangePropertyAction PropertyName="Opacity" Value="1.0" />
+        </c:DataTriggerBehavior>
+      </i:Interaction.Behaviors>
+      
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto"/>
         <RowDefinition Height="*"/>
@@ -133,10 +142,13 @@
           <!-- engagement counters -->
           <Grid Margin="0,10,0,0">
             <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="0.3*"/>
-              <ColumnDefinition Width="0.3*"/>
-              <ColumnDefinition Width="0.3*"/>
+              <ColumnDefinition Width="0.25*"/>
+              <ColumnDefinition Width="0.25*"/>
+              <ColumnDefinition Width="0.25*"/>
+              <ColumnDefinition Width="0.25*"/>
             </Grid.ColumnDefinitions>
+            
+            <!-- replies -->
             <Button Grid.Column="0" Margin="0,0,5,0" Click="Reply_Click">
               <Button.Template>
                 <ControlTemplate>
@@ -147,6 +159,8 @@
                 </ControlTemplate>
               </Button.Template>
             </Button>
+
+            <!-- reposts -->
             <Button Grid.Column="1" Margin="0,0,5,0" Click="RepostMenu_Click">
               <Button.Template>
                 <ControlTemplate>
@@ -197,6 +211,8 @@
                 </MenuFlyout>
               </FlyoutBase.AttachedFlyout>
             </Button>
+
+            <!-- likes -->
             <Button Grid.Column="2" Margin="0,0,5,0" Click="Like_Click">
               <Button.Template>
                 <ControlTemplate>
@@ -227,6 +243,40 @@
                 </ControlTemplate>
               </Button.Template>
             </Button>
+
+            <!-- misc -->
+            <Button Grid.Column="3" Margin="0,0,5,0" Click="MiscMenu_Click">
+              <Button.Template>
+                <ControlTemplate>
+                  <StackPanel Orientation="Horizontal">
+                    <FontIcon Glyph="&#xE712;" FontSize="12" Margin="0,0,5,0" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+                  </StackPanel>
+                </ControlTemplate>
+              </Button.Template>
+              <FlyoutBase.AttachedFlyout>
+                <MenuFlyout>
+                  <MenuFlyoutItem Text="Copy link to post" Click="MiscCopy_Click">
+                    <MenuFlyoutItem.Icon>
+                      <FontIcon Glyph="&#xE8C8;" />
+                    </MenuFlyoutItem.Icon>
+                  </MenuFlyoutItem>
+                  <MenuFlyoutItem Text="Delete post" Click="MiscDelete_Click">
+                    <i:Interaction.Behaviors>
+                      <c:DataTriggerBehavior Binding="{Binding PostMine}" Value="True">
+                        <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                      </c:DataTriggerBehavior>
+                      <c:DataTriggerBehavior Binding="{Binding PostMine}" Value="False">
+                        <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                      </c:DataTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    <MenuFlyoutItem.Icon>
+                      <FontIcon Glyph="&#xE74D;" />
+                    </MenuFlyoutItem.Icon>
+                  </MenuFlyoutItem>
+                </MenuFlyout>
+              </FlyoutBase.AttachedFlyout>
+            </Button>
+
           </Grid>
 
           <!-- end -->

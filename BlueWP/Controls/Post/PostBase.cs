@@ -27,6 +27,7 @@ namespace BlueWP.Controls.Post
     }
 
     public bool IsRepost => FeedViewPost?.IsRepost ?? false;
+    public bool IsDeleted { get; set; } = false;
     public bool IsReply => FeedViewPost?.IsReply ?? false;
     public bool HasQuotedPost => PostData?.HasQuotedPost ?? false;
     public bool HasEmbedExternal => PostData?.HasEmbedExternal ?? false;
@@ -44,6 +45,7 @@ namespace BlueWP.Controls.Post
 
     public bool PostReposted => PostView?.PostReposted ?? false;
     public bool PostLiked => PostView?.PostLiked ?? false;
+    public bool PostMine => PostView.author.did == _app.Client.DID;
 
     public IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> PostImages => PostView?.PostImages;
     public ATProto.Lexicons.App.BSky.Embed.External.View PostEmbedExternal => PostView?.PostEmbedExternal;
@@ -130,6 +132,15 @@ namespace BlueWP.Controls.Post
     }
 
     protected void RepostMenu_Click(object sender, RoutedEventArgs e)
+    {
+      var element = sender as FrameworkElement;
+      if (element != null)
+      {
+        FlyoutBase.ShowAttachedFlyout(element);
+      }
+    }
+
+    protected void MiscMenu_Click(object sender, RoutedEventArgs e)
     {
       var element = sender as FrameworkElement;
       if (element != null)
@@ -233,6 +244,38 @@ namespace BlueWP.Controls.Post
     protected void Quote_Click(object sender, RoutedEventArgs e)
     {
       _mainPage.Quote(PostView);
+    }
+
+    protected void MiscCopy_Click(object sender, RoutedEventArgs e)
+    {
+      string repo = string.Empty;
+      string collection = string.Empty;
+      string rkey = string.Empty;
+      if (ATProto.Helpers.ParseATURI(PostView.uri, ref repo, ref collection, ref rkey))
+      {
+        var dataPackage = new Windows.ApplicationModel.DataTransfer.DataPackage();
+        dataPackage.RequestedOperation = Windows.ApplicationModel.DataTransfer.DataPackageOperation.Copy;
+        dataPackage.SetText($"https://bsky.app/profile/{PostView?.author?.handle}/post/{rkey}");
+        Windows.ApplicationModel.DataTransfer.Clipboard.SetContent(dataPackage);
+      }
+    }
+
+    protected async void MiscDelete_Click(object sender, RoutedEventArgs e)
+    {
+      string repo = string.Empty;
+      string collection = string.Empty;
+      string rkey = string.Empty;
+      if (ATProto.Helpers.ParseATURI(PostView.uri, ref repo, ref collection, ref rkey))
+      {
+        var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
+        {
+          repo = repo,
+          collection = collection,
+          rkey = rkey
+        });
+        IsDeleted = true;
+        OnPropertyChanged(nameof(IsDeleted));
+      }
     }
 
     protected List<Inline> GenerateInlines()

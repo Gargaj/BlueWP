@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Navigation;
 
 namespace BlueWP.Pages
 {
@@ -7,8 +8,9 @@ namespace BlueWP.Pages
   {
     private App _app;
     private string _serviceHost = "bsky.social";
-    private string _handle = "";
-    private string _appPassword = "";
+    private string _handle = string.Empty;
+    private string _appPassword = string.Empty;
+    private string _params = string.Empty;
 
     public LoginPage()
     {
@@ -31,12 +33,18 @@ namespace BlueWP.Pages
     {
       if (await _app.Client.AuthenticateWithPassword(_serviceHost, _handle, _appPassword))
       {
-        _app.NavigateToMainScreen();
+        _app.NavigateToMainScreen(_params);
       }
       else
       {
         // TODO: handle error
       }
+    }
+
+    protected override void OnNavigatedTo(NavigationEventArgs e)
+    {
+      _params = e.Parameter as string;
+      base.OnNavigatedTo(e);
     }
 
     /// <summary>

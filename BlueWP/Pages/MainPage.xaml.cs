@@ -120,6 +120,11 @@ namespace BlueWP.Pages
 
       _notificationsTimer.Start();
       await RefreshNotificationCounter(); // Start() doesn't trigger immediately
+
+      if (e.Parameter != null && e.Parameter is string)
+      {
+        await SwitchToThreadViewInlayFromHTTPURL(e.Parameter as string);
+      }
     }
 
     protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
@@ -238,26 +243,35 @@ namespace BlueWP.Pages
       }
     }
 
-    public async void SwitchToThreadViewInlay(string postURI)
+    public async Task SwitchToThreadViewInlay(string postAtURI)
     {
-      if (string.IsNullOrEmpty(postURI))
+      if (string.IsNullOrEmpty(postAtURI))
       {
         return;
       }
-      _threadPostURI = postURI;
+      _threadPostURI = postAtURI;
       if (MainMenu.SelectedItem == ThreadPivotItem)
       {
         var threadInlay = ThreadPivotItem.ContentTemplateRoot as Inlays.ThreadInlay;
         if (threadInlay != null)
         {
           threadInlay.Flush();
-          threadInlay.PostURI = postURI;
+          threadInlay.PostURI = postAtURI;
           await threadInlay.Refresh();
         }
       }
       else
       {
         MainMenu.SelectedItem = ThreadPivotItem;
+      }
+    }
+
+    public async Task SwitchToThreadViewInlayFromHTTPURL(string postHttpURI)
+    {
+      string atUri = await ATProto.Helpers.HTTPToATURI(_app.Client, postHttpURI);
+      if (atUri != null)
+      {
+        await SwitchToThreadViewInlay(atUri);
       }
     }
 

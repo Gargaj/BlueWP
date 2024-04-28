@@ -70,7 +70,7 @@ namespace BlueWP
           }
           else
           {
-            NavigateToMainScreen();
+            NavigateToMainScreen(e.Arguments);
           }
         }
         // Ensure the current window is active
@@ -78,14 +78,14 @@ namespace BlueWP
       }
     }
 
-    public void NavigateToMainScreen()
+    public void NavigateToMainScreen(string arguments)
     {
       if (_rootFrame == null)
       {
         return;
       }
 
-      _rootFrame.Navigate(typeof(Pages.MainPage));
+      _rootFrame.Navigate(typeof(Pages.MainPage), arguments);
     }
 
     public bool TryGoBack()

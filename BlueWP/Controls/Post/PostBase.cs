@@ -121,9 +121,9 @@ namespace BlueWP.Controls.Post
       _mainPage.SwitchToProfileInlay(PostView?.author?.did);
     }
 
-    protected void ViewThread_Click(object sender, RoutedEventArgs e)
+    protected async void ViewThread_Click(object sender, RoutedEventArgs e)
     {
-      _mainPage.SwitchToThreadViewInlay(PostView?.uri);
+      await _mainPage.SwitchToThreadViewInlay(PostView?.uri);
     }
 
     protected void Reply_Click(object sender, RoutedEventArgs e)

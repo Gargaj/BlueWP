@@ -90,12 +90,12 @@ namespace BlueWP.Inlays
       PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+    private async void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
       var post = sender as Controls.Post.PostBase;
       if (post != null)
       {
-        _mainPage.SwitchToThreadViewInlay(post.PostView.uri);
+        await _mainPage.SwitchToThreadViewInlay(post.PostView.uri);
       }
     }
   }

@@ -3,6 +3,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
     <UseEmulator>true</UseEmulator>
+    <StartArguments>https://bsky.app/profile/stefanheck.bsky.social/post/3kr77dkudyc2w</StartArguments>
+    <CommandLineArguments>https://bsky.app/profile/stefanheck.bsky.social/post/3kr77dkudyc2w</CommandLineArguments>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
     <DeviceId>30F105C9-681E-420b-A277-7C086EAD8A4E</DeviceId>
@@ -24,6 +26,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <StartArguments>https://bsky.app/profile/stefanheck.bsky.social/post/3kr77dkudyc2w</StartArguments>
-    <CommandLineArguments>https://bsky.app/profile/stefanheck.bsky.social/post/3kr77dkudyc2w</CommandLineArguments>
+    <CommandLineArguments>
+    </CommandLineArguments>
   </PropertyGroup>
 </Project>

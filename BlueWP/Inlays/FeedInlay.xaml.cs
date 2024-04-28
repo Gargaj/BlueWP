@@ -94,7 +94,7 @@ namespace BlueWP.Inlays
 
     public ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get; set; }
 
-    private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+    private async void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
       if (e.OriginalSource as Image != null)
       {
@@ -103,7 +103,7 @@ namespace BlueWP.Inlays
       var post = sender as Controls.Post.PostBase;
       if (post != null)
       {
-        _mainPage.SwitchToThreadViewInlay(post.PostView.uri);
+        await _mainPage.SwitchToThreadViewInlay(post.PostView.uri);
       }
     }
 

@@ -79,22 +79,22 @@ namespace BlueWP.Inlays
       }
     }
 
-    private void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+    private async void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
     {
       var post = sender as Controls.Post.PostBase;
       if (post != null)
       {
-        _mainPage.SwitchToThreadViewInlay(post.PostData.PostURI);
+        await _mainPage.SwitchToThreadViewInlay(post.PostData.PostURI);
       }
     }
 
-    private void LikedPost_Click(object sender, RoutedEventArgs e)
+    private async void LikedPost_Click(object sender, RoutedEventArgs e)
     {
       var button = sender as Button;
       var post = button.DataContext as NotificationGroup;
       if (post?.FirstPost != null)
       {
-        _mainPage.SwitchToThreadViewInlay(post?.FirstPost.reasonSubject);
+        await _mainPage.SwitchToThreadViewInlay(post?.FirstPost.reasonSubject);
       }
     }
 

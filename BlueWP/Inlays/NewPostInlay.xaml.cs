@@ -230,7 +230,7 @@ namespace BlueWP.Inlays
           RemoveReply();
           RemoveQuote();
 
-          _mainPage.SwitchToThreadViewInlay(response.uri);
+          await _mainPage.SwitchToThreadViewInlay(response.uri);
         }
       }
       catch (WebException ex)

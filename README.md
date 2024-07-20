@@ -18,7 +18,5 @@ If someone knows how to build a... thing? App package? Idk? Something I can uplo
 
 ## Todo
 - Posting: Autocomplete handles
-- Posting: Language selection
 - Search
 - Context-menu stuff (copy URL etc)
-- Multiaccounting

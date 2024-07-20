@@ -137,7 +137,7 @@ namespace BlueWP.Pages
       await RefreshNotificationCounter();
     }
 
-    private async Task RefreshNotificationCounter()
+    public async Task RefreshNotificationCounter()
     {
       try
       {

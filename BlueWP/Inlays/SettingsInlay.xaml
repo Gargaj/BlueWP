@@ -6,11 +6,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:c="using:Microsoft.Xaml.Interactions.Core"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-  <Grid x:Name="LayoutRoot">
+  <Grid x:Name="SettingsLayoutRoot">
     <Grid.RowDefinitions>
       <RowDefinition Height="Auto"/>
       <RowDefinition Height="*"/>
@@ -18,14 +18,72 @@
 
     <Pivot Grid.Row="1">
       <Pivot.Items>
-        <PivotItem Header="Account">
-          <StackPanel Orientation="Vertical">
-            <!-- TODO: multiaccounts? -->
-            <TextBlock Text="Handle" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Handle}" Margin="0,0,0,10"  />
-            <TextBlock Text="DID" FontWeight="Bold"/>
-            <TextBlock Text="{Binding DID}" Margin="0,0,0,10" />
-            <Button Click="Logout_Click" Margin="0,30,0,0">Log out</Button>
+        <PivotItem Header="Accounts">
+          <StackPanel>
+            <ListView ItemsSource="{Binding Accounts}" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch">
+              <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                  <Setter Property="Padding" Value="0"/>
+                  <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+              </ListView.ItemContainerStyle>
+              <ListView.ItemTemplate>
+                <DataTemplate>
+                  <Button Click="SwitchAccount_Click" Background="Transparent">
+                    <Button.Template>
+                      <ControlTemplate>
+                        <Grid>
+                          <Border Background="{TemplateBinding Background}"
+                                  BorderBrush="{TemplateBinding BorderBrush}"
+                                  BorderThickness="{TemplateBinding BorderThickness}">
+                            <Grid>
+                              <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                              </Grid.ColumnDefinitions>
+                              <ContentPresenter HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Center"/>
+                              <Canvas Background="AliceBlue" Grid.Column="1" />
+                            </Grid>
+                          </Border>
+                        </Grid>
+                      </ControlTemplate>
+                    </Button.Template>
+                    <Grid>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="48"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="48"/>
+                      </Grid.ColumnDefinitions>
+                      <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
+                        <Image.Source>
+                          <BitmapImage UriSource="{Binding AccountAvatarURL}"/>
+                        </Image.Source>
+                      </Image>
+
+                      <StackPanel Grid.Column="1" Orientation="Vertical">
+                        <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Handle}" Opacity="0.5"/>
+                      </StackPanel>
+
+                      <Button Grid.Column="2" Click="RemoveAccount_Click">
+                        <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
+                        <i:Interaction.Behaviors>
+                          <c:DataTriggerBehavior Binding="{Binding IsSelected}" Value="True">
+                            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+                          </c:DataTriggerBehavior>
+                          <c:DataTriggerBehavior Binding="{Binding IsSelected}" Value="False">
+                            <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+                          </c:DataTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                      </Button>
+                    </Grid>
+                  </Button>
+                </DataTemplate>
+              </ListView.ItemTemplate>
+            </ListView>
+            <Button Grid.Column="2" Click="AddAccount_Click">
+              <TextBlock Text="Add account"/>
+            </Button>
           </StackPanel>
         </PivotItem>
         <PivotItem Header="About">
@@ -37,6 +95,6 @@
         </PivotItem>
       </Pivot.Items>
     </Pivot>
-    
+
   </Grid>
 </UserControl>

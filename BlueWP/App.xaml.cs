@@ -66,7 +66,7 @@ namespace BlueWP
           // parameter
           if (!await _client.Authenticate())
           {
-            _rootFrame.Navigate(typeof(Pages.LoginPage), e.Arguments);
+            NavigateToLoginScreen(e.Arguments);
           }
           else
           {
@@ -86,6 +86,16 @@ namespace BlueWP
       }
 
       _rootFrame.Navigate(typeof(Pages.MainPage), arguments);
+    }
+
+    public void NavigateToLoginScreen(string arguments)
+    {
+      if (_rootFrame == null)
+      {
+        return;
+      }
+
+      _rootFrame.Navigate(typeof(Pages.LoginPage), arguments);
     }
 
     public bool TryGoBack()

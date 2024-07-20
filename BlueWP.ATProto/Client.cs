@@ -63,6 +63,7 @@ namespace BlueWP.ATProto
       }
       _hostOverride = null;
 
+      // TODO: check if account already exists in the db
       var credentials = new Settings.AccountSettingsData()
       {
         Credentials = new Settings.CredentialsData()

@@ -128,6 +128,7 @@
     <Compile Include="ILexicon.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Actor\GetProfiles.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\SearchActorsTypeahead.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\SearchActors.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetPreferences.cs" />

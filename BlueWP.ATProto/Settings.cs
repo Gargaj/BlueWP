@@ -87,6 +87,29 @@ namespace BlueWP.ATProto
       }
     }
 
+    public async Task<bool> DeleteAccountSettings(string DID)
+    {
+      try
+      {
+        var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
+
+        _accounts.RemoveAll(s=>s.Credentials.DID == DID);
+        if (SelectedDID == DID)
+        {
+          SelectedDID = _accounts.Count > 0 ? _accounts[0].Credentials.DID : null;
+        }
+        if (!await WriteSettings())
+        {
+          return false;
+        }
+        return true;
+      }
+      catch (Exception)
+      {
+        return false;
+      }
+    }
+
     public struct CredentialsData
     {
       public string ServiceHost { get; set; }

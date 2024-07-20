@@ -27,7 +27,7 @@ namespace BlueWP.ATProto
 
     public Settings Settings => _settings;
     public Settings.AccountSettingsData CurrentAccountSettings => Settings.CurrentAccountSettings;
-    private string CurrentHost { get { return _hostOverride ?? CurrentAccountSettings?.Credentials?.ServiceHost; } }
+    private string CurrentHost { get { return _hostOverride ?? CurrentAccountSettings?.Credentials.ServiceHost; } }
 
     public async Task<bool> Authenticate()
     {
@@ -75,14 +75,14 @@ namespace BlueWP.ATProto
         }
       };
 
-      _settings.SelectedDID = credentials?.Credentials?.DID;
+      _settings.SelectedDID = credentials?.Credentials.DID;
       _settings.AccountSettings.Add(credentials);
       return await _settings.WriteSettings();
     }
 
-    public bool IsAuthenticated { get { return CurrentAccountSettings?.Credentials?.AccessToken != null; } }
-    public string Handle { get { return CurrentAccountSettings?.Credentials?.Handle; } }
-    public string DID { get { return CurrentAccountSettings?.Credentials?.DID; } }
+    public bool IsAuthenticated { get { return CurrentAccountSettings?.Credentials.AccessToken != null; } }
+    public string Handle { get { return CurrentAccountSettings?.Credentials.Handle; } }
+    public string DID { get { return CurrentAccountSettings?.Credentials.DID; } }
 
     public async Task<T> GetAsync<T>(ILexicon input) where T : ILexicon
     {

@@ -19,7 +19,7 @@ namespace BlueWP.ATProto
     public string SelectedDID { get => _selectedDID; set => _selectedDID = value; }
     public List<AccountSettingsData> AccountSettings { get => _accounts; set => _accounts = value; }
 
-    public AccountSettingsData CurrentAccountSettings { get { return _accounts.FirstOrDefault(s => s.Credentials?.DID == _selectedDID); } }
+    public AccountSettingsData CurrentAccountSettings { get { return _accounts.FirstOrDefault(s => s.Credentials.DID == _selectedDID); } }
 
     public async Task<bool> ReadSettings()
     {
@@ -87,7 +87,7 @@ namespace BlueWP.ATProto
       }
     }
 
-    public class CredentialsData
+    public struct CredentialsData
     {
       public string ServiceHost { get; set; }
       public string DID { get; set; }

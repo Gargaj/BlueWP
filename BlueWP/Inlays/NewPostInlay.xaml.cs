@@ -259,7 +259,7 @@ namespace BlueWP.Inlays
       // regex based on: https://atproto.com/specs/handle#handle-identifier-syntax
       // but with added "?:"-s to not capture stuff that shouldnt be
       var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
-      FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
+      await FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
       {
         var response = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
         {
@@ -278,7 +278,7 @@ namespace BlueWP.Inlays
       });
 
       var linkRegex = new Regex(@"[$|\W](https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)");
-      FindFacet(postText, results, linkRegex, (facet, matchText) =>
+      await FindFacet(postText, results, linkRegex, async (facet, matchText) =>
       {
         facet.features = new List<object>()
           {
@@ -290,7 +290,7 @@ namespace BlueWP.Inlays
       });
 
       var hashtagRegex = new Regex(@"(#\w+)");
-      FindFacet(postText, results, hashtagRegex, (facet, matchText) =>
+      await FindFacet(postText, results, hashtagRegex, async (facet, matchText) =>
       {
         facet.features = new List<object>()
           {
@@ -304,7 +304,7 @@ namespace BlueWP.Inlays
       return results.Count == 0 ? null : results;
     }
 
-    private void FindFacet(string postText, List<ATProto.Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Action<ATProto.Lexicons.App.BSky.RichText.Facet, string> perform)
+    private async Task FindFacet(string postText, List<ATProto.Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Func<ATProto.Lexicons.App.BSky.RichText.Facet, string, Task> perform)
     {
       var matches = regex.Matches(postText);
       if (matches.Count <= 0)
@@ -316,7 +316,7 @@ namespace BlueWP.Inlays
         var facet = new ATProto.Lexicons.App.BSky.RichText.Facet();
 
         var group = m.Groups[1];
-        perform(facet, group.Value.ToString());
+        await perform(facet, group.Value.ToString());
 
         facet.index = new ATProto.Lexicons.App.BSky.RichText.Facet.ByteSlice()
         {

@@ -1,3 +1,5 @@
+*.user
+*.args.json
 .vs/
 bin/
 obj/

@@ -5,18 +5,18 @@
   {
     public string EndpointID => "com.atproto.server.refreshSession";
 
-    public string GetAuthorizationHeader(Settings.Credential credentials)
+    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings)
     {
-      return $"Bearer {credentials.RefreshToken}";
+      return $"Bearer {accountSettings.Credentials.RefreshToken}";
     }
   }
   public class RefreshSessionResponse : ILexicon, ICustomAuthorizationHeaderProvider
   {
     public string EndpointID => "com.atproto.server.refreshSession";
 
-    public string GetAuthorizationHeader(Settings.Credential credentials)
+    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings)
     {
-      return $"Bearer {credentials.RefreshToken}";
+      return $"Bearer {accountSettings.Credentials.RefreshToken}";
     }
 
     public string accessJwt;

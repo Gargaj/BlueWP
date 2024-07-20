@@ -10,18 +10,18 @@ namespace BlueWP.ATProto
   {
     private const string _settingsFilename = "settings.dat";
     private string _selectedDID;
-    private List<Credential> _credentials = new List<Credential>();
+    private List<AccountSettingsData> _accounts = new List<AccountSettingsData>();
 
     public Settings()
     {
     }
 
     public string SelectedDID { get => _selectedDID; set => _selectedDID = value; }
-    public List<Credential> Credentials { get => _credentials; set => _credentials = value; }
+    public List<AccountSettingsData> AccountSettings { get => _accounts; set => _accounts = value; }
 
-    public Credential CurrentCredential { get { return _credentials.FirstOrDefault(s => s.DID == _selectedDID); } }
+    public AccountSettingsData CurrentAccountSettings { get { return _accounts.FirstOrDefault(s => s.Credentials?.DID == _selectedDID); } }
 
-    public async Task<bool> ReadCredentials()
+    public async Task<bool> ReadSettings()
     {
       try
       {
@@ -36,7 +36,7 @@ namespace BlueWP.ATProto
 
         Newtonsoft.Json.JsonConvert.PopulateObject(strClearText,this);
 
-        return true;
+        return _accounts.Count > 0;
       }
       catch (Exception)
       {
@@ -44,7 +44,7 @@ namespace BlueWP.ATProto
       }
     }
 
-    public async Task<bool> WriteCredentials()
+    public async Task<bool> WriteSettings()
     {
       try
       {
@@ -67,23 +67,18 @@ namespace BlueWP.ATProto
       }
     }
 
-    public async Task<bool> DeleteCredentials()
+    public async Task<bool> DeleteCurrentAccountSettings()
     {
       try
       {
         var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
 
-        _credentials.Remove(CurrentCredential);
-        SelectedDID = _credentials.Count > 0 ? _credentials[0].DID : null;
-        if (!await WriteCredentials())
+        _accounts.Remove(CurrentAccountSettings);
+        SelectedDID = _accounts.Count > 0 ? _accounts[0].Credentials.DID : null;
+        if (!await WriteSettings())
         {
           return false;
         }
-        /*
-                var file = await localFolder.GetFileAsync(_settingsFilename);
-                await file.DeleteAsync();
-        */
-
         return true;
       }
       catch (Exception)
@@ -92,13 +87,18 @@ namespace BlueWP.ATProto
       }
     }
 
-    public class Credential
+    public class CredentialsData
     {
       public string ServiceHost { get; set; }
       public string DID { get; set; }
       public string Handle { get; set; }
       public string AccessToken { get; set; }
       public string RefreshToken { get; set; }
+    }
+
+    public class AccountSettingsData
+    {
+      public CredentialsData Credentials;
     }
   }
 }

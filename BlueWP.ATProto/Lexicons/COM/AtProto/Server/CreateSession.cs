@@ -4,7 +4,7 @@
   public class CreateSession : ILexicon, ICustomAuthorizationHeaderProvider
   {
     public string EndpointID => "com.atproto.server.createSession";
-    public string GetAuthorizationHeader(Settings.Credential credentials) { return string.Empty; }
+    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings) { return string.Empty; }
 
     public string identifier;
     public string password;
@@ -13,7 +13,7 @@
   public class CreateSessionResponse : ILexicon, ICustomAuthorizationHeaderProvider
   {
     public string EndpointID => "com.atproto.server.createSession";
-    public string GetAuthorizationHeader(Settings.Credential credentials) { return string.Empty; }
+    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings) { return string.Empty; }
 
     public string accessJwt;
     public string refreshJwt;

@@ -26,12 +26,12 @@ namespace BlueWP.ATProto
     }
 
     public Settings Settings => _settings;
-    public Settings.Credential CurrentCredential => Settings.CurrentCredential;
-    private string CurrentHost { get { return _hostOverride ?? CurrentCredential?.ServiceHost; } }
+    public Settings.AccountSettingsData CurrentAccountSettings => Settings.CurrentAccountSettings;
+    private string CurrentHost { get { return _hostOverride ?? CurrentAccountSettings?.Credentials?.ServiceHost; } }
 
     public async Task<bool> Authenticate()
     {
-      return await _settings.ReadCredentials();
+      return await _settings.ReadSettings();
     }
 
     public async Task<bool> AuthenticateWithPassword(string host, string handle, string appPassword)
@@ -63,23 +63,26 @@ namespace BlueWP.ATProto
       }
       _hostOverride = null;
 
-      var credentials = new Settings.Credential()
+      var credentials = new Settings.AccountSettingsData()
       {
-        ServiceHost = host,
-        DID = response.did,
-        Handle = response.handle,
-        AccessToken = response.accessJwt,
-        RefreshToken = response.refreshJwt,
+        Credentials = new Settings.CredentialsData()
+        {
+          ServiceHost = host,
+          DID = response.did,
+          Handle = response.handle,
+          AccessToken = response.accessJwt,
+          RefreshToken = response.refreshJwt,
+        }
       };
 
-      _settings.SelectedDID = credentials.DID;
-      _settings.Credentials.Add(credentials);
-      return await _settings.WriteCredentials();
+      _settings.SelectedDID = credentials?.Credentials?.DID;
+      _settings.AccountSettings.Add(credentials);
+      return await _settings.WriteSettings();
     }
 
-    public bool IsAuthenticated { get { return CurrentCredential?.AccessToken != null; } }
-    public string Handle { get { return CurrentCredential?.Handle; } }
-    public string DID { get { return CurrentCredential?.DID; } }
+    public bool IsAuthenticated { get { return CurrentAccountSettings?.Credentials?.AccessToken != null; } }
+    public string Handle { get { return CurrentAccountSettings?.Credentials?.Handle; } }
+    public string DID { get { return CurrentAccountSettings?.Credentials?.DID; } }
 
     public async Task<T> GetAsync<T>(ILexicon input) where T : ILexicon
     {
@@ -109,7 +112,7 @@ namespace BlueWP.ATProto
       }
       if (input as ICustomAuthorizationHeaderProvider != null)
       {
-        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_settings.CurrentCredential);
+        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_settings.CurrentAccountSettings);
         if (!string.IsNullOrEmpty(header))
         {
           headers["Authorization"] = header;
@@ -117,7 +120,7 @@ namespace BlueWP.ATProto
       }
       else
       {
-        headers["Authorization"] = $"Bearer {CurrentCredential.AccessToken}";
+        headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
       }
       var url = $"https://{CurrentHost}/xrpc/{input.EndpointID}";
       string responseJson = null;
@@ -164,7 +167,7 @@ namespace BlueWP.ATProto
           {
             if (await RefreshCredentials())
             {
-              headers["Authorization"] = $"Bearer {CurrentCredential.AccessToken}";
+              headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
               switch (method)
               {
                 case "GET":
@@ -214,11 +217,11 @@ namespace BlueWP.ATProto
       var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSessionResponse>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
       {
-        CurrentCredential.DID = response.did;
-        CurrentCredential.Handle = response.handle;
-        CurrentCredential.AccessToken = response.accessJwt;
-        CurrentCredential.RefreshToken = response.refreshJwt;
-        await _settings.WriteCredentials();
+        CurrentAccountSettings.Credentials.DID = response.did;
+        CurrentAccountSettings.Credentials.Handle = response.handle;
+        CurrentAccountSettings.Credentials.AccessToken = response.accessJwt;
+        CurrentAccountSettings.Credentials.RefreshToken = response.refreshJwt;
+        await _settings.WriteSettings();
       }
 
       return true;

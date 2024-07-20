@@ -38,6 +38,10 @@ namespace BlueWP.Inlays
     private void NewPostInlay_Loaded(object sender, RoutedEventArgs e)
     {
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
+      if (_app?.Client?.CurrentAccountSettings?.PostSettings.UsedLanguages?.Count > 0)
+      {
+        SelectedLanguage = _app?.Client?.CurrentAccountSettings?.PostSettings.UsedLanguages[0];
+      }
     }
 
     public string PostText
@@ -52,7 +56,6 @@ namespace BlueWP.Inlays
     }
     public string PostLengthText => $"{PostLengthInGraphemes} / {MaxLengthInGraphemes}";
     public string SelectedLanguage { get; set; } = "en";
-    public List<string> PreferredLanguages => new List<string>() { "en", "hu" }; // TODO: un-hardwire, save into settings
     public int PostLengthInGraphemes { get { return new StringInfo(PostText ?? string.Empty).LengthInTextElements; } }
     public int MaxLengthInGraphemes { get { return 300; } }
     public ObservableCollection<ImageAttachment> ImageAttachments { get; set; }
@@ -141,18 +144,26 @@ namespace BlueWP.Inlays
         {
           var sortedLanguageList = BlueWP.ATProto.Enums.LanguageList.OrderBy(kvp => kvp.Value).ToList();
           menuFlyout.Items.Clear();
-          foreach (var lang in PreferredLanguages)
+          if (_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages != null)
           {
-            int kvpIndex = sortedLanguageList.FindIndex(s => s.Key == lang);
-            if (kvpIndex < 0)
+            bool needsSeparator = false;
+            foreach (var lang in _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages)
             {
-              continue;
+              int kvpIndex = sortedLanguageList.FindIndex(s => s.Key == lang);
+              if (kvpIndex < 0)
+              {
+                continue;
+              }
+              var kvp = sortedLanguageList[kvpIndex];
+              AddToFlyout(menuFlyout, kvp);
+              sortedLanguageList.Remove(kvp);
+              needsSeparator = true;
             }
-            var kvp = sortedLanguageList[kvpIndex];
-            AddToFlyout(menuFlyout, kvp);
-            sortedLanguageList.Remove(kvp);
+            if (needsSeparator)
+            {
+              menuFlyout.Items.Add(new MenuFlyoutSeparator());
+            }
           }
-          menuFlyout.Items.Add(new MenuFlyoutSeparator());
           foreach (var kvp in sortedLanguageList)
           {
             AddToFlyout(menuFlyout, kvp);
@@ -192,6 +203,16 @@ namespace BlueWP.Inlays
 
         // Language
         post.langs = new List<string>() { SelectedLanguage };
+
+        if (_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages == null)
+        {
+          _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages = new List<string>();
+        }
+        if (!_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Contains(SelectedLanguage))
+        {
+          _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Add(SelectedLanguage);
+          await _app.Client.Settings.WriteSettings();
+        }
 
         // Reply
         if (IsReplying)

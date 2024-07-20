@@ -96,9 +96,15 @@ namespace BlueWP.ATProto
       public string RefreshToken { get; set; }
     }
 
+    public struct PostSettingsData
+    {
+      public List<string> UsedLanguages { get; set; }
+    }
+
     public class AccountSettingsData
     {
       public CredentialsData Credentials;
+      public PostSettingsData PostSettings;
     }
   }
 }

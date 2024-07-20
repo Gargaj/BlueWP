@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
@@ -13,6 +14,7 @@ using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace BlueWP.Inlays
@@ -49,6 +51,8 @@ namespace BlueWP.Inlays
       }
     }
     public string PostLengthText => $"{PostLengthInGraphemes} / {MaxLengthInGraphemes}";
+    public string SelectedLanguage { get; set; } = "en";
+    public List<string> PreferredLanguages => new List<string>() { "en", "hu" }; // TODO: un-hardwire, save into settings
     public int PostLengthInGraphemes { get { return new StringInfo(PostText ?? string.Empty).LengthInTextElements; } }
     public int MaxLengthInGraphemes { get { return 300; } }
     public ObservableCollection<ImageAttachment> ImageAttachments { get; set; }
@@ -127,6 +131,52 @@ namespace BlueWP.Inlays
       OnPropertyChanged(nameof(ImageAttachments));
     }
 
+    private async void SelectLanguage_Click(object sender, RoutedEventArgs args)
+    {
+      var element = sender as FrameworkElement;
+      if (element != null)
+      {
+        var menuFlyout = FlyoutBase.GetAttachedFlyout(element) as MenuFlyout;
+        if (menuFlyout != null)
+        {
+          var sortedLanguageList = BlueWP.ATProto.Enums.LanguageList.OrderBy(kvp => kvp.Value).ToList();
+          menuFlyout.Items.Clear();
+          foreach (var lang in PreferredLanguages)
+          {
+            int kvpIndex = sortedLanguageList.FindIndex(s => s.Key == lang);
+            if (kvpIndex < 0)
+            {
+              continue;
+            }
+            var kvp = sortedLanguageList[kvpIndex];
+            AddToFlyout(menuFlyout, kvp);
+            sortedLanguageList.Remove(kvp);
+          }
+          menuFlyout.Items.Add(new MenuFlyoutSeparator());
+          foreach (var kvp in sortedLanguageList)
+          {
+            AddToFlyout(menuFlyout, kvp);
+          }
+          FlyoutBase.ShowAttachedFlyout(element);
+        }
+      }
+    }
+
+    private void AddToFlyout(MenuFlyout flyout, KeyValuePair<string, string> languageKvp)
+    {
+      var item = new MenuFlyoutItem()
+      {
+        Text = languageKvp.Value,
+        Tag = languageKvp.Key
+      };
+      item.Click += (object s, RoutedEventArgs e) =>
+      {
+        SelectedLanguage = (s as MenuFlyoutItem).Tag as string;
+        OnPropertyChanged(nameof(SelectedLanguage));
+      };
+      flyout.Items.Add(item);
+    }
+
     private async void Send_Click(object sender, RoutedEventArgs e)
     {
       try
@@ -137,7 +187,11 @@ namespace BlueWP.Inlays
           createdAt = DateTime.Now
         };
 
+        // Post facets (handles, hashtags, etc.)
         post.facets = await ParseTextForFacets(PostText);
+
+        // Language
+        post.langs = new List<string>() { SelectedLanguage };
 
         // Reply
         if (IsReplying)

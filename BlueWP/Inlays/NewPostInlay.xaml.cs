@@ -254,77 +254,77 @@ namespace BlueWP.Inlays
 
     private async Task<List<ATProto.Lexicons.App.BSky.RichText.Facet>> ParseTextForFacets(string postText)
     {
-      var result = new List<ATProto.Lexicons.App.BSky.RichText.Facet>();
+      var results = new List<ATProto.Lexicons.App.BSky.RichText.Facet>();
 
       // regex based on: https://atproto.com/specs/handle#handle-identifier-syntax
       // but with added "?:"-s to not capture stuff that shouldnt be
       var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
-      var mentionMatches = mentionRegex.Matches(PostText);
-      if (mentionMatches.Count > 0)
+      FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
       {
-        foreach (Match m in mentionMatches)
+        var response = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
         {
-          var facet = new ATProto.Lexicons.App.BSky.RichText.Facet();
-
-          var group = m.Groups[1];
-          try
-          {
-            var response = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
+          handle = matchText.Substring(1) // chop off @
+        });
+        if (response != null)
+        {
+          facet.features = new List<object>()
             {
-              handle = group.Value.ToString().Substring(1) // chop off @
-            });
-            if (response != null)
-            {
-              facet.features = new List<object>()
+              new ATProto.Lexicons.App.BSky.RichText.Facet.Mention()
               {
-                new ATProto.Lexicons.App.BSky.RichText.Facet.Mention()
-                {
-                  did = response.did,
-                }
-              };
-            }
-          }
-          catch (WebException)
-          {
-            continue;
-          }
-
-          facet.index = new ATProto.Lexicons.App.BSky.RichText.Facet.ByteSlice()
-          {
-            byteStart = ConvertCharacterPositionToBytePositionInString(postText, group.Index),
-            byteEnd = ConvertCharacterPositionToBytePositionInString(postText, group.Index + group.Length),
-          };
-          result.Add(facet);
+                did = response.did,
+              }
+            };
         }
-      }
+      });
 
       var linkRegex = new Regex(@"[$|\W](https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)");
-      var linkMatches = linkRegex.Matches(PostText);
-      if (linkMatches.Count > 0)
+      FindFacet(postText, results, linkRegex, (facet, matchText) =>
       {
-        foreach (Match m in linkMatches)
-        {
-          var facet = new ATProto.Lexicons.App.BSky.RichText.Facet();
-
-          var group = m.Groups[1];
-          facet.features = new List<object>()
+        facet.features = new List<object>()
           {
             new ATProto.Lexicons.App.BSky.RichText.Facet.Link()
             {
-              uri = group.Value.ToString()
+              uri = matchText
             }
           };
+      });
 
-          facet.index = new ATProto.Lexicons.App.BSky.RichText.Facet.ByteSlice()
+      var hashtagRegex = new Regex(@"(#\w+)");
+      FindFacet(postText, results, hashtagRegex, (facet, matchText) =>
+      {
+        facet.features = new List<object>()
           {
-            byteStart = ConvertCharacterPositionToBytePositionInString(postText, group.Index),
-            byteEnd = ConvertCharacterPositionToBytePositionInString(postText, group.Index + group.Length),
+            new ATProto.Lexicons.App.BSky.RichText.Facet.Tag()
+            {
+              tag = matchText.Substring(1)
+            }
           };
-          result.Add(facet);
-        }
-      }
+      });
 
-      return result.Count == 0 ? null : result;
+      return results.Count == 0 ? null : results;
+    }
+
+    private void FindFacet(string postText, List<ATProto.Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Action<ATProto.Lexicons.App.BSky.RichText.Facet, string> perform)
+    {
+      var matches = regex.Matches(postText);
+      if (matches.Count <= 0)
+      {
+        return;
+      }
+      foreach (Match m in matches)
+      {
+        var facet = new ATProto.Lexicons.App.BSky.RichText.Facet();
+
+        var group = m.Groups[1];
+        perform(facet, group.Value.ToString());
+
+        facet.index = new ATProto.Lexicons.App.BSky.RichText.Facet.ByteSlice()
+        {
+          byteStart = ConvertCharacterPositionToBytePositionInString(postText, group.Index),
+          byteEnd = ConvertCharacterPositionToBytePositionInString(postText, group.Index + group.Length),
+        };
+        facets.Add(facet);
+      }
     }
 
     private void RemoveImage_Click(object sender, RoutedEventArgs e)

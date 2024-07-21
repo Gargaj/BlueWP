@@ -32,39 +32,31 @@ namespace BlueWP.Inlays
     {
       _mainPage?.StartLoading();
 
-      try
+      if (!string.IsNullOrEmpty(FeedURI))
       {
-        if (!string.IsNullOrEmpty(FeedURI))
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
         {
-          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
-          {
-            limit = 60,
-            feed = FeedURI
-          });
-          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
-        }
-        else if (!string.IsNullOrEmpty(ActorDID))
-        {
-          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetAuthorFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed()
-          {
-            limit = 60,
-            actor = ActorDID
-          });
-          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
-        }
-        else
-        {
-          var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
-          {
-            limit = 60
-          });
-          FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
-        }
+          limit = 60,
+          feed = FeedURI
+        });
+        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
       }
-      catch (WebException ex)
+      else if (!string.IsNullOrEmpty(ActorDID))
       {
-        var webResponse = ex.Response as HttpWebResponse;
-        _mainPage?.TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetAuthorFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed()
+        {
+          limit = 60,
+          actor = ActorDID
+        });
+        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+      }
+      else
+      {
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+        {
+          limit = 60
+        });
+        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
       }
 
       _mainPage?.EndLoading();

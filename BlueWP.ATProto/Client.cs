@@ -104,13 +104,15 @@ namespace BlueWP.ATProto
 
       var http = new HTTP();
 
-      var rawPost = input as IRawPost;
       var headers = new NameValueCollection();
       headers["Content-Type"] = "application/json";
+
+      var rawPost = input as IRawPost;
       if (rawPost != null)
       {
         headers["Content-Type"] = rawPost.MimeType;
       }
+
       if (input as ICustomAuthorizationHeaderProvider != null)
       {
         string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_settings.CurrentAccountSettings);

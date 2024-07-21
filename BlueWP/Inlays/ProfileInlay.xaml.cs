@@ -39,7 +39,7 @@ namespace BlueWP.Inlays
       }
 
       _mainPage?.StartLoading();
-      var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetProfileResponse>(new ATProto.Lexicons.App.BSky.Actor.GetProfile()
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Actor.GetProfileResponse>(new ATProto.Lexicons.App.BSky.Actor.GetProfile()
       {
         actor = ActorDID
       });

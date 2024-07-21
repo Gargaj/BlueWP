@@ -190,93 +190,92 @@ namespace BlueWP.Inlays
 
     private async void Send_Click(object sender, RoutedEventArgs e)
     {
-      try
+      var post = new ATProto.Lexicons.App.BSky.Feed.Post()
       {
-        var post = new ATProto.Lexicons.App.BSky.Feed.Post()
+        text = PostText,
+        createdAt = DateTime.Now
+      };
+
+      // Post facets (handles, hashtags, etc.)
+      post.facets = await ParseTextForFacets(PostText);
+
+      // Language
+      post.langs = new List<string>() { SelectedLanguage };
+
+      if (_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages == null)
+      {
+        _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages = new List<string>();
+      }
+      if (!_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Contains(SelectedLanguage))
+      {
+        _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Add(SelectedLanguage);
+        await _app.Client.Settings.WriteSettings();
+      }
+
+      // Reply
+      if (IsReplying)
+      {
+        string repo = string.Empty, collection = string.Empty, rkey = string.Empty;
+        if (ATProto.Helpers.ParseATURI(RepliedPost.uri, ref repo, ref collection, ref rkey))
         {
-          text = PostText,
-          createdAt = DateTime.Now
+          var recordResponse = await _mainPage.Get<ATProto.Lexicons.COM.ATProto.Repo.GetRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.GetRecord()
+          {
+            repo = repo,
+            collection = collection,
+            rkey = rkey
+          });
+
+          var root = (recordResponse?.value as ATProto.Lexicons.App.BSky.Feed.Post)?.reply?.root;
+          post.reply = new ATProto.Lexicons.App.BSky.Feed.Post.ReplyRef()
+          {
+            root = root ?? new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+            {
+              uri = recordResponse.uri,
+              cid = recordResponse.cid,
+            },
+            parent = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+            {
+              uri = recordResponse.uri,
+              cid = recordResponse.cid,
+            },
+          };
+        }
+      }
+
+      // Quote
+      if (IsQuoting)
+      {
+        post.embed = new ATProto.Lexicons.App.BSky.Embed.Record()
+        {
+          record = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+          {
+            uri = QuotedPost.uri,
+            cid = QuotedPost.cid,
+          }
         };
+      }
 
-        // Post facets (handles, hashtags, etc.)
-        post.facets = await ParseTextForFacets(PostText);
-
-        // Language
-        post.langs = new List<string>() { SelectedLanguage };
-
-        if (_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages == null)
+      // Image attachment
+      if (ImageAttachments != null && ImageAttachments.Count > 0)
+      {
+        foreach (var imageAttachment in ImageAttachments)
         {
-          _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages = new List<string>();
+          imageAttachment.IsLoading = true;
+          imageAttachment.OnPropertyChanged("IsLoading");
         }
-        if (!_app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Contains(SelectedLanguage))
+        var images = new ATProto.Lexicons.App.BSky.Embed.Images()
         {
-          _app.Client.CurrentAccountSettings.PostSettings.UsedLanguages.Add(SelectedLanguage);
-          await _app.Client.Settings.WriteSettings();
-        }
-
-        // Reply
-        if (IsReplying)
+          images = new List<ATProto.Lexicons.App.BSky.Embed.Images.Image>()
+        };
+        foreach (var imageAttachment in ImageAttachments)
         {
-          string repo = string.Empty, collection = string.Empty, rkey = string.Empty;
-          if (ATProto.Helpers.ParseATURI(RepliedPost.uri, ref repo, ref collection, ref rkey))
+          var blobResponse = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.UploadBlobResponse>(new ATProto.Lexicons.COM.ATProto.Repo.UploadBlob()
           {
-            var recordResponse = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Repo.GetRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.GetRecord()
-            {
-              repo = repo,
-              collection = collection,
-              rkey = rkey
-            });
-
-            var root = (recordResponse?.value as ATProto.Lexicons.App.BSky.Feed.Post)?.reply?.root;
-            post.reply = new ATProto.Lexicons.App.BSky.Feed.Post.ReplyRef()
-            {
-              root = root ?? new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
-              {
-                uri = recordResponse.uri,
-                cid = recordResponse.cid,
-              },
-              parent = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
-              {
-                uri = recordResponse.uri,
-                cid = recordResponse.cid,
-              },
-            };
-          }
-        }
-
-        // Quote
-        if (IsQuoting)
-        {
-          post.embed = new ATProto.Lexicons.App.BSky.Embed.Record()
+            MimeType = imageAttachment.MimeType,
+            PostData = imageAttachment.ByteData,
+          });
+          if (blobResponse != null)
           {
-            record = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
-            {
-              uri = QuotedPost.uri,
-              cid = QuotedPost.cid,
-            }
-          };
-        }
-
-        // Image attachment
-        if (ImageAttachments != null && ImageAttachments.Count > 0)
-        {
-          foreach (var imageAttachment in ImageAttachments)
-          {
-            imageAttachment.IsLoading = true;
-            imageAttachment.OnPropertyChanged("IsLoading");
-          }
-          var images = new ATProto.Lexicons.App.BSky.Embed.Images()
-          {
-            images = new List<ATProto.Lexicons.App.BSky.Embed.Images.Image>()
-          };
-          foreach (var imageAttachment in ImageAttachments)
-          {
-            var blobResponse = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.UploadBlobResponse>(new ATProto.Lexicons.COM.ATProto.Repo.UploadBlob()
-            {
-              MimeType = imageAttachment.MimeType,
-              PostData = imageAttachment.ByteData,
-            });
-
             var image = new ATProto.Lexicons.App.BSky.Embed.Images.Image()
             {
               image = blobResponse.blob,
@@ -286,39 +285,27 @@ namespace BlueWP.Inlays
             imageAttachment.IsLoading = false;
             imageAttachment.OnPropertyChanged("IsLoading");
           }
-          post.embed = images;
         }
-
-        var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
-        {
-          repo = _app.Client.DID,
-          collection = "app.bsky.feed.post",
-          record = post
-        });
-        if (response != null)
-        {
-          PostText = string.Empty;
-
-          ImageAttachments.Clear();
-          OnPropertyChanged(nameof(ImageAttachments));
-
-          RemoveReply();
-          RemoveQuote();
-
-          await _mainPage.SwitchToThreadViewInlay(response.uri);
-        }
+        post.embed = images;
       }
-      catch (WebException ex)
+
+      var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
       {
-        var webResponse = ex.Response as HttpWebResponse;
-        var dialog = new ContentDialog
-        {
-          Content = new TextBlock { Text = ex.Message, TextWrapping = TextWrapping.WrapWholeWords },
-          Title = $"HTTP ERROR {(int)webResponse.StatusCode}",
-          IsSecondaryButtonEnabled = false,
-          PrimaryButtonText = "Ok"
-        };
-        await dialog.ShowAsync();
+        repo = _app.Client.DID,
+        collection = "app.bsky.feed.post",
+        record = post
+      });
+      if (response != null)
+      {
+        PostText = string.Empty;
+
+        ImageAttachments.Clear();
+        OnPropertyChanged(nameof(ImageAttachments));
+
+        RemoveReply();
+        RemoveQuote();
+
+        await _mainPage.SwitchToThreadViewInlay(response.uri);
       }
     }
 
@@ -336,7 +323,7 @@ namespace BlueWP.Inlays
       var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
       await FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
       {
-        var response = await _app.Client.GetAsync<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
+        var response = await _mainPage.Get<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
         {
           handle = matchText.Substring(1) // chop off @
         });

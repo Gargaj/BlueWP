@@ -61,72 +61,53 @@ namespace BlueWP.Pages
     {
       StartLoading();
 
-      try
+      var preferences = await Get<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
+      if (preferences != null)
       {
-        var preferences = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
-        if (preferences != null)
+        _preferences = preferences.preferences;
+        _savedFeedsPrefV2 = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2;
+
+        var getFeedReq = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
+        getFeedReq.feeds = new List<string>();
+
+        _feeds = new List<Feed>();
+        foreach (var feedInfo in _savedFeedsPrefV2.items.Where(s=>s.pinned))
         {
-          _preferences = preferences.preferences;
-          _savedFeedsPrefV2 = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2;
-
-          var getFeedReq = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
-          getFeedReq.feeds = new List<string>();
-
-          _feeds = new List<Feed>();
-          foreach (var feedInfo in _savedFeedsPrefV2.items.Where(s=>s.pinned))
+          switch (feedInfo.type)
           {
-            switch (feedInfo.type)
-            {
-              case "timeline":
-                {
-                  _feeds.Add(new Feed() { Name = feedInfo.value.Substring(0, 1).ToUpper() + feedInfo.value.Substring(1) });
-                }
-                break;
-              case "feed":
-                {
-                  var feedURI = feedInfo.value;
-                  var name = feedURI.Contains("/") ? feedURI.Substring(feedURI.LastIndexOf("/") + 1) : feedURI; // temp name
-                  getFeedReq.feeds.Add(feedURI);
-
-                  _feeds.Add(new Feed() { Name = name, URI = feedURI });
-                }
-                break;
-            }
-          }
-          OnPropertyChanged(nameof(Feeds));
-
-          var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(getFeedReq);
-          if (feedInfoResponse?.feeds != null)
-          {
-            foreach (var feedInfo in feedInfoResponse.feeds)
-            {
-              var feed = _feeds.FirstOrDefault(s => s.URI == feedInfo.uri);
-              if (feed == null)
+            case "timeline":
               {
-                continue;
+                _feeds.Add(new Feed() { Name = feedInfo.value.Substring(0, 1).ToUpper() + feedInfo.value.Substring(1) });
               }
-              feed.FeedInfo = feedInfo;
-              feed.Name = feedInfo.displayName;
-              feed.OnPropertyChanged("Name");
-            }
+              break;
+            case "feed":
+              {
+                var feedURI = feedInfo.value;
+                var name = feedURI.Contains("/") ? feedURI.Substring(feedURI.LastIndexOf("/") + 1) : feedURI; // temp name
+                getFeedReq.feeds.Add(feedURI);
+
+                _feeds.Add(new Feed() { Name = name, URI = feedURI });
+              }
+              break;
           }
         }
-      }
-      catch (WebException ex)
-      {
-        var webResponse = ex.Response as HttpWebResponse;
-        if (webResponse != null)
+        OnPropertyChanged(nameof(Feeds));
+
+        var feedInfoResponse = await Get<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(getFeedReq);
+        if (feedInfoResponse?.feeds != null)
         {
-          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+          foreach (var feedInfo in feedInfoResponse.feeds)
+          {
+            var feed = _feeds.FirstOrDefault(s => s.URI == feedInfo.uri);
+            if (feed == null)
+            {
+              continue;
+            }
+            feed.FeedInfo = feedInfo;
+            feed.Name = feedInfo.displayName;
+            feed.OnPropertyChanged("Name");
+          }
         }
-        else
-        {
-          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
-        }
-      }
-      catch (Exception ex)
-      {
-        TriggerError($"ERROR\n{ex?.InnerException?.Message ?? ex?.Message}");
       }
 
       EndLoading();
@@ -152,25 +133,10 @@ namespace BlueWP.Pages
 
     public async Task RefreshNotificationCounter()
     {
-      try
+      var unreadCountResponse = await Get<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+      if (unreadCountResponse != null)
       {
-        var unreadCountResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
-        if (unreadCountResponse != null)
-        {
-          UnreadNotificationCount = (int)unreadCountResponse.count;
-        }
-      }
-      catch (WebException ex)
-      {
-        var webResponse = ex.Response as HttpWebResponse;
-        if (webResponse != null)
-        {
-          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
-        }
-        else
-        {
-          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
-        }
+        UnreadNotificationCount = (int)unreadCountResponse.count;
       }
     }
 
@@ -327,6 +293,56 @@ namespace BlueWP.Pages
     private void CloseZoomedImage_Click(object sender, RoutedEventArgs e)
     {
       ZoomedImageURL = null;
+    }
+
+    public async Task<T> Get<T>(ATProto.ILexicon input) where T : class, ATProto.ILexicon
+    {
+      try
+      {
+        return await _app.Client.GetAsync<T>(input);
+      }
+      catch (WebException ex)
+      {
+        var webResponse = ex.Response as HttpWebResponse;
+        if (webResponse != null)
+        {
+          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        }
+        else
+        {
+          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
+        }
+      }
+      catch (Exception ex)
+      {
+        TriggerError($"ERROR\n{ex?.InnerException?.Message ?? ex?.Message}");
+      }
+      return null;
+    }
+
+    public async Task<T> Post<T>(ATProto.ILexicon input) where T : class, ATProto.ILexicon
+    {
+      try
+      {
+        return await _app.Client.PostAsync<T>(input);
+      }
+      catch (WebException ex)
+      {
+        var webResponse = ex.Response as HttpWebResponse;
+        if (webResponse != null)
+        {
+          TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
+        }
+        else
+        {
+          TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
+        }
+      }
+      catch (Exception ex)
+      {
+        TriggerError($"ERROR\n{ex?.InnerException?.Message ?? ex?.Message}");
+      }
+      return null;
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

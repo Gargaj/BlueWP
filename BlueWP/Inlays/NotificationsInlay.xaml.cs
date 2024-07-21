@@ -33,18 +33,19 @@ namespace BlueWP.Inlays
     {
       _mainPage?.StartLoading();
 
-      try
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Notification.ListNotificationsResponse>(new ATProto.Lexicons.App.BSky.Notification.ListNotifications()
       {
-        var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Notification.ListNotificationsResponse>(new ATProto.Lexicons.App.BSky.Notification.ListNotifications()
-        {
-          limit = 60
-        });
+        limit = 60
+      });
+      if (response != null)
+      {
         NotificationGroups = response?.notifications.GroupBy(
-          s => {
+          s =>
+          {
             if (s.reason == "like" || s.reason == "repost" || s.reason == "follow")
             {
               return $"{s.reason}|{s.reasonSubject}"; // only group these three types
-            }
+          }
             return $"{s.reason}|{s.cid}";
           },
           s => s,
@@ -52,16 +53,11 @@ namespace BlueWP.Inlays
         ).ToList();
 
         var subjectUris = response?.notifications.Select(s => s.reasonSubject).Where(s => !string.IsNullOrEmpty(s)).Distinct().Take(25);
-        var responsePosts = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetPostsResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
+        var responsePosts = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPostsResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
         {
           uris = subjectUris.ToList()
         });
         responsePosts?.posts.ForEach(s => { if (!PostCache.ContainsKey(s.uri)) { PostCache.Add(s.uri, s); } });
-      }
-      catch (WebException ex)
-      {
-        var webResponse = ex.Response as HttpWebResponse;
-        _mainPage?.TriggerError($"HTTP ERROR {(int)webResponse.StatusCode}\n\n{ex.Message}");
       }
 
       _mainPage?.EndLoading();
@@ -71,7 +67,7 @@ namespace BlueWP.Inlays
       if (_mainPage.UnreadNotificationCount > 0)
       {
         // Reset notification counter
-        await _app.Client.PostAsync<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
+        await _mainPage.Post<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
         {
           seenAt = System.DateTime.Now
         });

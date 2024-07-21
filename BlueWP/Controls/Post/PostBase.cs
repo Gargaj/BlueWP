@@ -154,7 +154,7 @@ namespace BlueWP.Controls.Post
       if (!PostReposted)
       {
         // add repost
-        var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
+        var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
         {
           repo = _app.Client.DID,
           collection = "app.bsky.feed.repost",
@@ -181,7 +181,7 @@ namespace BlueWP.Controls.Post
         string rkey = string.Empty;
         if (ATProto.Helpers.ParseATURI(PostView?.viewer?.repost, ref repo, ref collection, ref rkey))
         {
-          var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
+          var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
           {
             repo = repo,
             collection = collection,
@@ -200,7 +200,7 @@ namespace BlueWP.Controls.Post
       if (!PostLiked)
       {
         // add like
-        var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
+        var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
         {
           repo = _app.Client.DID,
           collection = "app.bsky.feed.like",
@@ -227,7 +227,7 @@ namespace BlueWP.Controls.Post
         string rkey = string.Empty;
         if (ATProto.Helpers.ParseATURI(PostView?.viewer?.like, ref repo, ref collection, ref rkey))
         {
-          var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
+          var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
           {
             repo = repo,
             collection = collection,
@@ -267,7 +267,7 @@ namespace BlueWP.Controls.Post
       string rkey = string.Empty;
       if (ATProto.Helpers.ParseATURI(PostView.uri, ref repo, ref collection, ref rkey))
       {
-        var response = await _app.Client.PostAsync<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
+        var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.DeleteRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.DeleteRecord()
         {
           repo = repo,
           collection = collection,

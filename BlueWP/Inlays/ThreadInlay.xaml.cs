@@ -38,39 +38,41 @@ namespace BlueWP.Inlays
 
       _mainPage?.StartLoading();
 
-      var response = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetPostThreadResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPostThread()
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPostThreadResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPostThread()
       {
         uri = PostURI
       });
-      var thread = response.thread as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
-
-      // main post
-      Posts = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.PostView>();
-      Posts.Add(thread.post);
-
-      // previous posts
-      var post = thread.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
-      while (post != null)
+      var thread = response?.thread as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+      if (thread != null)
       {
-        Posts.Insert(0, post.post);
-        post = post?.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
-      }
+        // main post
+        Posts = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.PostView>();
+        Posts.Add(thread.post);
 
-      // replies
-      if (thread.replies != null)
-      {
-        foreach (var reply in thread.replies)
+        // previous posts
+        var post = thread.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+        while (post != null)
         {
-          var replyPost = reply as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
-          Posts.Add(replyPost?.post);
+          Posts.Insert(0, post.post);
+          post = post?.parent as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
         }
-      }
 
-      OnPropertyChanged(nameof(Posts));
+        // replies
+        if (thread.replies != null)
+        {
+          foreach (var reply in thread.replies)
+          {
+            var replyPost = reply as ATProto.Lexicons.App.BSky.Feed.Defs.ThreadViewPost;
+            Posts.Add(replyPost?.post);
+          }
+        }
+
+        OnPropertyChanged(nameof(Posts));
+      }
 
       _mainPage?.EndLoading();
 
-      listView.ScrollIntoView(thread.post);
+      listView.ScrollIntoView(thread?.post);
     }
 
     public void Flush()

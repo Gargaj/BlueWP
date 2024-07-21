@@ -20,7 +20,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       {
         get
         {
-          return displayName ?? handle ?? "[ERROR]";
+          if (!string.IsNullOrEmpty(displayName))
+          {
+            return displayName;
+          }
+          if (!string.IsNullOrEmpty(handle))
+          {
+            return handle;
+          }
+          return "[ERROR]";
         }
       }
       public string Handle
@@ -48,7 +56,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       {
         get
         {
-          return displayName ?? handle ?? "[ERROR]";
+          if (!string.IsNullOrEmpty(displayName))
+          {
+            return displayName;
+          }
+          if (!string.IsNullOrEmpty(handle))
+          {
+            return handle;
+          }
+          return "[ERROR]";
         }
       }
       public string Handle
@@ -80,7 +96,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       {
         get
         {
-          return displayName ?? handle ?? "[ERROR]";
+          if (!string.IsNullOrEmpty(displayName))
+          {
+            return displayName;
+          }
+          if (!string.IsNullOrEmpty(handle))
+          {
+            return handle;
+          }
+          return "[ERROR]";
         }
       }
       public string Handle

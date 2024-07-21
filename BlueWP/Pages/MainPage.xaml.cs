@@ -21,7 +21,7 @@ namespace BlueWP.Pages
     private List<object> _preferences;
     private string _profileActorDID;
     private string _threadPostURI;
-    private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref _savedFeedsPref;
+    private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2 _savedFeedsPrefV2;
     private DispatcherTimer _notificationsTimer = new DispatcherTimer();
     private string _zoomedImageURL;
 
@@ -67,22 +67,35 @@ namespace BlueWP.Pages
         if (preferences != null)
         {
           _preferences = preferences.preferences;
-          _savedFeedsPref = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPref;
+          _savedFeedsPrefV2 = _preferences?.FirstOrDefault(s => s is ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2) as ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2;
 
-          var req = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
-          req.feeds = new List<string>();
+          var getFeedReq = new ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators();
+          getFeedReq.feeds = new List<string>();
 
           _feeds = new List<Feed>();
-          _feeds.Add(new Feed() { Name = "Following" });
-          foreach (var feed in _savedFeedsPref.pinned)
+          foreach (var feedInfo in _savedFeedsPrefV2.items.Where(s=>s.pinned))
           {
-            var name = feed.Substring(feed.LastIndexOf("/") + 1); // temp
-            _feeds.Add(new Feed() { Name = name, URI = feed });
-            req.feeds.Add(feed);
+            switch (feedInfo.type)
+            {
+              case "timeline":
+                {
+                  _feeds.Add(new Feed() { Name = feedInfo.value.Substring(0, 1).ToUpper() + feedInfo.value.Substring(1) });
+                }
+                break;
+              case "feed":
+                {
+                  var feedURI = feedInfo.value;
+                  var name = feedURI.Contains("/") ? feedURI.Substring(feedURI.LastIndexOf("/") + 1) : feedURI; // temp name
+                  getFeedReq.feeds.Add(feedURI);
+
+                  _feeds.Add(new Feed() { Name = name, URI = feedURI });
+                }
+                break;
+            }
           }
           OnPropertyChanged(nameof(Feeds));
 
-          var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(req);
+          var feedInfoResponse = await _app.Client.GetAsync<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(getFeedReq);
           if (feedInfoResponse?.feeds != null)
           {
             foreach (var feedInfo in feedInfoResponse.feeds)

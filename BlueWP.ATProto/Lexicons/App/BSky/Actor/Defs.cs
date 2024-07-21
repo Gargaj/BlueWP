@@ -152,10 +152,24 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string visibility;
     }
 
+    public class SavedFeed
+    {
+      public string id;
+      public string type;
+      public string value;
+      public bool pinned;
+    }
+
     public class SavedFeedsPref
     {
       public List<string> pinned;
       public List<string> saved;
+      public int timelineIndex;
+    }
+
+    public class SavedFeedsPrefV2
+    {
+      public List<Defs.SavedFeed> items;
     }
 
     public class PersonalDetailsPref

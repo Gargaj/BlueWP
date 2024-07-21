@@ -272,7 +272,9 @@ namespace BlueWP.ATProto
               { "blob",                                    typeof(Blob) },
               { "app.bsky.actor.defs#adultContentPref",    typeof(Lexicons.App.BSky.Actor.Defs.AdultContentPref) },
               { "app.bsky.actor.defs#contentLabelPref",    typeof(Lexicons.App.BSky.Actor.Defs.ContentLabelPref) },
+              { "app.bsky.actor.defs#savedFeed",           typeof(Lexicons.App.BSky.Actor.Defs.SavedFeed) },
               { "app.bsky.actor.defs#savedFeedsPref",      typeof(Lexicons.App.BSky.Actor.Defs.SavedFeedsPref) },
+              { "app.bsky.actor.defs#savedFeedsPrefV2",    typeof(Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2) },
               { "app.bsky.actor.defs#personalDetailsPref", typeof(Lexicons.App.BSky.Actor.Defs.PersonalDetailsPref) },
               { "app.bsky.actor.defs#feedViewPref",        typeof(Lexicons.App.BSky.Actor.Defs.FeedViewPref) },
               { "app.bsky.actor.defs#threadViewPref",      typeof(Lexicons.App.BSky.Actor.Defs.ThreadViewPref) },
@@ -313,6 +315,16 @@ namespace BlueWP.ATProto
               { "com.atproto.repo.uploadBlob",             typeof(Lexicons.COM.ATProto.Repo.UploadBlob) },
               { "com.atproto.server.createSession",        typeof(Lexicons.COM.ATProto.Server.CreateSession) },
               { "com.atproto.server.refreshSession",       typeof(Lexicons.COM.ATProto.Server.RefreshSession) },
+              { "chat.bsky.convo.defs.messageRef",         typeof(Lexicons.Chat.BSky.Convo.Defs.MessageRef) },
+              { "chat.bsky.convo.defs.messageInput",       typeof(Lexicons.Chat.BSky.Convo.Defs.MessageInput) },
+              { "chat.bsky.convo.defs.messageView",        typeof(Lexicons.Chat.BSky.Convo.Defs.MessageView) },
+              { "chat.bsky.convo.defs.messageViewSender",  typeof(Lexicons.Chat.BSky.Convo.Defs.MessageViewSender) },
+              { "chat.bsky.convo.defs.convoView",          typeof(Lexicons.Chat.BSky.Convo.Defs.ConvoView) },
+              { "chat.bsky.convo.getConvo",                typeof(Lexicons.Chat.BSky.Convo.GetConvo) },
+              { "chat.bsky.convo.getMessages",             typeof(Lexicons.Chat.BSky.Convo.GetMessages) },
+              { "chat.bsky.convo.listConvos",              typeof(Lexicons.Chat.BSky.Convo.ListConvos) },
+              { "chat.bsky.convo.sendMessage",             typeof(Lexicons.Chat.BSky.Convo.SendMessage) },
+              { "chat.bsky.convo.updateRead",              typeof(Lexicons.Chat.BSky.Convo.UpdateRead) },
           };
       }
 

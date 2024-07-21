@@ -12,6 +12,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string handle;
       public string displayName;
       public string avatar;
+      public ProfileAssociated associated;
       public object viewer;
       public object labels;
 
@@ -38,6 +39,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string displayName;
       public string description;
       public string avatar;
+      public ProfileAssociated associated;
       public DateTime indexedAt;
       public object viewer;
       public object labels;
@@ -65,6 +67,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string displayName;
       public string description;
       public string avatar;
+      public ProfileAssociated associated;
       public string banner;
       public uint followersCount;
       public uint followsCount;
@@ -87,6 +90,20 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
           return $"@{handle}";
         }
       }
+    }
+
+    public class ProfileAssociated
+    {
+      public int lists;
+      public int feedgens;
+      public int startPacks;
+      public bool labeler;
+      public ProfileAssociatedChat chat;
+    }
+
+    public class ProfileAssociatedChat
+    {
+      public string allowIncoming; // ["all", "none", "following"]
     }
 
     public class ViewerState

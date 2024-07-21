@@ -213,7 +213,16 @@
               <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
             </c:DataTriggerBehavior>
           </i:Interaction.Behaviors>
-          <TextBlock TextAlignment="Center" VerticalAlignment="Center" Foreground="White" TextWrapping="WrapWholeWords" Text="{Binding ErrorText}"/>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*"/>
+              <ColumnDefinition Width="30"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" TextAlignment="Center" VerticalAlignment="Center" Foreground="White" TextWrapping="WrapWholeWords" Text="{Binding ErrorText}"/>
+            <Button Grid.Column="1" Click="CloseErrorPopup_Click" Background="Transparent" VerticalAlignment="Top">
+              <FontIcon Glyph="&#xE711;" FontSize="12" Foreground="white"/>
+            </Button>
+          </Grid>
         </Border>
       </Grid>
     </Canvas>

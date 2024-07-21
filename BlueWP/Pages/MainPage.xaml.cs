@@ -210,6 +210,12 @@ namespace BlueWP.Pages
       ErrorText = error;
     }
 
+    private void CloseErrorPopup_Click(object sender, RoutedEventArgs e)
+    {
+      HasError = false;
+      ErrorText = string.Empty;
+    }
+
     public async void SwitchToProfileInlay(string actorDID)
     {
       if (string.IsNullOrEmpty(actorDID))

@@ -1,23 +1,20 @@
-﻿namespace BlueWP.ATProto.Lexicons.COM.ATProto.Server
+﻿using System.Collections.Specialized;
+
+namespace BlueWP.ATProto.Lexicons.COM.ATProto.Server
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/refreshSession.json"/>
-  public class RefreshSession : ILexicon, ICustomAuthorizationHeaderProvider
+  public class RefreshSession : ILexicon, ICustomHeaderProvider
   {
     public string EndpointID => "com.atproto.server.refreshSession";
 
-    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings)
+    public void SetCustomHeaders(NameValueCollection headers, Settings.AccountSettingsData accountSettings)
     {
-      return $"Bearer {accountSettings.Credentials.RefreshToken}";
+      headers["Authorization"] = $"Bearer {accountSettings.Credentials.RefreshToken}";
     }
   }
-  public class RefreshSessionResponse : ILexicon, ICustomAuthorizationHeaderProvider
+  public class RefreshSessionResponse : ILexicon
   {
     public string EndpointID => "com.atproto.server.refreshSession";
-
-    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings)
-    {
-      return $"Bearer {accountSettings.Credentials.RefreshToken}";
-    }
 
     public string accessJwt;
     public string refreshJwt;

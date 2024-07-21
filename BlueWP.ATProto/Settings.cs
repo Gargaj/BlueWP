@@ -8,7 +8,7 @@ namespace BlueWP.ATProto
 {
   public class Settings
   {
-    private const string _settingsFilename = "settings.dat";
+    private const string _settingsFilename = "bluewp_settings.dat";
     private string _selectedDID;
     private List<AccountSettingsData> _accounts = new List<AccountSettingsData>();
 
@@ -112,11 +112,11 @@ namespace BlueWP.ATProto
 
     public struct CredentialsData
     {
-      public string ServiceHost { get; set; }
       public string DID { get; set; }
       public string Handle { get; set; }
       public string AccessToken { get; set; }
       public string RefreshToken { get; set; }
+      public string Endpoint { get; set; }
     }
 
     public struct PostSettingsData

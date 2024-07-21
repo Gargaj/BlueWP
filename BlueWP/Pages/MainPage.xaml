@@ -114,6 +114,14 @@
         <bwpi:NewPostInlay x:Name="PostInlay" />
       </PivotItem>
 
+      <!-- DMs / Chat -->
+      <PivotItem x:Name="ConvoPivotItem">
+        <PivotItem.Header>
+          <bwpc:FeedPagePivotHeader Glyph="&#xE715;" Label="Messages"/>
+        </PivotItem.Header>
+        <bwpi:ConvoInlay x:Name="ConvoInlay" />
+      </PivotItem>
+
       <!-- Settings -->
       <PivotItem>
         <PivotItem.Header>

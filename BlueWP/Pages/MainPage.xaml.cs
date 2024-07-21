@@ -172,6 +172,12 @@ namespace BlueWP.Pages
         threadInlay.PostURI = _threadPostURI;
         await threadInlay.Refresh();
       }
+
+      var convoInlay = args.Item.ContentTemplateRoot as Inlays.ConvoInlay;
+      if (convoInlay != null)
+      {
+        await convoInlay.Refresh();
+      }
     }
 
     private void Main_PivotItemUnloading(Pivot sender, PivotItemEventArgs args)
@@ -185,6 +191,11 @@ namespace BlueWP.Pages
       if (threadInlay != null)
       {
         threadInlay.Flush();
+      }
+      var convoInlay = args.Item.ContentTemplateRoot as Inlays.ConvoInlay;
+      if (convoInlay != null)
+      {
+        convoInlay.Flush();
       }
     }
 

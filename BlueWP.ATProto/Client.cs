@@ -27,7 +27,7 @@ namespace BlueWP.ATProto
 
     public Settings Settings => _settings;
     public Settings.AccountSettingsData CurrentAccountSettings => Settings.CurrentAccountSettings;
-    private string CurrentHost { get { return _hostOverride ?? CurrentAccountSettings?.Credentials.ServiceHost; } }
+    private string CurrentEndpoint { get { return !string.IsNullOrEmpty(_hostOverride) ? $"https://{_hostOverride}" : CurrentAccountSettings?.Credentials.Endpoint; } }
 
     public async Task<bool> Authenticate()
     {
@@ -63,16 +63,18 @@ namespace BlueWP.ATProto
       }
       _hostOverride = null;
 
+      var didDoc = (response?.didDoc as Newtonsoft.Json.Linq.JObject).ToObject<Lexicons.COM.ATProto.Server.DIDDoc>();
+
       // TODO: check if account already exists in the db
       var credentials = new Settings.AccountSettingsData()
       {
         Credentials = new Settings.CredentialsData()
         {
-          ServiceHost = host,
           DID = response.did,
           Handle = response.handle,
           AccessToken = response.accessJwt,
           RefreshToken = response.refreshJwt,
+          Endpoint = didDoc?.service?.FirstOrDefault()?.serviceEndpoint ?? $"https://{host}",
         }
       };
 
@@ -97,7 +99,7 @@ namespace BlueWP.ATProto
 
     protected async Task<T> RequestAsync<T>(string method, ILexicon input) where T : ILexicon
     {
-      if (string.IsNullOrEmpty(CurrentHost))
+      if (string.IsNullOrEmpty(CurrentEndpoint))
       {
         throw new ArgumentException();
       }
@@ -113,19 +115,11 @@ namespace BlueWP.ATProto
         headers["Content-Type"] = rawPost.MimeType;
       }
 
-      if (input as ICustomAuthorizationHeaderProvider != null)
-      {
-        string header = (input as ICustomAuthorizationHeaderProvider).GetAuthorizationHeader(_settings.CurrentAccountSettings);
-        if (!string.IsNullOrEmpty(header))
-        {
-          headers["Authorization"] = header;
-        }
-      }
-      else
-      {
-        headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
-      }
-      var url = $"https://{CurrentHost}/xrpc/{input.EndpointID}";
+      headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
+
+      (input as ICustomHeaderProvider)?.SetCustomHeaders(headers, _settings.CurrentAccountSettings);
+
+      var url = $"{CurrentEndpoint}/xrpc/{input.EndpointID}";
       string responseJson = null;
       string bodyJson = string.Empty;
       try

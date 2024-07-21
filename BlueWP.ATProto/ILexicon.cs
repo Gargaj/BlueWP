@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Specialized;
 
 namespace BlueWP.ATProto
 {
@@ -16,8 +17,8 @@ namespace BlueWP.ATProto
     string MimeType { get; set; }
   }
 
-  public interface ICustomAuthorizationHeaderProvider
+  public interface ICustomHeaderProvider
   {
-    string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings);
+    void SetCustomHeaders(NameValueCollection headers, Settings.AccountSettingsData accountSettings);
   }
 }

@@ -153,6 +153,9 @@
     <Compile Include="Inlays\NewPostInlay.xaml.cs">
       <DependentUpon>NewPostInlay.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Inlays\ConvoInlay.xaml.cs">
+      <DependentUpon>ConvoInlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Inlays\NotificationsInlay.xaml.cs">
       <DependentUpon>NotificationsInlay.xaml</DependentUpon>
     </Compile>
@@ -225,6 +228,10 @@
     <Page Include="Inlays\NewPostInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inlays\ConvoInlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Inlays\NotificationsInlay.xaml">
       <SubType>Designer</SubType>

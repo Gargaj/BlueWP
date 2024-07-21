@@ -1,19 +1,24 @@
-﻿namespace BlueWP.ATProto.Lexicons.COM.ATProto.Server
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+
+namespace BlueWP.ATProto.Lexicons.COM.ATProto.Server
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/com/atproto/server/createSession.json"/>
-  public class CreateSession : ILexicon, ICustomAuthorizationHeaderProvider
+  public class CreateSession : ILexicon, ICustomHeaderProvider
   {
     public string EndpointID => "com.atproto.server.createSession";
-    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings) { return string.Empty; }
+    public void SetCustomHeaders(NameValueCollection headers, Settings.AccountSettingsData accountSettings)
+    {
+      headers.Remove("Authorization");
+    }
 
     public string identifier;
     public string password;
 
   }
-  public class CreateSessionResponse : ILexicon, ICustomAuthorizationHeaderProvider
+  public class CreateSessionResponse : ILexicon
   {
     public string EndpointID => "com.atproto.server.createSession";
-    public string GetAuthorizationHeader(Settings.AccountSettingsData accountSettings) { return string.Empty; }
 
     public string accessJwt;
     public string refreshJwt;
@@ -22,5 +27,29 @@
     public object didDoc;
     public string email;
     public bool emailConfirmed;
+    public bool emailAuthFactor;
+    public bool active;
+    public string status;
+  }
+
+  public class DIDDoc
+  {
+    public class VerificationMethod
+    {
+      public string id;
+      public string type;
+      public string controller;
+      public string publicKeyMultibase;
+    }
+    public class Service
+    {
+      public string id;
+      public string type;
+      public string serviceEndpoint;
+    }
+    public string id;
+    public List<string> alsoKnownAs;
+    public List<VerificationMethod> verificationMethod;
+    public List<Service> service;
   }
 }

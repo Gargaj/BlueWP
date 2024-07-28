@@ -16,13 +16,13 @@
   <Page.Resources>
     <ResourceDictionary>
       <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/Styles/FeedPagePivotStyle.xaml"/>
+        <ResourceDictionary Source="/Styles/MainPagePivotStyle.xaml"/>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>
   </Page.Resources>
 
   <Grid>
-    <Pivot x:Name="MainMenu" Style="{StaticResource FeedPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading" PivotItemUnloaded="Main_PivotItemUnloading">
+    <Pivot x:Name="MainMenu" Style="{StaticResource MainPagePivotStyle}" PivotItemLoading="Main_PivotItemLoading" PivotItemUnloaded="Main_PivotItemUnloading">
       <Pivot.Resources>
         <Style TargetType="PivotHeaderItem">
           <Setter Property="Margin" Value="0"/>
@@ -33,7 +33,7 @@
       <!-- Home -->
       <PivotItem>
         <PivotItem.Header>
-          <bwpc:FeedPagePivotHeader Glyph="&#xE80F;" Label="Home"/>
+          <bwpc:MainPagePivotHeader Glyph="&#xE80F;" Label="Home"/>
         </PivotItem.Header>
         <PivotItem.Style>
           <Style TargetType="PivotItem">
@@ -74,7 +74,7 @@
       <PivotItem>
         <PivotItem.Header>
           <Grid>
-            <bwpc:FeedPagePivotHeader Glyph="&#xEA8F;" Label="Notifications"/>
+            <bwpc:MainPagePivotHeader Glyph="&#xEA8F;" Label="Notifications"/>
 
             <!-- Unread count notifier -->
             <Canvas Visibility="{Binding UnreadCountVisibility}">
@@ -109,7 +109,7 @@
       <!-- Post -->
       <PivotItem x:Name="PostPivotItem">
         <PivotItem.Header>
-          <bwpc:FeedPagePivotHeader Glyph="&#xE70F;" Label="Post"/>
+          <bwpc:MainPagePivotHeader Glyph="&#xE70F;" Label="Post"/>
         </PivotItem.Header>
         <bwpi:NewPostInlay x:Name="PostInlay" />
       </PivotItem>
@@ -117,7 +117,7 @@
       <!-- DMs / Chat -->
       <PivotItem x:Name="ConvoPivotItem">
         <PivotItem.Header>
-          <bwpc:FeedPagePivotHeader Glyph="&#xE715;" Label="Messages"/>
+          <bwpc:MainPagePivotHeader Glyph="&#xE715;" Label="Messages"/>
         </PivotItem.Header>
         <bwpi:ConvoInlay x:Name="ConvoInlay" />
       </PivotItem>
@@ -125,7 +125,7 @@
       <!-- Settings -->
       <PivotItem>
         <PivotItem.Header>
-          <bwpc:FeedPagePivotHeader Glyph="&#xE713;" Label="Settings"/>
+          <bwpc:MainPagePivotHeader Glyph="&#xE713;" Label="Settings"/>
         </PivotItem.Header>
         <bwpi:SettingsInlay />
       </PivotItem>
@@ -162,7 +162,7 @@
     <!-- modals -->
     <Canvas x:Name="RootCanvas">
 
-      <!-- progress spinner -->
+      <!-- image viewer -->
       <Grid Width="{Binding ActualWidth, ElementName=RootCanvas}" 
             Height="{Binding ActualHeight, ElementName=RootCanvas}"
             HorizontalAlignment="Center"

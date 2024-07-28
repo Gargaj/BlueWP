@@ -130,8 +130,8 @@
     <Compile Include="Controls\Post\EmbedExternal.xaml.cs">
       <DependentUpon>EmbedExternal.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\FeedPagePivotHeader.xaml.cs">
-      <DependentUpon>FeedPagePivotHeader.xaml</DependentUpon>
+    <Compile Include="Controls\MainPagePivotHeader.xaml.cs">
+      <DependentUpon>MainPagePivotHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\Post\ImageGallery.xaml.cs">
       <DependentUpon>ImageGallery.xaml</DependentUpon>
@@ -201,7 +201,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\FeedPagePivotHeader.xaml">
+    <Page Include="Controls\MainPagePivotHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -257,7 +257,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Styles\FeedPagePivotStyle.xaml">
+    <Page Include="Styles\MainPagePivotStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -9,7 +9,7 @@
     </Grid>
   </ControlTemplate>
   
-  <Style x:Key="FeedPagePivotStyle" TargetType="Pivot">
+  <Style x:Key="MainPagePivotStyle" TargetType="Pivot">
     <Setter Property="Margin" Value="0"/>
     <Setter Property="Padding" Value="0"/>
     <Setter Property="Background" Value="{ThemeResource PivotBackground}"/>

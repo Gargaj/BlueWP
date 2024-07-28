@@ -134,7 +134,7 @@ namespace BlueWP.Inlays
       OnPropertyChanged(nameof(ImageAttachments));
     }
 
-    private async void SelectLanguage_Click(object sender, RoutedEventArgs args)
+    private void SelectLanguage_Click(object sender, RoutedEventArgs args)
     {
       var element = sender as FrameworkElement;
       if (element != null)

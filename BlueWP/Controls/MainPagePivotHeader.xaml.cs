@@ -3,15 +3,15 @@ using Windows.UI.Xaml.Controls;
 
 namespace BlueWP.Controls
 {
-  public sealed partial class FeedPagePivotHeader : UserControl
+  public sealed partial class MainPagePivotHeader : UserControl
   {
-    public FeedPagePivotHeader()
+    public MainPagePivotHeader()
     {
       InitializeComponent();
       DataContext = this;
     }
 
-    public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register("Glyph", typeof(string), typeof(FeedPagePivotHeader), null);
+    public static readonly DependencyProperty GlyphProperty = DependencyProperty.Register("Glyph", typeof(string), typeof(MainPagePivotHeader), null);
 
     public string Glyph
     {
@@ -19,7 +19,7 @@ namespace BlueWP.Controls
       set { SetValue(GlyphProperty, value); }
     }
 
-    public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(FeedPagePivotHeader), null);
+    public static readonly DependencyProperty LabelProperty = DependencyProperty.Register("Label", typeof(string), typeof(MainPagePivotHeader), null);
 
     public string Label
     {

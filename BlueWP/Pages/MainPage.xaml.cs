@@ -183,6 +183,7 @@ namespace BlueWP.Pages
       var convoInlay = args.Item.ContentTemplateRoot as Inlays.ConvoInlay;
       if (convoInlay != null)
       {
+        convoInlay.ID = _convoID;
         await convoInlay.Refresh();
       }
     }

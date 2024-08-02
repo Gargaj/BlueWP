@@ -46,8 +46,11 @@ namespace BlueWP.Inlays
 
     public async Task Refresh()
     {
+      if (string.IsNullOrEmpty(ID))
+      {
+        return;
+      }
       _mainPage?.StartLoading();
-      await Update();
 
       var responseConvo = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.GetConvoResponse>(new ATProto.Lexicons.Chat.BSky.Convo.GetConvo()
       {
@@ -59,6 +62,8 @@ namespace BlueWP.Inlays
         ChatName = string.Join(", ", _convoInfo.members.Select(m => m.DisplayName));
         OnPropertyChanged(nameof(ChatName));
       }
+
+      await Update();
 
       _mainPage?.EndLoading();
 
@@ -85,7 +90,7 @@ namespace BlueWP.Inlays
 
     private void AddNewMessages(IEnumerable<object> messageBurst)
     {
-      var newMessages = messageBurst.Select(s => s as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView).Where(s => s != null);
+      var newMessages = messageBurst.Select(s => s as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView).Where(s => s != null && !Messages.Any(m=>m.ID == s.id));
       if (!newMessages.Any())
       {
         return;
@@ -126,6 +131,7 @@ namespace BlueWP.Inlays
       if (response != null)
       {
         MessageText = string.Empty;
+        OnPropertyChanged(nameof(MessageText));
         AddNewMessages(new List<object>() { response });
       }
     }

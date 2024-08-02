@@ -27,7 +27,7 @@
             <!-- sender -->
 
             <StackPanel Orientation="Horizontal">
-              <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top">
+              <Image Grid.Column="0" Width="16" Height="16" VerticalAlignment="Top" Margin="0,0,5,0">
                 <Image.Source>
                   <BitmapImage UriSource="{Binding SenderAvatarURL}"/>
                 </Image.Source>
@@ -39,7 +39,7 @@
             </StackPanel>
 
             <!-- message -->
-            <TextBlock Text="{Binding Text}" Margin="10,0,0,0"/>
+            <TextBlock Text="{Binding Text}" Margin="10,0,0,0" TextWrapping="WrapWholeWords"/>
             
             <!-- TODO: reactions-->
             

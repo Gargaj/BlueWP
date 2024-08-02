@@ -21,6 +21,7 @@ namespace BlueWP.Pages
     private List<object> _preferences;
     private string _profileActorDID;
     private string _threadPostURI;
+    private string _convoID;
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2 _savedFeedsPrefV2;
     private DispatcherTimer _notificationsTimer = new DispatcherTimer();
     private string _zoomedImageURL;
@@ -173,6 +174,12 @@ namespace BlueWP.Pages
         await threadInlay.Refresh();
       }
 
+      var convoListInlay = args.Item.ContentTemplateRoot as Inlays.ConvoListInlay;
+      if (convoListInlay != null)
+      {
+        await convoListInlay.Refresh();
+      }
+
       var convoInlay = args.Item.ContentTemplateRoot as Inlays.ConvoInlay;
       if (convoInlay != null)
       {
@@ -191,6 +198,11 @@ namespace BlueWP.Pages
       if (threadInlay != null)
       {
         threadInlay.Flush();
+      }
+      var convoListInlay = args.Item.ContentTemplateRoot as Inlays.ConvoListInlay;
+      if (convoListInlay != null)
+      {
+        convoListInlay.Flush();
       }
       var convoInlay = args.Item.ContentTemplateRoot as Inlays.ConvoInlay;
       if (convoInlay != null)
@@ -270,6 +282,29 @@ namespace BlueWP.Pages
       else
       {
         MainMenu.SelectedItem = ThreadPivotItem;
+      }
+    }
+
+    public async Task SwitchToConvoInlay(string convoID)
+    {
+      if (string.IsNullOrEmpty(convoID))
+      {
+        return;
+      }
+      _convoID = convoID;
+      if (MainMenu.SelectedItem == ConvoPivotItem)
+      {
+        var convoInlay = ConvoPivotItem.ContentTemplateRoot as Inlays.ConvoInlay;
+        if (convoInlay != null)
+        {
+          convoInlay.Flush();
+          convoInlay.ID = convoID;
+          await convoInlay.Refresh();
+        }
+      }
+      else
+      {
+        MainMenu.SelectedItem = ConvoPivotItem;
       }
     }
 

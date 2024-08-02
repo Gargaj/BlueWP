@@ -147,14 +147,17 @@
       <DependentUpon>PostQuoted.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\ThreadPostTemplateSelector.cs" />
+    <Compile Include="Inlays\ConvoInlay.xaml.cs">
+      <DependentUpon>ConvoInlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Inlays\FeedInlay.xaml.cs">
       <DependentUpon>FeedInlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Inlays\NewPostInlay.xaml.cs">
       <DependentUpon>NewPostInlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Inlays\ConvoInlay.xaml.cs">
-      <DependentUpon>ConvoInlay.xaml</DependentUpon>
+    <Compile Include="Inlays\ConvoListInlay.xaml.cs">
+      <DependentUpon>ConvoListInlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Inlays\NotificationsInlay.xaml.cs">
       <DependentUpon>NotificationsInlay.xaml</DependentUpon>
@@ -221,6 +224,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Inlays\ConvoInlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Inlays\FeedInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -229,7 +236,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Inlays\ConvoInlay.xaml">
+    <Page Include="Inlays\ConvoListInlay.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

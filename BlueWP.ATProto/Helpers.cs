@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace BlueWP.ATProto
@@ -43,7 +42,8 @@ namespace BlueWP.ATProto
       {
         if (!repo.StartsWith("did:"))
         {
-          var response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new Lexicons.COM.ATProto.Identity.ResolveHandle() {
+          var response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
+          {
             handle = repo
           });
           repo = response.did;
@@ -76,6 +76,94 @@ namespace BlueWP.ATProto
         return dateTime.ToString("MMM d");
       }
       return "'" + dateTime.ToString("yy MMM d");
+    }
+
+    public static uint ConvertCharacterPositionToBytePositionInString(string s, int characterPosition)
+    {
+      return (uint)System.Text.Encoding.UTF8.GetBytes(s.Substring(0, characterPosition)).Length;
+    }
+
+    public static async Task<List<Lexicons.App.BSky.RichText.Facet>> ParseTextForFacets(Client client, string postText)
+    {
+      var results = new List<Lexicons.App.BSky.RichText.Facet>();
+
+      // regex based on: https://atproto.com/specs/handle#handle-identifier-syntax
+      // but with added "?:"-s to not capture stuff that shouldnt be
+      var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
+      await FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
+      {
+        Lexicons.COM.ATProto.Identity.ResolveHandleResponse response = null;
+        try
+        {
+          response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
+          {
+            handle = matchText.Substring(1) // chop off @
+          });
+        }
+        catch (Exception)
+        {
+          return;
+        }
+        if (response != null)
+        {
+          facet.features = new List<object>()
+              {
+              new Lexicons.App.BSky.RichText.Facet.Mention()
+              {
+                did = response.did,
+              }
+              };
+        }
+      });
+
+      var linkRegex = new Regex(@"[$|\W](https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)");
+      await FindFacet(postText, results, linkRegex, async (facet, matchText) =>
+      {
+        facet.features = new List<object>()
+            {
+            new Lexicons.App.BSky.RichText.Facet.Link()
+            {
+              uri = matchText
+            }
+            };
+      });
+
+      var hashtagRegex = new Regex(@"(#\w+)");
+      await FindFacet(postText, results, hashtagRegex, async (facet, matchText) =>
+      {
+        facet.features = new List<object>()
+            {
+            new Lexicons.App.BSky.RichText.Facet.Tag()
+            {
+              tag = matchText.Substring(1)
+            }
+            };
+      });
+
+      return results.Count == 0 ? null : results;
+    }
+
+    public static async Task FindFacet(string postText, List<Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Func<Lexicons.App.BSky.RichText.Facet, string, Task> perform)
+    {
+      var matches = regex.Matches(postText);
+      if (matches.Count <= 0)
+      {
+        return;
+      }
+      foreach (Match m in matches)
+      {
+        var facet = new Lexicons.App.BSky.RichText.Facet();
+
+        var group = m.Groups[1];
+        await perform(facet, group.Value.ToString());
+
+        facet.index = new Lexicons.App.BSky.RichText.Facet.ByteSlice()
+        {
+          byteStart = ConvertCharacterPositionToBytePositionInString(postText, group.Index),
+          byteEnd = ConvertCharacterPositionToBytePositionInString(postText, group.Index + group.Length),
+        };
+        facets.Add(facet);
+      }
     }
   }
 }

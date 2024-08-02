@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Graphics.Imaging;
 using Windows.Storage;
@@ -197,7 +196,7 @@ namespace BlueWP.Inlays
       };
 
       // Post facets (handles, hashtags, etc.)
-      post.facets = await ParseTextForFacets(PostText);
+      post.facets = await ATProto.Helpers.ParseTextForFacets(_app.Client, PostText);
 
       // Language
       post.langs = new List<string>() { SelectedLanguage };
@@ -306,86 +305,6 @@ namespace BlueWP.Inlays
         RemoveQuote();
 
         await _mainPage.SwitchToThreadViewInlay(response.uri);
-      }
-    }
-
-    private uint ConvertCharacterPositionToBytePositionInString(string s, int characterPosition)
-    {
-      return (uint)System.Text.Encoding.UTF8.GetBytes(s.Substring(0, characterPosition)).Length;
-    }
-
-    private async Task<List<ATProto.Lexicons.App.BSky.RichText.Facet>> ParseTextForFacets(string postText)
-    {
-      var results = new List<ATProto.Lexicons.App.BSky.RichText.Facet>();
-
-      // regex based on: https://atproto.com/specs/handle#handle-identifier-syntax
-      // but with added "?:"-s to not capture stuff that shouldnt be
-      var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
-      await FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
-      {
-        var response = await _mainPage.Get<ATProto.Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new ATProto.Lexicons.COM.ATProto.Identity.ResolveHandle()
-        {
-          handle = matchText.Substring(1) // chop off @
-        });
-        if (response != null)
-        {
-          facet.features = new List<object>()
-            {
-              new ATProto.Lexicons.App.BSky.RichText.Facet.Mention()
-              {
-                did = response.did,
-              }
-            };
-        }
-      });
-
-      var linkRegex = new Regex(@"[$|\W](https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*[-a-zA-Z0-9@%_\+~#//=])?)");
-      await FindFacet(postText, results, linkRegex, async (facet, matchText) =>
-      {
-        facet.features = new List<object>()
-          {
-            new ATProto.Lexicons.App.BSky.RichText.Facet.Link()
-            {
-              uri = matchText
-            }
-          };
-      });
-
-      var hashtagRegex = new Regex(@"(#\w+)");
-      await FindFacet(postText, results, hashtagRegex, async (facet, matchText) =>
-      {
-        facet.features = new List<object>()
-          {
-            new ATProto.Lexicons.App.BSky.RichText.Facet.Tag()
-            {
-              tag = matchText.Substring(1)
-            }
-          };
-      });
-
-      return results.Count == 0 ? null : results;
-    }
-
-    private async Task FindFacet(string postText, List<ATProto.Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Func<ATProto.Lexicons.App.BSky.RichText.Facet, string, Task> perform)
-    {
-      var matches = regex.Matches(postText);
-      if (matches.Count <= 0)
-      {
-        return;
-      }
-      foreach (Match m in matches)
-      {
-        var facet = new ATProto.Lexicons.App.BSky.RichText.Facet();
-
-        var group = m.Groups[1];
-        await perform(facet, group.Value.ToString());
-
-        facet.index = new ATProto.Lexicons.App.BSky.RichText.Facet.ByteSlice()
-        {
-          byteStart = ConvertCharacterPositionToBytePositionInString(postText, group.Index),
-          byteEnd = ConvertCharacterPositionToBytePositionInString(postText, group.Index + group.Length),
-        };
-        facets.Add(facet);
       }
     }
 

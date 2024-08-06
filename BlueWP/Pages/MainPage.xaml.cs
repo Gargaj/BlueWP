@@ -17,6 +17,7 @@ namespace BlueWP.Pages
     private bool _hasError = false;
     private string _errorText = string.Empty;
     private int _unreadCount = 0;
+    private int _unreadConvoCount = 0;
     private List<Feed> _feeds = null;
     private List<object> _preferences;
     private string _profileActorDID;
@@ -44,6 +45,8 @@ namespace BlueWP.Pages
     public string ErrorText { get { return _errorText; } set { _errorText = value; OnPropertyChanged(nameof(ErrorText)); } }
     public int UnreadNotificationCount { get { return _unreadCount; } set { _unreadCount = value; OnPropertyChanged(nameof(UnreadNotificationCount)); OnPropertyChanged(nameof(UnreadCountVisibility)); } }
     public Visibility UnreadCountVisibility { get { return _unreadCount > 0 ? Visibility.Visible : Visibility.Collapsed; } }
+    public int UnreadConvoNotificationCount { get { return _unreadConvoCount; } set { _unreadConvoCount = value; OnPropertyChanged(nameof(UnreadConvoNotificationCount)); OnPropertyChanged(nameof(UnreadConvoNotificationCountVisibility)); } }
+    public Visibility UnreadConvoNotificationCountVisibility { get { return _unreadConvoCount > 0 ? Visibility.Visible : Visibility.Collapsed; } }
     public List<Feed> Feeds { get { return _feeds; } }
 
     public string ZoomedImageURL
@@ -67,7 +70,7 @@ namespace BlueWP.Pages
       EndLoading();
 
       _notificationsTimer.Start();
-      await RefreshNotificationCounter(); // Start() doesn't trigger immediately
+      await RefreshNotificationCounters(); // Start() doesn't trigger immediately
 
       if (e.Parameter != null && e.Parameter is string)
       {
@@ -140,15 +143,23 @@ namespace BlueWP.Pages
 
     private async void RefreshNotifications_Timer(object sender, object o)
     {
-      await RefreshNotificationCounter();
+      await RefreshNotificationCounters();
     }
 
-    public async Task RefreshNotificationCounter()
+    public async Task RefreshNotificationCounters()
     {
       var unreadCountResponse = await Get<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
       if (unreadCountResponse != null)
       {
         UnreadNotificationCount = (int)unreadCountResponse.count;
+      }
+
+      var convoUnreadCountResponse = await Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvosResponse>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos() {
+        limit = 1
+      });
+      if (convoUnreadCountResponse != null)
+      {
+        UnreadConvoNotificationCount = convoUnreadCountResponse.convos.Sum(s => s.unreadCount);
       }
     }
 

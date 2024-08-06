@@ -100,7 +100,7 @@ namespace BlueWP.Inlays
       }
 
       _app.Client.Settings.SelectedDID = dataContext.DID;
-      await _mainPage.RefreshNotificationCounter();
+      await _mainPage.RefreshNotificationCounters();
       _mainPage.SwitchToProfileInlay(dataContext.DID);
     }
 

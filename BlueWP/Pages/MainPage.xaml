@@ -78,18 +78,6 @@
 
             <!-- Unread count notifier -->
             <Canvas Visibility="{Binding UnreadCountVisibility}">
-              <!--
-              No idea why this didn't work, cos it works with HasError...?!
-              
-              <i:Interaction.Behaviors>
-                <c:DataTriggerBehavior Binding="{Binding HasUnreadNotifications}" Value="True">
-                  <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                </c:DataTriggerBehavior>
-                <c:DataTriggerBehavior Binding="{Binding HasUnreadNotifications}" Value="False">
-                  <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                </c:DataTriggerBehavior>
-              </i:Interaction.Behaviors>
-              -->
               <Border Canvas.Left="60" Canvas.Top="12" Background="Red" Width="16" Height="16" CornerRadius="8">
                 <TextBlock Text="{Binding UnreadNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
               </Border>
@@ -117,7 +105,17 @@
       <!-- DMs / Chat -->
       <PivotItem x:Name="ConvoListPivotItem">
         <PivotItem.Header>
-          <bwpc:MainPagePivotHeader Glyph="&#xE715;" Label="Messages"/>
+          <Grid>
+            <bwpc:MainPagePivotHeader Glyph="&#xE715;" Label="Messages"/>
+
+            <!-- Unread count notifier -->
+            <Canvas Visibility="{Binding UnreadConvoNotificationCountVisibility}">
+              <Border Canvas.Left="50" Canvas.Top="12" Background="Red" Width="16" Height="16" CornerRadius="8">
+                <TextBlock Text="{Binding UnreadConvoNotificationCount}" TextAlignment="Center" Foreground="White" FontSize="10"/>
+              </Border>
+            </Canvas>
+
+          </Grid>
         </PivotItem.Header>
         <bwpi:ConvoListInlay x:Name="ConvoListInlay" />
       </PivotItem>

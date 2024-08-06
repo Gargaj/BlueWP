@@ -106,7 +106,7 @@ namespace BlueWP.Inlays
           SenderAvatarURL = _convoInfo.members.FirstOrDefault(s=>s.did == message?.sender?.did)?.avatar,
           SenderName = _convoInfo.members.FirstOrDefault(s => s.did == message?.sender?.did)?.DisplayName,
           Text = message?.text,
-          Timestamp = message?.sentAt
+          Timestamp = message?.sentAt.ToLocalTime()
         });
       }
 

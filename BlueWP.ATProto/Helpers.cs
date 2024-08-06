@@ -54,7 +54,7 @@ namespace BlueWP.ATProto
     }
     public static string ToElapsedTime(DateTime dateTime)
     {
-      var timespan = DateTime.Now - dateTime;
+      var timespan = DateTime.Now - dateTime.ToLocalTime();
       if (timespan.TotalSeconds < 60)
       {
         return timespan.ToString("%s") + "s";
@@ -73,9 +73,9 @@ namespace BlueWP.ATProto
       }
       if (dateTime.Year == DateTime.Now.Year)
       {
-        return dateTime.ToString("MMM d");
+        return dateTime.ToLocalTime().ToString("MMM d");
       }
-      return "'" + dateTime.ToString("yy MMM d");
+      return "'" + dateTime.ToLocalTime().ToString("yy MMM d");
     }
 
     public static uint ConvertCharacterPositionToBytePositionInString(string s, int characterPosition)

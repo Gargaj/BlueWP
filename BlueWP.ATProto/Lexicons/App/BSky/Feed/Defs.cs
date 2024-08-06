@@ -33,7 +33,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);
       public string PostText => (record as Post)?.text ?? "[ERROR]";
       public string PostURI => uri;
-      public string PostDateTime => indexedAt.ToString("MMM d, yyyy") + " at " + indexedAt.ToString("HH:mm");
+      public string PostDateTime => indexedAt.ToLocalTime().ToString("MMM d, yyyy") + " at " + indexedAt.ToLocalTime().ToString("HH:mm");
 
       public uint ReplyCount => replyCount ?? 0;
       public uint RepostCount => repostCount ?? 0;

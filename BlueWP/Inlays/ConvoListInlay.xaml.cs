@@ -41,7 +41,10 @@ namespace BlueWP.Inlays
       });
       if (response != null)
       {
-        Convos = response.convos.Select(s => new Convo() { ConvoView = s }).ToList();
+        Convos = response.convos.Select(s => new Convo() {
+          ConvoView = s,
+          CurrentUserDID = _app.Client.DID
+        }).ToList();
         OnPropertyChanged(nameof(Convos));
       }
 
@@ -51,10 +54,11 @@ namespace BlueWP.Inlays
     public class Convo
     {
       public ATProto.Lexicons.Chat.BSky.Convo.Defs.ConvoView ConvoView { get; set; }
+      public string CurrentUserDID { get; set; }
 
       public string ID => ConvoView.id;
-      public string PartnerAvatarURL => ConvoView.members.FirstOrDefault().avatar;
-      public string PartnerNames => string.Join(", ", ConvoView.members.Select(s => s.DisplayName));
+      public string PartnerAvatarURL => ConvoView.members.Where(s=>s.did != CurrentUserDID).FirstOrDefault().avatar;
+      public string PartnerNames => string.Join(", ", ConvoView.members.Where(s => s.did != CurrentUserDID).Select(s => s.DisplayName));
       public string LastMessage => (ConvoView.lastMessage as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView)?.text ?? string.Empty;
       public bool IsRead => ConvoView.unreadCount == 0;
     }

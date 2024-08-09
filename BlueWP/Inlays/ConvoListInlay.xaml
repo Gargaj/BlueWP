@@ -13,38 +13,45 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-  <ListView ItemsSource="{Binding Convos}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
-    <ListView.ItemTemplate>
-      <DataTemplate>
-        <StackPanel Orientation="Horizontal">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="32"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+    <TextBlock Grid.Row="0" Text="Messages" FontSize="20"/>
+    <ListView Grid.Row="1" ItemsSource="{Binding Convos}" IsItemClickEnabled="True" ItemClick="ListView_ItemClick">
+      <ListView.ItemTemplate>
+        <DataTemplate>
+          <StackPanel Orientation="Horizontal">
           
-          <!-- big avatar -->
-          <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
-            <Image.Source>
-              <BitmapImage UriSource="{Binding PartnerAvatarURL}"/>
-            </Image.Source>
-          </Image>
+            <!-- big avatar -->
+            <Image Grid.Column="0" Width="32" Height="32" VerticalAlignment="Top" Margin="0,0,5,0">
+              <Image.Source>
+                <BitmapImage UriSource="{Binding PartnerAvatarURL}"/>
+              </Image.Source>
+            </Image>
           
-          <StackPanel Orientation="Vertical">
-            <!-- names -->
-            <TextBlock Text="{Binding PartnerNames}" FontWeight="Bold"/>
+            <StackPanel Orientation="Vertical">
+              <!-- names -->
+              <TextBlock Text="{Binding PartnerNames}" FontWeight="Bold"/>
 
-            <!-- message preview -->
-            <TextBlock Text="{Binding LastMessage}" FontSize="10">
-              <i:Interaction.Behaviors>
-                <c:DataTriggerBehavior Binding="{Binding IsRead}" Value="True">
-                  <c:ChangePropertyAction PropertyName="Opacity" Value="0.5" />
-                </c:DataTriggerBehavior>
-                <c:DataTriggerBehavior Binding="{Binding IsRead}" Value="False">
-                  <c:ChangePropertyAction PropertyName="Opacity" Value="1.0" />
-                </c:DataTriggerBehavior>
-              </i:Interaction.Behaviors>
-            </TextBlock>
+              <!-- message preview -->
+              <TextBlock Text="{Binding LastMessage}" FontSize="10">
+                <i:Interaction.Behaviors>
+                  <c:DataTriggerBehavior Binding="{Binding IsRead}" Value="True">
+                    <c:ChangePropertyAction PropertyName="Opacity" Value="0.5" />
+                  </c:DataTriggerBehavior>
+                  <c:DataTriggerBehavior Binding="{Binding IsRead}" Value="False">
+                    <c:ChangePropertyAction PropertyName="Opacity" Value="1.0" />
+                  </c:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
+              </TextBlock>
             
-          </StackPanel>
+            </StackPanel>
           
-        </StackPanel>
-      </DataTemplate>
-    </ListView.ItemTemplate>
-  </ListView>
+          </StackPanel>
+        </DataTemplate>
+      </ListView.ItemTemplate>
+    </ListView>
+  </Grid>
 </UserControl>

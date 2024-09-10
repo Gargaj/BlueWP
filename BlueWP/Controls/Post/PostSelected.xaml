@@ -69,7 +69,7 @@
         </local:ImageGallery>
 
         <!-- video block -->
-        <MediaPlayerElement Loaded="MediaPlayerElement_Loaded" HorizontalAlignment="Stretch" Height="600" AreTransportControlsEnabled="True">
+        <MediaPlayerElement Loaded="MediaPlayerElement_Loaded" HorizontalAlignment="Stretch" Height="{Binding VideoHeight}" AreTransportControlsEnabled="True">
           <i:Interaction.Behaviors>
             <c:DataTriggerBehavior Binding="{Binding HasVideo}" Value="True">
               <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />

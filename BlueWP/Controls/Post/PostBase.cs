@@ -19,6 +19,7 @@ namespace BlueWP.Controls.Post
       _app = (App)Application.Current;
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
       Loaded += PostBase_Loaded;
+      LayoutUpdated += PostBase_LayoutUpdated;
     }
 
     protected void PostBase_Loaded(object sender, RoutedEventArgs e)
@@ -51,9 +52,23 @@ namespace BlueWP.Controls.Post
     public IEnumerable<ATProto.Lexicons.App.BSky.Embed.Images.ViewImage> PostImages => PostView?.PostImages;
     public ATProto.Lexicons.App.BSky.Embed.External.View PostEmbedExternal => PostView?.PostEmbedExternal;
     public ATProto.Lexicons.App.BSky.Embed.Record.ViewRecord QuotedPost => PostView?.QuotedPost;
+    public ATProto.Lexicons.App.BSky.Embed.Video.View PostVideo => PostView?.PostVideo;
 
     public string PostReason => FeedViewPost?.PostReason;
     public string PostReplyTo => FeedViewPost?.PostReplyTo;
+    public int VideoHeight
+    {
+      get
+      {
+        if (PostVideo == null)
+        {
+          return 100;
+        }
+        int height = (int)(ActualWidth * PostVideo.aspectRatio.height / PostVideo.aspectRatio.width);
+        height = Math.Min(height, 400);
+        return height;
+      }
+    }
 
     public ATProto.IPost PostData
     {
@@ -86,8 +101,9 @@ namespace BlueWP.Controls.Post
         post.OnPropertyChanged(nameof(IsReply));
         post.OnPropertyChanged(nameof(HasQuotedPost));
         post.OnPropertyChanged(nameof(HasEmbedExternal));
-        post.OnPropertyChanged(nameof(HasVideo));
         post.OnPropertyChanged(nameof(PostText));
+
+        post.OnPropertyChanged(nameof(HasVideo));
 
         post.OnPropertyChanged(nameof(PostAuthorAvatarURL));
         post.OnPropertyChanged(nameof(PostAuthorDisplayName));
@@ -112,6 +128,11 @@ namespace BlueWP.Controls.Post
 
         post.UpdateText();
       }
+    }
+
+    protected void PostBase_LayoutUpdated(object sender, object e)
+    {
+      OnPropertyChanged(nameof(VideoHeight));
     }
 
     protected virtual void UpdateText()

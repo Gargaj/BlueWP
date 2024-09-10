@@ -38,6 +38,18 @@
           </c:DataTriggerBehavior>
         </i:Interaction.Behaviors>
       </local:ImageGallery>
+
+      <!-- video block -->
+      <MediaPlayerElement Loaded="MediaPlayerElement_Loaded" HorizontalAlignment="Stretch" Height="{Binding VideoHeight}" AreTransportControlsEnabled="True">
+        <i:Interaction.Behaviors>
+          <c:DataTriggerBehavior Binding="{Binding HasVideo}" Value="True">
+            <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+          </c:DataTriggerBehavior>
+          <c:DataTriggerBehavior Binding="{Binding HasVideo}" Value="False">
+            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+          </c:DataTriggerBehavior>
+        </i:Interaction.Behaviors>
+      </MediaPlayerElement>
       
     </StackPanel>
   </Grid>

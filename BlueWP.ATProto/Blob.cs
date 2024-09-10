@@ -2,7 +2,7 @@
 
 namespace BlueWP.ATProto
 {
-  class Blob
+  public class Blob
   {
     [JsonProperty("ref")]
     public object reference = null;

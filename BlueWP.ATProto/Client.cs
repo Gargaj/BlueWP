@@ -288,6 +288,8 @@ namespace BlueWP.ATProto
               { "app.bsky.embed.record#viewBlocked",       typeof(Lexicons.App.BSky.Embed.Record.ViewBlocked) },
               { "app.bsky.embed.recordWithMedia",          typeof(Lexicons.App.BSky.Embed.RecordWithMedia) },
               { "app.bsky.embed.recordWithMedia#view",     typeof(Lexicons.App.BSky.Embed.RecordWithMedia.View) },
+              { "app.bsky.embed.video",                    typeof(Lexicons.App.BSky.Embed.Video) },
+              { "app.bsky.embed.video#view",               typeof(Lexicons.App.BSky.Embed.Video.View) },
               { "app.bsky.feed.defs#generatorView",        typeof(Lexicons.App.BSky.Feed.Defs.GeneratorView) },
               { "app.bsky.feed.defs#postView",             typeof(Lexicons.App.BSky.Feed.Defs.PostView) },
               { "app.bsky.feed.defs#reasonRepost",         typeof(Lexicons.App.BSky.Feed.Defs.ReasonRepost) },

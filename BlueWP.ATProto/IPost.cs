@@ -8,6 +8,7 @@ namespace BlueWP.ATProto
     bool IsReply { get; }
     bool HasQuotedPost { get; }
     bool HasEmbedExternal { get; }
+    bool HasVideo { get; }
     string PostAuthorAvatarURL { get; }
     string PostAuthorDisplayName { get; }
     string PostAuthorHandle { get; }

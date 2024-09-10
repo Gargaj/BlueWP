@@ -26,6 +26,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool IsReply => false;
       public bool HasQuotedPost => QuotedPost != null;
       public bool HasEmbedExternal => PostEmbedExternal != null;
+      public bool HasVideo => embed is Video.View;
 
       public string PostAuthorAvatarURL => author?.avatar;
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
@@ -43,6 +44,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool PostLiked => !string.IsNullOrEmpty(viewer?.like);
 
       public External.View PostEmbedExternal => embed as External.View;
+      public Video.View PostVideo => embed as Video.View;
 
       public Record.ViewRecord QuotedPost
       {
@@ -129,6 +131,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       }
 
       public bool HasQuotedPost => post?.HasQuotedPost ?? false;
+      public bool HasVideo => post?.HasVideo ?? false;
       public Record.ViewRecord QuotedPost => post?.QuotedPost;
       public string PostText => post.PostText;
       public string PostURI => post.PostURI;

@@ -68,6 +68,18 @@
           </i:Interaction.Behaviors>
         </local:ImageGallery>
 
+        <!-- video block -->
+        <MediaPlayerElement Loaded="MediaPlayerElement_Loaded" HorizontalAlignment="Stretch" Height="600" AreTransportControlsEnabled="True">
+          <i:Interaction.Behaviors>
+            <c:DataTriggerBehavior Binding="{Binding HasVideo}" Value="True">
+              <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
+            </c:DataTriggerBehavior>
+            <c:DataTriggerBehavior Binding="{Binding HasVideo}" Value="False">
+              <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
+            </c:DataTriggerBehavior>
+          </i:Interaction.Behaviors>
+        </MediaPlayerElement>
+
         <!-- embed link -->
         <Border BorderThickness="1" CornerRadius="5" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}">
           <i:Interaction.Behaviors>

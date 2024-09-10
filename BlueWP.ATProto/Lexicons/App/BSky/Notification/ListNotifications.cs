@@ -40,6 +40,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public bool IsReply => false;
     public bool HasQuotedPost => false;
     public bool HasEmbedExternal => false;
+    public bool HasVideo => false;
 
     public string PostAuthorAvatarURL => author?.avatar;
     public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";

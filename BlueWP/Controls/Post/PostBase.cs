@@ -31,6 +31,7 @@ namespace BlueWP.Controls.Post
     public bool IsReply => FeedViewPost?.IsReply ?? false;
     public bool HasQuotedPost => PostData?.HasQuotedPost ?? false;
     public bool HasEmbedExternal => PostData?.HasEmbedExternal ?? false;
+    public bool HasVideo => PostData?.HasVideo ?? false;
 
     public string PostAuthorAvatarURL => PostData?.PostAuthorAvatarURL;
     public string PostAuthorDisplayName => PostData?.PostAuthorDisplayName;
@@ -85,6 +86,7 @@ namespace BlueWP.Controls.Post
         post.OnPropertyChanged(nameof(IsReply));
         post.OnPropertyChanged(nameof(HasQuotedPost));
         post.OnPropertyChanged(nameof(HasEmbedExternal));
+        post.OnPropertyChanged(nameof(HasVideo));
         post.OnPropertyChanged(nameof(PostText));
 
         post.OnPropertyChanged(nameof(PostAuthorAvatarURL));
@@ -348,6 +350,29 @@ namespace BlueWP.Controls.Post
         return;
       }
       _mainPage.SwitchToProfileInlay(_atURIs[sender]);
+    }
+
+    protected void MediaPlayerElement_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+    {
+      if (!HasVideo)
+      {
+        return;
+      }
+
+      var mp = sender as MediaPlayerElement;
+      if (mp == null)
+      {
+        return;
+      }
+      var video = PostView.embed as ATProto.Lexicons.App.BSky.Embed.Video.View;
+      if (video == null)
+      {
+        return;
+      }
+      var mediaPlayer = new Windows.Media.Playback.MediaPlayer();
+      mp.SetMediaPlayer(mediaPlayer);
+
+      mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(video.playlist));
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

@@ -44,6 +44,8 @@ namespace BlueWP.Controls.Post
     public uint ReplyCount => PostView?.ReplyCount ?? 0;
     public uint RepostCount => PostView?.RepostCount ?? 0;
     public uint LikeCount => PostView?.LikeCount ?? 0;
+    public uint QuoteCount => PostView?.QuoteCount ?? 0;
+    public uint CombinedRepostCount => RepostCount + QuoteCount;
 
     public bool PostReposted => PostView?.PostReposted ?? false;
     public bool PostLiked => PostView?.PostLiked ?? false;
@@ -115,6 +117,8 @@ namespace BlueWP.Controls.Post
         post.OnPropertyChanged(nameof(ReplyCount));
         post.OnPropertyChanged(nameof(RepostCount));
         post.OnPropertyChanged(nameof(LikeCount));
+        post.OnPropertyChanged(nameof(QuoteCount));
+        post.OnPropertyChanged(nameof(CombinedRepostCount));
 
         post.OnPropertyChanged(nameof(PostReposted));
         post.OnPropertyChanged(nameof(PostLiked));

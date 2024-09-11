@@ -17,6 +17,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public uint? replyCount;
       public uint? repostCount;
       public uint? likeCount;
+      public uint? quoteCount;
       public DateTime indexedAt;
       public ViewerState viewer;
       public List<COM.ATProto.Label.Defs.Label> labels;
@@ -39,6 +40,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public uint ReplyCount => replyCount ?? 0;
       public uint RepostCount => repostCount ?? 0;
       public uint LikeCount => likeCount ?? 0;
+      public uint QuoteCount => quoteCount ?? 0;
 
       public bool PostReposted => !string.IsNullOrEmpty(viewer?.repost);
       public bool PostLiked => !string.IsNullOrEmpty(viewer?.like);

@@ -113,6 +113,8 @@
           <StackPanel Orientation="Horizontal">
             <TextBlock Text="{Binding RepostCount}" FontWeight="Bold" Margin="0,0,5,0"/>
             <TextBlock Text="reposts" Margin="0,0,25,0"/>
+            <TextBlock Text="{Binding QuoteCount}" FontWeight="Bold" Margin="0,0,5,0"/>
+            <TextBlock Text="quotes" Margin="0,0,25,0"/>
             <TextBlock Text="{Binding LikeCount}" FontWeight="Bold" Margin="0,0,5,0"/>
             <TextBlock Text="likes"/>
           </StackPanel>
@@ -154,7 +156,7 @@
                       </c:DataTriggerBehavior>
                     </i:Interaction.Behaviors>
                   </FontIcon>
-                  <TextBlock Text="{Binding RepostCount}" FontSize="12">
+                  <TextBlock Text="{Binding CombinedRepostCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />

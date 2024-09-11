@@ -187,7 +187,7 @@
                         </c:DataTriggerBehavior>
                       </i:Interaction.Behaviors>
                     </FontIcon>
-                    <TextBlock Text="{Binding RepostCount}" FontSize="12">
+                    <TextBlock Text="{Binding CombinedRepostCount}" FontSize="12">
                       <i:Interaction.Behaviors>
                         <c:DataTriggerBehavior Binding="{Binding PostReposted}" Value="True">
                           <c:ChangePropertyAction PropertyName="Foreground" Value="#20BC07" />

@@ -400,6 +400,15 @@ namespace BlueWP.Controls.Post
       mediaPlayer.Source = Windows.Media.Core.MediaSource.CreateFromUri(new Uri(video.playlist));
     }
 
+    protected async void QuotedPost_Click(object sender, RoutedEventArgs e)
+    {
+      if (QuotedPost == null)
+      {
+        return;
+      }
+      await _mainPage.SwitchToThreadViewInlay(QuotedPost.uri);
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>

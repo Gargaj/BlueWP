@@ -94,7 +94,7 @@
         </Border>
 
         <!-- quote post -->
-        <Button BorderThickness="1" Click="QuotedPost_Click" Background="Transparent"  BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
+        <Button BorderThickness="1" Click="QuotedPost_Click" Background="Transparent" BorderBrush="{ThemeResource AppBarItemDisabledForegroundThemeBrush}" Padding="5">
           <i:Interaction.Behaviors>
             <c:DataTriggerBehavior Binding="{Binding HasQuotedPost}" Value="True">
               <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />

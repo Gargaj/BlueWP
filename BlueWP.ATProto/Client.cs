@@ -115,9 +115,11 @@ namespace BlueWP.ATProto
         headers["Content-Type"] = rawPost.MimeType;
       }
 
-      headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
-
-      (input as ICustomHeaderProvider)?.SetCustomHeaders(headers, _settings.CurrentAccountSettings);
+      if (CurrentAccountSettings != null)
+      {
+        headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
+        (input as ICustomHeaderProvider)?.SetCustomHeaders(headers, CurrentAccountSettings);
+      }
 
       var url = $"{CurrentEndpoint}/xrpc/{input.EndpointID}";
       string responseJson = null;

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 
@@ -37,7 +38,13 @@ namespace BlueWP.Pages
       }
       else
       {
-        // TODO: handle error
+        var dialog = new ContentDialog
+        {
+          Content = new TextBlock { Text = $"Login failed!" },
+          Title = $"Login failed!",
+          PrimaryButtonText = "Ok :(",
+        };
+        await dialog.ShowAsync();
       }
     }
 

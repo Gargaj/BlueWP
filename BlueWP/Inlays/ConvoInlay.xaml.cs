@@ -52,7 +52,7 @@ namespace BlueWP.Inlays
       }
       _mainPage?.StartLoading();
 
-      var responseConvo = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.GetConvoResponse>(new ATProto.Lexicons.Chat.BSky.Convo.GetConvo()
+      var responseConvo = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.GetConvo.Response>(new ATProto.Lexicons.Chat.BSky.Convo.GetConvo()
       {
         convoId = ID
       });
@@ -77,7 +77,7 @@ namespace BlueWP.Inlays
         return;
       }
 
-      var responseMessages = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.GetMessagesResponse>(new ATProto.Lexicons.Chat.BSky.Convo.GetMessages()
+      var responseMessages = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.GetMessages.Response>(new ATProto.Lexicons.Chat.BSky.Convo.GetMessages()
       {
         convoId = ID
       });
@@ -117,7 +117,7 @@ namespace BlueWP.Inlays
 
     private async void Send_Click(object sender, RoutedEventArgs e)
     {
-      var response = await _mainPage.Post<ATProto.Lexicons.Chat.BSky.Convo.SendMessageResponse>(new ATProto.Lexicons.Chat.BSky.Convo.SendMessage
+      var response = await _mainPage.Post<ATProto.Lexicons.Chat.BSky.Convo.SendMessage.Response>(new ATProto.Lexicons.Chat.BSky.Convo.SendMessage
       {
         convoId = ID,
         message = new ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageInput()

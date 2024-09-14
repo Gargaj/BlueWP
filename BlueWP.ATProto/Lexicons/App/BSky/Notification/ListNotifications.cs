@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/notification/listNotifications.json"/>
-  public class ListNotifications : ILexicon
+  public class ListNotifications : ILexiconRequest
   {
     public string EndpointID => "app.bsky.notification.listNotifications";
 
     public uint limit;
     public string cursor;
     public DateTime? seenAt;
-  }
-  public class ListNotificationsResponse : ILexicon
-  {
-    public string EndpointID => "app.bsky.notification.listNotifications";
 
-    public string cursor;
-    public List<Notification> notifications;
-    public DateTime? seenAt;
+    public class Response : ILexiconResponse
+    {
+      public string cursor;
+      public List<Notification> notifications;
+      public DateTime? seenAt;
+    }
   }
+
   public class Notification : IPost
   {
     public string uri;

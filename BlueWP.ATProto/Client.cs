@@ -44,10 +44,10 @@ namespace BlueWP.ATProto
       }
 
       _hostOverride = host;
-      Lexicons.COM.ATProto.Server.CreateSessionResponse response = null;
+      Lexicons.COM.ATProto.Server.CreateSession.Response response = null;
       try
       {
-        response = await PostAsync<Lexicons.COM.ATProto.Server.CreateSessionResponse>(new Lexicons.COM.ATProto.Server.CreateSession()
+        response = await PostAsync<Lexicons.COM.ATProto.Server.CreateSession.Response>(new Lexicons.COM.ATProto.Server.CreateSession()
         {
           identifier = handle,
           password = appPassword,
@@ -87,17 +87,17 @@ namespace BlueWP.ATProto
     public string Handle { get { return CurrentAccountSettings?.Credentials.Handle; } }
     public string DID { get { return CurrentAccountSettings?.Credentials.DID; } }
 
-    public async Task<T> GetAsync<T>(ILexicon input) where T : ILexicon
+    public async Task<T> GetAsync<T>(ILexiconRequest input) where T : ILexiconResponse
     {
       return await RequestAsync<T>("GET", input);
     }
 
-    public async Task<T> PostAsync<T>(ILexicon input) where T : ILexicon
+    public async Task<T> PostAsync<T>(ILexiconRequest input) where T : ILexiconResponse
     {
       return await RequestAsync<T>("POST", input);
     }
 
-    protected async Task<T> RequestAsync<T>(string method, ILexicon input) where T : ILexicon
+    protected async Task<T> RequestAsync<T>(string method, ILexiconRequest input) where T : ILexiconResponse
     {
       if (string.IsNullOrEmpty(CurrentEndpoint))
       {
@@ -213,7 +213,7 @@ namespace BlueWP.ATProto
     private async Task<bool> RefreshCredentials()
     {
       var body = new Lexicons.COM.ATProto.Server.RefreshSession();
-      var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSessionResponse>(body);
+      var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSession.Response>(body);
       if (response != null && !string.IsNullOrEmpty(response.accessJwt))
       {
         CurrentAccountSettings.Credentials.DID = response.did;
@@ -226,7 +226,7 @@ namespace BlueWP.ATProto
       return true;
     }
 
-    private string SerializeInputToQueryString(ILexicon input)
+    private string SerializeInputToQueryString(ILexiconRequest input)
     {
       var inputType = input.GetType();
       bool first = true;

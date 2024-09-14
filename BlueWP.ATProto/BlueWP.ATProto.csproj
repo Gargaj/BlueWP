@@ -125,7 +125,7 @@
     <Compile Include="Helpers.cs" />
     <Compile Include="HTTP.cs" />
     <Compile Include="IPost.cs" />
-    <Compile Include="ILexicon.cs" />
+    <Compile Include="Interfaces.cs" />
     <Compile Include="Enums.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\Defs.cs" />
     <Compile Include="Lexicons\App\BSky\Actor\GetProfiles.cs" />

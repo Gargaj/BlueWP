@@ -3,7 +3,7 @@
 namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
 {
   /// <see cref="https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/actor/searchActors.json"/>
-  public class SearchActors : ILexicon
+  public class SearchActors : ILexiconRequest
   {
     public string EndpointID => "app.bsky.actor.searchActors";
 
@@ -12,7 +12,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
     public uint? limit;
     public string cursor;
   }
-  public class SearchActorsResponse : ILexicon
+  public class Response : ILexiconResponse
   {
     public string EndpointID => "app.bsky.actor.searchActors";
 

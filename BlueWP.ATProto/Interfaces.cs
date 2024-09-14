@@ -3,10 +3,14 @@ using System.Collections.Specialized;
 
 namespace BlueWP.ATProto
 {
-  public interface ILexicon
+  public interface ILexiconRequest
   {
     [JsonIgnore]
     string EndpointID { get; }
+  }
+
+  public interface ILexiconResponse
+  {
   }
 
   public interface IRawPost

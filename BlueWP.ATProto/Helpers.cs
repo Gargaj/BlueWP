@@ -42,7 +42,7 @@ namespace BlueWP.ATProto
       {
         if (!repo.StartsWith("did:"))
         {
-          var response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
+          var response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandle.Response>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
           {
             handle = repo
           });
@@ -88,14 +88,14 @@ namespace BlueWP.ATProto
       var results = new List<Lexicons.App.BSky.RichText.Facet>();
 
       // regex based on: https://atproto.com/specs/handle#handle-identifier-syntax
-      // but with added "?:"-s to not capture stuff that shouldnt be
+      // but with added "?:"-s to not capture stuff that shouldn't be
       var mentionRegex = new Regex(@"[$|\W](@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)");
       await FindFacet(postText, results, mentionRegex, async (facet, matchText) =>
       {
-        Lexicons.COM.ATProto.Identity.ResolveHandleResponse response = null;
+        Lexicons.COM.ATProto.Identity.ResolveHandle.Response response = null;
         try
         {
-          response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandleResponse>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
+          response = await client.GetAsync<Lexicons.COM.ATProto.Identity.ResolveHandle.Response>(new Lexicons.COM.ATProto.Identity.ResolveHandle()
           {
             handle = matchText.Substring(1) // chop off @
           });

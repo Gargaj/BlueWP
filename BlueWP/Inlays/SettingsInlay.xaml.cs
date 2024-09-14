@@ -36,7 +36,7 @@ namespace BlueWP.Inlays
 
     public async Task Refresh()
     {
-      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Actor.GetProfilesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetProfiles()
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Actor.GetProfiles.Response>(new ATProto.Lexicons.App.BSky.Actor.GetProfiles()
       {
         actors = _app.Client.Settings.AccountSettings.Select(s => s.Credentials.DID).ToList()
       });

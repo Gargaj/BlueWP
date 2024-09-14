@@ -217,7 +217,7 @@ namespace BlueWP.Inlays
         string repo = string.Empty, collection = string.Empty, rkey = string.Empty;
         if (ATProto.Helpers.ParseATURI(RepliedPost.uri, ref repo, ref collection, ref rkey))
         {
-          var recordResponse = await _mainPage.Get<ATProto.Lexicons.COM.ATProto.Repo.GetRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.GetRecord()
+          var recordResponse = await _mainPage.Get<ATProto.Lexicons.COM.ATProto.Repo.GetRecord.Response>(new ATProto.Lexicons.COM.ATProto.Repo.GetRecord()
           {
             repo = repo,
             collection = collection,
@@ -268,7 +268,7 @@ namespace BlueWP.Inlays
         };
         foreach (var imageAttachment in ImageAttachments)
         {
-          var blobResponse = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.UploadBlobResponse>(new ATProto.Lexicons.COM.ATProto.Repo.UploadBlob()
+          var blobResponse = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.UploadBlob.Response>(new ATProto.Lexicons.COM.ATProto.Repo.UploadBlob()
           {
             MimeType = imageAttachment.MimeType,
             PostData = imageAttachment.ByteData,
@@ -288,7 +288,7 @@ namespace BlueWP.Inlays
         post.embed = images;
       }
 
-      var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.CreateRecordResponse>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
+      var response = await _mainPage.Post<ATProto.Lexicons.COM.ATProto.Repo.CreateRecord.Response>(new ATProto.Lexicons.COM.ATProto.Repo.CreateRecord()
       {
         repo = _app.Client.DID,
         collection = "app.bsky.feed.post",

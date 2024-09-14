@@ -31,7 +31,7 @@ namespace BlueWP.Inlays
 
       if (!string.IsNullOrEmpty(FeedURI))
       {
-        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetFeed.Response>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
         {
           limit = 60,
           feed = FeedURI
@@ -40,7 +40,7 @@ namespace BlueWP.Inlays
       }
       else if (!string.IsNullOrEmpty(ActorDID))
       {
-        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetAuthorFeedResponse>(new ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed()
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed.Response>(new ATProto.Lexicons.App.BSky.Feed.GetAuthorFeed()
         {
           limit = 60,
           actor = ActorDID
@@ -49,7 +49,7 @@ namespace BlueWP.Inlays
       }
       else
       {
-        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetTimelineResponse>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
+        var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetTimeline.Response>(new ATProto.Lexicons.App.BSky.Feed.GetTimeline()
         {
           limit = 60
         });

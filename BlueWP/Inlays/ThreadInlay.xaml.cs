@@ -38,7 +38,7 @@ namespace BlueWP.Inlays
 
       _mainPage?.StartLoading();
 
-      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPostThreadResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPostThread()
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPostThread.Response>(new ATProto.Lexicons.App.BSky.Feed.GetPostThread()
       {
         uri = PostURI
       });

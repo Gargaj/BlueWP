@@ -33,7 +33,7 @@ namespace BlueWP.Inlays
     {
       _mainPage?.StartLoading();
 
-      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Notification.ListNotificationsResponse>(new ATProto.Lexicons.App.BSky.Notification.ListNotifications()
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Notification.ListNotifications.Response>(new ATProto.Lexicons.App.BSky.Notification.ListNotifications()
       {
         limit = 60
       });
@@ -53,7 +53,7 @@ namespace BlueWP.Inlays
         ).ToList();
 
         var subjectUris = response?.notifications.Select(s => s.reasonSubject).Where(s => !string.IsNullOrEmpty(s)).Distinct().Take(25);
-        var responsePosts = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPostsResponse>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
+        var responsePosts = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPosts.Response>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
         {
           uris = subjectUris.ToList()
         });
@@ -67,7 +67,7 @@ namespace BlueWP.Inlays
       if (_mainPage.UnreadNotificationCount > 0)
       {
         // Reset notification counter
-        await _mainPage.Post<ATProto.Lexicons.App.BSky.Notification.UpdateSeen>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
+        await _mainPage.Post<ATProto.Lexicons.App.BSky.Notification.UpdateSeen.Response>(new ATProto.Lexicons.App.BSky.Notification.UpdateSeen()
         {
           seenAt = System.DateTime.Now
         });

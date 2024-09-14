@@ -80,7 +80,7 @@ namespace BlueWP.Pages
 
     protected async Task LoadPreferences()
     {
-      var preferences = await Get<ATProto.Lexicons.App.BSky.Actor.GetPreferencesResponse>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
+      var preferences = await Get<ATProto.Lexicons.App.BSky.Actor.GetPreferences.Response>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
       if (preferences != null)
       {
         _preferences = preferences.preferences;
@@ -119,7 +119,7 @@ namespace BlueWP.Pages
       }
       OnPropertyChanged(nameof(Feeds));
 
-      var feedInfoResponse = await Get<ATProto.Lexicons.App.BSky.Feed.GetFeedGeneratorsResponse>(getFeedReq);
+      var feedInfoResponse = await Get<ATProto.Lexicons.App.BSky.Feed.GetFeedGenerators.Response>(getFeedReq);
       if (feedInfoResponse?.feeds != null)
       {
         foreach (var feedInfo in feedInfoResponse.feeds)
@@ -148,13 +148,13 @@ namespace BlueWP.Pages
 
     public async Task RefreshNotificationCounters()
     {
-      var unreadCountResponse = await Get<ATProto.Lexicons.App.BSky.Notification.GetUnreadCountResponse>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
+      var unreadCountResponse = await Get<ATProto.Lexicons.App.BSky.Notification.GetUnreadCount.Response>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
       if (unreadCountResponse != null)
       {
         UnreadNotificationCount = (int)unreadCountResponse.count;
       }
 
-      var convoUnreadCountResponse = await Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvosResponse>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos() {
+      var convoUnreadCountResponse = await Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvos.Response>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos() {
         limit = 1
       });
       if (convoUnreadCountResponse != null)
@@ -370,7 +370,7 @@ namespace BlueWP.Pages
       ZoomedImageURL = null;
     }
 
-    public async Task<T> Get<T>(ATProto.ILexicon input) where T : class, ATProto.ILexicon
+    public async Task<T> Get<T>(ATProto.ILexiconRequest input) where T : class, ATProto.ILexiconResponse
     {
       try
       {
@@ -395,7 +395,7 @@ namespace BlueWP.Pages
       return null;
     }
 
-    public async Task<T> Post<T>(ATProto.ILexicon input) where T : class, ATProto.ILexicon
+    public async Task<T> Post<T>(ATProto.ILexiconRequest input) where T : class, ATProto.ILexiconResponse
     {
       try
       {

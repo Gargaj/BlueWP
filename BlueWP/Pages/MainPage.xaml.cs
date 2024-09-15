@@ -81,7 +81,7 @@ namespace BlueWP.Pages
     protected async Task LoadPreferences()
     {
       var preferences = await Get<ATProto.Lexicons.App.BSky.Actor.GetPreferences.Response>(new ATProto.Lexicons.App.BSky.Actor.GetPreferences());
-      if (preferences != null)
+      if (preferences?.preferences != null)
       {
         _preferences = preferences.preferences;
 

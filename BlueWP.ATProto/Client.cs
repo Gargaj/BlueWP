@@ -124,86 +124,69 @@ namespace BlueWP.ATProto
       var url = $"{CurrentEndpoint}/xrpc/{input.EndpointID}";
       string responseJson = null;
       string bodyJson = string.Empty;
-      try
+      switch (method)
       {
-        switch (method)
-        {
-          case "GET":
-            {
-              url += SerializeInputToQueryString(input);
-              responseJson = await http.DoGETRequestAsync(url, null, headers);
-            }
-            break;
-          case "POST":
-            {
-              if (rawPost != null)
-              {
-                responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
-              }
-              else
-              {
-                var inputType = input.GetType();
-                var fields = inputType.GetFields();
-                bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
-                if (bodyJson == "{}" || fields.Length == 0)
-                {
-                  bodyJson = string.Empty;
-                }
-                responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
-              }
-            }
-            break;
-        }
-      }
-      catch (WebException ex)
-      {
-        var webResponse = ex.Response as HttpWebResponse;
-        var error = ex.Response != null ? await new StreamReader(ex.Response.GetResponseStream()).ReadToEndAsync() : ex.ToString();
-        if (ex?.Response?.Headers != null && ex.Response.Headers["content-type"].ToLower().StartsWith("application/json"))
-        {
-          var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(error) as Newtonsoft.Json.Linq.JObject;
-          if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
+        case "GET":
           {
-            if (await RefreshCredentials())
+            url += SerializeInputToQueryString(input);
+            responseJson = await http.DoGETRequestAsync(url, null, headers);
+          }
+          break;
+        case "POST":
+          {
+            if (rawPost != null)
             {
-              headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
-              switch (method)
-              {
-                case "GET":
-                  {
-                    responseJson = await http.DoGETRequestAsync(url, null, headers);
-                  }
-                  break;
-                case "POST":
-                  {
-                    if (rawPost != null)
-                    {
-                      responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
-                    }
-                    else
-                    {
-                      responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
-                    }
-                  }
-                  break;
-              }
+              responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
             }
             else
             {
-              throw ex;
+              var inputType = input.GetType();
+              var fields = inputType.GetFields();
+              bodyJson = Newtonsoft.Json.JsonConvert.SerializeObject(input, _deserializerSettings);
+              if (bodyJson == "{}" || fields.Length == 0)
+              {
+                bodyJson = string.Empty;
+              }
+              responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
             }
           }
-          else
+          break;
+      }
+      if (http.Response == null || !http.Response.IsSuccessStatusCode)
+      {
+        var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson) as Newtonsoft.Json.Linq.JObject;
+        if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
+        {
+          if (await RefreshCredentials())
           {
-#if DEBUG
-            System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {webResponse.StatusCode}] {error}");
-#endif
-            throw new WebException(error, ex, ex.Status, ex.Response);
+            headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
+            switch (method)
+            {
+              case "GET":
+                {
+                  responseJson = await http.DoGETRequestAsync(url, null, headers);
+                }
+                break;
+              case "POST":
+                {
+                  if (rawPost != null)
+                  {
+                    responseJson = await http.DoPOSTRequestAsync(url, rawPost.PostData, headers);
+                  }
+                  else
+                  {
+                    responseJson = await http.DoPOSTRequestAsync(url, bodyJson, headers);
+                  }
+                }
+                break;
+            }
           }
         }
         else
         {
-          throw new WebException(error, ex, ex.Status, ex.Response);
+#if DEBUG
+          System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {http.Response.StatusCode}] {responseJson}");
+#endif
         }
       }
 

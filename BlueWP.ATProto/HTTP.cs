@@ -11,6 +11,9 @@ namespace BlueWP.ATProto
   {
     private CookieContainer _cookieContainer = new CookieContainer();
     private string _cookieDomain = string.Empty;
+    private System.Net.Http.HttpResponseMessage _response;
+
+    public System.Net.Http.HttpResponseMessage Response => _response;
 
     public async Task<MemoryStream> DoHTTPRequestStreamAsync(string url, byte[] data, NameValueCollection headers = null, string method = "POST", Func<long, long, bool> callback = null)
     {
@@ -19,7 +22,7 @@ namespace BlueWP.ATProto
         AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
       });
       httpClient.Timeout = TimeSpan.FromSeconds(5);
-      System.Net.Http.HttpResponseMessage response = null;
+      _response = null;
       try
       {
         System.Net.Http.HttpMethod httpMethod = System.Net.Http.HttpMethod.Get;
@@ -59,7 +62,7 @@ namespace BlueWP.ATProto
             requestMessage.Headers.Add(key, headers[key]);
           }
 
-          response = await httpClient.SendAsync(requestMessage);
+          _response = await httpClient.SendAsync(requestMessage);
         }
       }
       catch (TaskCanceledException)
@@ -67,8 +70,7 @@ namespace BlueWP.ATProto
         System.Diagnostics.Debug.WriteLine($"[TIMEOUT] {url}");
         return null;
       }
-
-      return new MemoryStream(await response.Content.ReadAsByteArrayAsync());
+      return new MemoryStream(await _response.Content.ReadAsByteArrayAsync());
     }
 
     public async Task<Stream> DoHTTPRequestStreamAsync(string _url, MemoryStream _stream, NameValueCollection _headers = null, string _method = "POST", Func<long, long, bool> callback = null)

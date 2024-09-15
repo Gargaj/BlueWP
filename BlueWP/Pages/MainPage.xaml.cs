@@ -235,6 +235,7 @@ namespace BlueWP.Pages
       {
         return;
       }
+      feedInlay.FollowedOnly = true;
       feedInlay.FeedURI = feed.URI; // Preempt the binding cos that seems to happen later
       await feedInlay.Refresh();
     }

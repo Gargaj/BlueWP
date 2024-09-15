@@ -93,7 +93,9 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
     {
       public string repost;
       public string like;
+      public bool threadMuted;
       public bool replyDisabled;
+      public bool embeddingDisabled;
     }
 
     public class FeedViewPost : IPost
@@ -147,6 +149,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
     {
       public object root; // union
       public object parent; // union
+      public Actor.Defs.ProfileViewBasic grandparentAuthor;
     }
 
     public class ThreadViewPost

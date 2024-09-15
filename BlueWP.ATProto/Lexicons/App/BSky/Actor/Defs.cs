@@ -13,8 +13,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string displayName;
       public string avatar;
       public ProfileAssociated associated;
-      public object viewer;
-      public object labels;
+      public ViewerState viewer;
+      public List<COM.ATProto.Label.Defs.Label> labels;
 
       public string DisplayName
       {
@@ -49,8 +49,8 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string avatar;
       public ProfileAssociated associated;
       public DateTime indexedAt;
-      public object viewer;
-      public object labels;
+      public ViewerState viewer;
+      public List<COM.ATProto.Label.Defs.Label> labels;
 
       public string DisplayName
       {
@@ -133,12 +133,19 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
     public class ViewerState
     {
       public bool muted;
-      public object mutedByList;
+      public List<Graph.Defs.ListViewBasic> mutedByList;
       public bool blockedBy;
       public string blocking;
-      public object blockingByList;
+      public List<Graph.Defs.ListViewBasic> blockingByList;
       public string following;
       public string followedBy;
+      public KnownFollowers knownFollowers;
+    }
+
+    public class KnownFollowers
+    {
+      public uint count;
+      public List<ProfileViewBasic> followers;
     }
 
     public class AdultContentPref

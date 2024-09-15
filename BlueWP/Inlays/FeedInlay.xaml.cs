@@ -1,5 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -10,6 +12,7 @@ namespace BlueWP.Inlays
   {
     private App _app;
     private Pages.MainPage _mainPage;
+    private bool _followedOnly = false;
 
     public FeedInlay()
     {
@@ -29,6 +32,7 @@ namespace BlueWP.Inlays
     {
       _mainPage?.StartLoading();
 
+      List<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> feedItems = null;
       if (!string.IsNullOrEmpty(FeedURI))
       {
         var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetFeed.Response>(new ATProto.Lexicons.App.BSky.Feed.GetFeed()
@@ -36,7 +40,7 @@ namespace BlueWP.Inlays
           limit = 60,
           feed = FeedURI
         });
-        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+        feedItems = response?.feed;
       }
       else if (!string.IsNullOrEmpty(ActorDID))
       {
@@ -45,7 +49,7 @@ namespace BlueWP.Inlays
           limit = 60,
           actor = ActorDID
         });
-        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+        feedItems = response?.feed;
       }
       else
       {
@@ -53,8 +57,25 @@ namespace BlueWP.Inlays
         {
           limit = 60
         });
-        FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(response?.feed);
+        feedItems = response?.feed;
       }
+
+      if (_followedOnly)
+      {
+        feedItems = feedItems.Where((s) => {
+          if (s?.reply?.parent == null)
+          {
+            return true;
+          }
+          var post = s.reply.parent as ATProto.Lexicons.App.BSky.Feed.Defs.PostView;
+          if (post == null)
+          {
+            return true;
+          }
+          return !string.IsNullOrEmpty(post.author.viewer.following);
+        }).ToList();
+      }
+      FeedItems = new ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost>(feedItems);
 
       _mainPage?.EndLoading();
 
@@ -82,6 +103,7 @@ namespace BlueWP.Inlays
     public static readonly DependencyProperty ActorDIDProperty = DependencyProperty.Register("ActorDID", typeof(string), typeof(FeedInlay), new PropertyMetadata(string.Empty));
 
     public ObservableCollection<ATProto.Lexicons.App.BSky.Feed.Defs.FeedViewPost> FeedItems { get; set; }
+    public bool FollowedOnly { get => _followedOnly; set => _followedOnly = value; }
 
     private async void Post_PointerReleased(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
     {

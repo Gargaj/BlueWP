@@ -154,6 +154,8 @@
     <Compile Include="Lexicons\App\BSky\Feed\Post.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\SearchPosts.cs" />
     <Compile Include="Lexicons\App\BSky\Feed\Threadgate.cs" />
+    <Compile Include="Lexicons\App\BSky\Graph\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Graph\StarterPack.cs" />
     <Compile Include="Lexicons\App\BSky\Graph\Follow.cs" />
     <Compile Include="Lexicons\App\BSky\Graph\GetFollows.cs" />
     <Compile Include="Lexicons\App\BSky\Graph\GetFollowers.cs" />

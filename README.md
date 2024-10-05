@@ -9,12 +9,17 @@ Bluesky client for Windows Phone
 Don't ask why.
 
 ## Building / running
-Everything should be in `BlueWP.sln`; needs VS2017 (not newer)
+Everything should be in `BlueWP.sln`; the solution is pinned to use VS2017 so that you can deploy directly
+to the device, but you should be able to compile and build packages with VS2022 as well.
 
-## Usage
-I don't know how you can install it on your phone if you don't know how Visual Studio works. 
-I'm not that far in understanding all of this just yet.
-If someone knows how to build a... thing? App package? Idk? Something I can upload, let me know.
+## Installation
+- Enable Developer mode on your phone (Settings > Update & Security > For developers)
+- Enable Device discovery and Device Portal
+- Connect your phone to your WiFi and open the address provided under "Connect using:"
+- In the browser, follow the instructions to pair your phone to your computer
+- In the device portal's App Manager, select the `.appxbundle` file from the downloaded release
+- If this is your first time installing, add the contents of the Dependencies directory using the "App dependency" button
+- Press Go and wait until it installs; ensure your phone doesn't lock while it's installing.
 
 ## Todo
 - Posting: Autocomplete handles

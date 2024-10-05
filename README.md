@@ -8,7 +8,7 @@ Bluesky client for Windows Phone
 
 Don't ask why.
 
-## Building / running
+## Building
 Everything should be in `BlueWP.sln`; the solution is pinned to use VS2017 so that you can deploy directly
 to the device, but you should be able to compile and build packages with VS2022 as well.
 

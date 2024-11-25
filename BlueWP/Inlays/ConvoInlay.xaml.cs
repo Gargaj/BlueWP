@@ -98,7 +98,7 @@ namespace BlueWP.Inlays
 
       foreach (var message in newMessages)
       {
-        var insertionItem = Messages.FirstOrDefault(s => s.Timestamp > message?.sentAt);
+        var insertionItem = Messages.FirstOrDefault(s => s.Timestamp > message?.sentAt.ToLocalTime());
         var idx = Messages.IndexOf(insertionItem);
         Messages.Insert(idx < 0 ? Messages.Count : idx, new Message()
         {

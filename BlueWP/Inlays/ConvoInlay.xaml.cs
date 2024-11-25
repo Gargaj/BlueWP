@@ -82,6 +82,8 @@ namespace BlueWP.Inlays
         convoId = ID
       });
 
+      await UpdateRead();
+
       if (responseMessages != null)
       {
         AddNewMessages(responseMessages.messages);
@@ -113,6 +115,14 @@ namespace BlueWP.Inlays
       OnPropertyChanged(nameof(Messages));
       listView.UpdateLayout();
       listView.ScrollIntoView(Messages.LastOrDefault());
+    }
+
+    private async Task UpdateRead()
+    {
+      await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.UpdateRead.Response>(new ATProto.Lexicons.Chat.BSky.Convo.UpdateRead()
+      {
+        convoId = ID
+      });
     }
 
     private async void Send_Click(object sender, RoutedEventArgs e)

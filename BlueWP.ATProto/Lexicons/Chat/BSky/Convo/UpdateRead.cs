@@ -9,11 +9,12 @@ namespace BlueWP.ATProto.Lexicons.Chat.BSky.Convo
 
     public string convoId;
     public string messageId;
-  }
-  public class Response : ILexiconResponse
-  {
-    public string EndpointID => "chat.bsky.convo.updateRead";
 
-    public Defs.ConvoView convo;
+    public class Response : ILexiconResponse
+    {
+      public string EndpointID => "chat.bsky.convo.updateRead";
+
+      public Defs.ConvoView convo;
+    }
   }
 }

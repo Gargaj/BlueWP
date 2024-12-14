@@ -1,0 +1,57 @@
+﻿<UserControl
+    x:Class="BlueWP.Inlays.SearchInlay"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BlueWP.Inlays"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:c="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:bwpfl="using:BlueWP.Controls.PostList"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+  <Grid x:Name="SearchLayoutRoot">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="48"/>
+      </Grid.ColumnDefinitions>
+      <TextBox Grid.Column="0" Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+      <Button Grid.Column="1" Click="Search_Click">
+        <FontIcon Glyph="&#xE721;"/>
+      </Button>
+    </Grid>
+
+    <Pivot Grid.Row="1" x:Name="SearchTypes" PivotItemLoading="SearchTypes_PivotItemLoading">
+      <Pivot.Resources>
+        <Style TargetType="PivotHeaderItem">
+          <Setter Property="Margin" Value="0"/>
+          <Setter Property="Padding" Value="12,0,12,0"/>
+        </Style>
+      </Pivot.Resources>
+      <Pivot.ItemContainerStyle>
+        <Style TargetType="PivotItem">
+          <Setter Property="Padding" Value="0"/>
+          <Setter Property="Margin" Value="0"/>
+        </Style>
+      </Pivot.ItemContainerStyle>
+      <PivotItem Header="Top">
+        <bwpfl:PostListSearch Sort="Top"/>
+      </PivotItem>
+      <PivotItem Header="Latest">
+        <bwpfl:PostListSearch Sort="Latest"/>
+      </PivotItem>
+      <!--
+      <PivotItem Header="People">
+      </PivotItem>
+      -->
+    </Pivot>
+    
+  </Grid>
+</UserControl>

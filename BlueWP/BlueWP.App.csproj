@@ -127,6 +127,9 @@
     </Compile>
     <Compile Include="Controls\ImageGalleryTemplateSelector.cs" />
     <Compile Include="Controls\NotificationDataTemplateSelector.cs" />
+    <Compile Include="Controls\PostList\PostListSearch.cs" />
+    <Compile Include="Controls\PostList\PostListProfile.cs" />
+    <Compile Include="Controls\PostList\PostListFeed.cs" />
     <Compile Include="Controls\Post\EmbedExternal.xaml.cs">
       <DependentUpon>EmbedExternal.xaml</DependentUpon>
     </Compile>
@@ -150,8 +153,8 @@
     <Compile Include="Inlays\ConvoInlay.xaml.cs">
       <DependentUpon>ConvoInlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Inlays\FeedInlay.xaml.cs">
-      <DependentUpon>FeedInlay.xaml</DependentUpon>
+    <Compile Include="Controls\PostList\PostListBase.xaml.cs">
+      <DependentUpon>PostListBase.xaml</DependentUpon>
     </Compile>
     <Compile Include="Inlays\NewPostInlay.xaml.cs">
       <DependentUpon>NewPostInlay.xaml</DependentUpon>
@@ -161,6 +164,9 @@
     </Compile>
     <Compile Include="Inlays\NotificationsInlay.xaml.cs">
       <DependentUpon>NotificationsInlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Inlays\SearchInlay.xaml.cs">
+      <DependentUpon>SearchInlay.xaml</DependentUpon>
     </Compile>
     <Compile Include="Inlays\ThreadInlay.xaml.cs">
       <DependentUpon>ThreadInlay.xaml</DependentUpon>
@@ -228,7 +234,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Inlays\FeedInlay.xaml">
+    <Page Include="Controls\PostList\PostListBase.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -243,6 +249,10 @@
     <Page Include="Inlays\NotificationsInlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Inlays\SearchInlay.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Inlays\ThreadInlay.xaml">
       <Generator>MSBuild:Compile</Generator>

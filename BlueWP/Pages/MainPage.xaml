@@ -9,6 +9,7 @@
     xmlns:c="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bwpc="using:BlueWP.Controls"
+    xmlns:bwpfl="using:BlueWP.Controls.PostList"
     xmlns:bwpcp="using:BlueWP.Controls.Post"
     xmlns:bwpi="using:BlueWP.Inlays"
     mc:Ignorable="d"
@@ -63,7 +64,7 @@
           </Pivot.ItemContainerStyle>
           <Pivot.ItemTemplate>
             <DataTemplate>
-              <bwpi:FeedInlay FeedURI="{Binding URI}"/>
+              <bwpfl:PostListFeed FeedURI="{Binding URI}"/>
             </DataTemplate>
           </Pivot.ItemTemplate>
         </Pivot>
@@ -118,6 +119,14 @@
           </Grid>
         </PivotItem.Header>
         <bwpi:ConvoListInlay x:Name="ConvoListInlay" />
+      </PivotItem>
+
+      <!-- Search -->
+      <PivotItem>
+        <PivotItem.Header>
+          <bwpc:MainPagePivotHeader Glyph="&#xE721;" Label="Search"/>
+        </PivotItem.Header>
+        <bwpi:SearchInlay />
       </PivotItem>
 
       <!-- Settings -->

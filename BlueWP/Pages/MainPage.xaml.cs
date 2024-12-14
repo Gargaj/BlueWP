@@ -230,7 +230,7 @@ namespace BlueWP.Pages
       {
         return;
       }
-      var feedInlay = args.Item.ContentTemplateRoot as Inlays.FeedInlay;
+      var feedInlay = args.Item.ContentTemplateRoot as Controls.PostList.PostListFeed;
       if (feedInlay == null)
       {
         return;

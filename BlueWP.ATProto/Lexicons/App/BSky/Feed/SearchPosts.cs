@@ -8,6 +8,15 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
     public string EndpointID => "app.bsky.feed.searchPosts";
 
     public string q;
+    public string sort;
+    public string since;
+    public string until;
+    public string mentions;
+    public string author;
+    public string lang;
+    public string domain;
+    public string url;
+    public string tag;
     public uint? limit;
     public string cursor;
 

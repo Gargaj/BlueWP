@@ -89,6 +89,16 @@ namespace BlueWP.Inlays
       feed.Flush();
     }
 
+    private void Followers_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void Following_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
     public event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>

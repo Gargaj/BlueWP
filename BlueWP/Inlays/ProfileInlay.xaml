@@ -43,14 +43,26 @@
         <TextBlock Text="{Binding Description}" Margin="0,5,0,5" TextWrapping="WrapWholeWords"/>
       </ScrollViewer>
       <StackPanel Orientation="Horizontal">
-        <TextBlock>
-          <Run Text="{Binding FollowerCount}" FontWeight="Bold"/>
-          <Run Text="followers" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
-        </TextBlock>
-        <TextBlock Margin="10,0,0,0">
-          <Run Text="{Binding FollowCount}" FontWeight="Bold"/>
-          <Run Text="following" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
-        </TextBlock>
+        <Button Click="Followers_Click">
+          <Button.Template>
+            <ControlTemplate>
+              <TextBlock>
+                <Run Text="{Binding FollowerCount}" FontWeight="Bold"/>
+                <Run Text="followers" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+              </TextBlock>
+            </ControlTemplate>
+          </Button.Template>
+        </Button>
+        <Button Click="Following_Click" Margin="10,0,0,0">
+          <Button.Template>
+            <ControlTemplate>
+              <TextBlock>
+                <Run Text="{Binding FollowCount}" FontWeight="Bold"/>
+                <Run Text="following" Foreground="{ThemeResource TextBoxDisabledForegroundThemeBrush}"/>
+              </TextBlock>
+            </ControlTemplate>
+          </Button.Template>
+        </Button>
       </StackPanel>
     </StackPanel>
     <Pivot Grid.Row="2" FontSize="12">

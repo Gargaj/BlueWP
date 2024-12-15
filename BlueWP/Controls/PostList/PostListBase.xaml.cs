@@ -27,7 +27,7 @@ namespace BlueWP.Controls.PostList
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
-    public async virtual Task<List<ATProto.IPost>> GetListItems()
+    public virtual Task<List<ATProto.IPost>> GetListItems()
     {
       return null;
     }

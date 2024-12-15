@@ -23,7 +23,7 @@ namespace BlueWP.Inlays
 
     public string SearchText { get; set; }
 
-    protected async void SearchInlay_Loaded(object sender, RoutedEventArgs e)
+    protected void SearchInlay_Loaded(object sender, RoutedEventArgs e)
     {
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }

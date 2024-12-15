@@ -27,7 +27,7 @@ namespace BlueWP.Controls.ProfileList
       _mainPage = _app.GetCurrentFrame<Pages.MainPage>();
     }
 
-    public async virtual Task<List<ATProto.Lexicons.App.BSky.Actor.Defs.ProfileView>> GetProfileItems()
+    public virtual Task<List<ATProto.Lexicons.App.BSky.Actor.Defs.ProfileView>> GetProfileItems()
     {
       return null;
     }

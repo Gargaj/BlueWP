@@ -92,7 +92,7 @@
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="0"/>
           </Style>
-        </PivotItem.Style>     
+        </PivotItem.Style>
         <bwpi:NotificationsInlay />
       </PivotItem>
 
@@ -124,6 +124,12 @@
 
       <!-- Search -->
       <PivotItem>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
         <PivotItem.Header>
           <bwpc:MainPagePivotHeader Glyph="&#xE721;" Label="Search"/>
         </PivotItem.Header>

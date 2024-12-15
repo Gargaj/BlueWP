@@ -38,6 +38,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
           return $"@{handle}";
         }
       }
+      public string DID => did;
       public string AvatarURL => avatar;
     }
 
@@ -75,6 +76,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
           return $"@{handle}";
         }
       }
+      public string DID => did;
       public string AvatarURL => avatar;
       public string Description => description;
     }
@@ -117,6 +119,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
           return $"@{handle}";
         }
       }
+      public string DID => did;
       public string AvatarURL => avatar;
       public string Description => description;
     }

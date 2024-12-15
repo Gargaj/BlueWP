@@ -163,6 +163,10 @@
     <Compile Include="Lexicons\App\BSky\Notification\GetUnreadCount.cs" />
     <Compile Include="Lexicons\App\BSky\Notification\ListNotifications.cs" />
     <Compile Include="Lexicons\App\BSky\RichText\Facet.cs" />
+    <Compile Include="Lexicons\App\BSky\Video\Defs.cs" />
+    <Compile Include="Lexicons\App\BSky\Video\UploadVideos.cs" />
+    <Compile Include="Lexicons\App\BSky\Video\GetUploadLimits.cs" />
+    <Compile Include="Lexicons\App\BSky\Video\GetJobStatus.cs" />
     <Compile Include="Lexicons\Chat\BSky\Actor\Defs.cs" />
     <Compile Include="Lexicons\Chat\BSky\Convo\Defs.cs" />
     <Compile Include="Lexicons\Chat\BSky\Convo\UpdateRead.cs" />

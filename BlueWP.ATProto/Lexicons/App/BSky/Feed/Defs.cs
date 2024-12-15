@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using BlueWP.ATProto.Lexicons.App.BSky.Embed;
 
 namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 {
@@ -27,7 +26,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool IsReply => false;
       public bool HasQuotedPost => QuotedPost != null;
       public bool HasEmbedExternal => PostEmbedExternal != null;
-      public bool HasVideo => embed is Video.View;
+      public bool HasVideo => embed is Embed.Video.View;
 
       public string PostAuthorAvatarURL => author?.avatar;
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
@@ -45,40 +44,40 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool PostReposted => !string.IsNullOrEmpty(viewer?.repost);
       public bool PostLiked => !string.IsNullOrEmpty(viewer?.like);
 
-      public External.View PostEmbedExternal => embed as External.View;
-      public Video.View PostVideo => embed as Video.View;
+      public Embed.External.View PostEmbedExternal => embed as Embed.External.View;
+      public Embed.Video.View PostVideo => embed as Embed.Video.View;
 
-      public Record.ViewRecord QuotedPost
+      public Embed.Record.ViewRecord QuotedPost
       {
         get
         {
-          var recordView = embed as Record.View;
+          var recordView = embed as Embed.Record.View;
           if (recordView != null)
           {
-            return recordView.record as Record.ViewRecord;
+            return recordView.record as Embed.Record.ViewRecord;
           }
-          var recordWithMediaView = embed as RecordWithMedia.View;
+          var recordWithMediaView = embed as Embed.RecordWithMedia.View;
           if (recordWithMediaView != null)
           {
-            return recordWithMediaView.record.record as Record.ViewRecord;
+            return recordWithMediaView.record.record as Embed.Record.ViewRecord;
           }
           return null;
         }
       }
 
-      public IEnumerable<Images.ViewImage> PostImages
+      public IEnumerable<Embed.Images.ViewImage> PostImages
       {
         get
         {
-          var imagesView = embed as Images.View;
+          var imagesView = embed as Embed.Images.View;
           if (imagesView != null)
           {
             return imagesView.images;
           }
-          var rwmView = embed as RecordWithMedia.View;
+          var rwmView = embed as Embed.RecordWithMedia.View;
           if (rwmView != null)
           {
-            imagesView = rwmView?.media as Images.View;
+            imagesView = rwmView?.media as Embed.Images.View;
             if (imagesView != null)
             {
               return imagesView.images;
@@ -136,13 +135,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
 
       public bool HasQuotedPost => post?.HasQuotedPost ?? false;
       public bool HasVideo => post?.HasVideo ?? false;
-      public Record.ViewRecord QuotedPost => post?.QuotedPost;
+      public Embed.Record.ViewRecord QuotedPost => post?.QuotedPost;
       public string PostText => post.PostText;
       public string PostURI => post.PostURI;
-      public IEnumerable<Images.ViewImage> PostImages => post.PostImages;
+      public IEnumerable<Embed.Images.ViewImage> PostImages => post.PostImages;
 
       public bool HasEmbedExternal => post?.HasEmbedExternal ?? false;
-      public External.View PostEmbedExternal => post?.PostEmbedExternal;
+      public Embed.External.View PostEmbedExternal => post?.PostEmbedExternal;
     }
 
     public class ReplyRef

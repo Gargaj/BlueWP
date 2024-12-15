@@ -14,6 +14,7 @@ using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
 namespace BlueWP.Inlays
@@ -397,6 +398,110 @@ namespace BlueWP.Inlays
         await readStream.ReadAsync(byteData, 0, (int)readStream.Length);
 
         return byteData;
+      }
+    }
+
+    private static T FindFirstChild<T>(DependencyObject control) where T : DependencyObject
+    {
+      int count = VisualTreeHelper.GetChildrenCount(control);
+      for (int i = 0; i < count; i++)
+      {
+        var current = VisualTreeHelper.GetChild(control, i);
+        if (current is T)
+        {
+          return current as T;
+        }
+        var childResult = FindFirstChild<T>(current);
+        if (childResult != null)
+        {
+          return childResult;
+        }
+      }
+      return null;
+    }
+
+    private static void FindChildren<T>(DependencyObject control, ref List<T> results) where T : DependencyObject
+    {
+      int count = VisualTreeHelper.GetChildrenCount(control);
+      for (int i = 0; i < count; i++)
+      {
+        var current = VisualTreeHelper.GetChild(control, i);
+        if (current is T)
+        {
+          results.Add(current as T);
+        }
+        FindChildren<T>(current, ref results);
+      }
+    }
+
+    private async Task<List<ATProto.Lexicons.App.BSky.Actor.Defs.ProfileViewBasic>> SearchHandles(string searchTerm)
+    {
+      if (string.IsNullOrWhiteSpace(searchTerm))
+      {
+        return null;
+      }
+      var response = await _mainPage.Get<ATProto.Lexicons.App.BSky.Actor.SearchActorsTypeahead.Response>(new ATProto.Lexicons.App.BSky.Actor.SearchActorsTypeahead()
+      {
+        limit = 60,
+        q = searchTerm,
+      });
+      return response?.actors;
+    }
+
+    private int _lastSelection = 0;
+    private async void AutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
+    {
+      if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+      {
+        var textbox = FindFirstChild<TextBox>(sender);
+        if (textbox.SelectionStart <= 0)
+        {
+          return;
+        }
+        var text = textbox.Text;
+        for (int i = textbox.SelectionStart-1; i >= 0; i--)
+        {
+          if (text[i] == '@')
+          {
+            _lastSelection = textbox.SelectionStart;
+            sender.ItemsSource = await SearchHandles(text.Substring(i + 1, textbox.SelectionStart - i - 1));
+            break;
+          }
+          else if (!char.IsLetterOrDigit(text[i]) && text[i] != '-' && text[i] != '.')
+          {
+            sender.ItemsSource = null;
+            break;
+          }
+        }
+      }
+    }
+
+    private void AutoSuggestBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
+    {
+      var result = args.SelectedItem as ATProto.Lexicons.App.BSky.Actor.Defs.ProfileViewBasic;
+      if (result == null)
+      {
+        return;
+      }
+      if (_lastSelection <= 0)
+      {
+        return;
+      }
+      var text = sender.Text;
+      for (int i = _lastSelection - 1; i >= 0; i--)
+      {
+        if (text[i] == '@')
+        {
+          var newText = text.Substring(0, i + 1);
+          newText += result.handle;
+          //var newSelection = newText.Length;
+          newText += text.Substring(_lastSelection);
+          sender.Text = newText;
+        }
+        else if (!char.IsLetterOrDigit(text[i]) && text[i] != '-' && text[i] != '.')
+        {
+          break;
+        }
       }
     }
 

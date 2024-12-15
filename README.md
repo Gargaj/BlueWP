@@ -22,5 +22,4 @@ to the device, but you should be able to compile and build packages with VS2022 
 - Press Go and wait until it installs; ensure your phone doesn't lock while it's installing.
 
 ## Todo
-- Posting: Autocomplete handles
 - Pagination / infinite scrolling

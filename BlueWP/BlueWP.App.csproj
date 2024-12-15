@@ -127,6 +127,10 @@
     </Compile>
     <Compile Include="Controls\ImageGalleryTemplateSelector.cs" />
     <Compile Include="Controls\NotificationDataTemplateSelector.cs" />
+    <Compile Include="Controls\ProfileList\ProfileListSearch.cs" />
+    <Compile Include="Controls\ProfileList\ProfileListBase.xaml.cs">
+      <DependentUpon>ProfileListBase.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\PostList\PostListSearch.cs" />
     <Compile Include="Controls\PostList\PostListProfile.cs" />
     <Compile Include="Controls\PostList\PostListFeed.cs" />
@@ -206,6 +210,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Controls\ProfileList\ProfileListBase.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Controls\Post\EmbedExternal.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

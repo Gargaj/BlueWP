@@ -57,6 +57,13 @@ namespace BlueWP.Inlays
         await postList.Refresh();
         return;
       }
+      var profileList = pivotItem.ContentTemplateRoot as Controls.ProfileList.ProfileListSearch;
+      if (profileList != null)
+      {
+        profileList.SearchTerm = SearchText;
+        await profileList.Refresh();
+        return;
+      }
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

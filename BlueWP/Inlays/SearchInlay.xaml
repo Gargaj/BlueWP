@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:c="using:Microsoft.Xaml.Interactions.Core"
     xmlns:bwpfl="using:BlueWP.Controls.PostList"
+    xmlns:bwppl="using:BlueWP.Controls.ProfileList"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -47,10 +48,9 @@
       <PivotItem Header="Latest">
         <bwpfl:PostListSearch Sort="Latest"/>
       </PivotItem>
-      <!--
       <PivotItem Header="People">
+        <bwppl:ProfileListSearch/>
       </PivotItem>
-      -->
     </Pivot>
     
   </Grid>

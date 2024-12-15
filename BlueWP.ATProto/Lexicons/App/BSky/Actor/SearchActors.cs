@@ -11,12 +11,13 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
     public string q;
     public uint? limit;
     public string cursor;
-  }
-  public class Response : ILexiconResponse
-  {
-    public string EndpointID => "app.bsky.actor.searchActors";
 
-    public string cursor;
-    public List<Defs.ProfileView> actors;
+    public class Response : ILexiconResponse
+    {
+      public string EndpointID => "app.bsky.actor.searchActors";
+
+      public string cursor;
+      public List<Defs.ProfileView> actors;
+    }
   }
 }

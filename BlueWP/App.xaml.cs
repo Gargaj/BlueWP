@@ -39,6 +39,10 @@ namespace BlueWP
     {
       _rootFrame = Window.Current.Content as Frame;
 
+#if !DEBUG
+      var task = Task.Run(async () => { await AutoUpdate.CheckForUpdates(typeof(App)); });
+#endif
+
       // Do not repeat app initialization when the Window already has content,
       // just ensure that the window is active
       if (_rootFrame == null)

@@ -11,13 +11,14 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Graph
     public string actor;
     public uint? limit;
     public string cursor;
-  }
-  public class Response : ILexiconResponse
-  {
-    public string EndpointID => "app.bsky.graph.getFollows";
 
-    public Actor.Defs.ProfileView subject;
-    public string cursor;
-    public List<Actor.Defs.ProfileView> follows;
+    public class Response : ILexiconResponse
+    {
+      public string EndpointID => "app.bsky.graph.getFollows";
+
+      public Actor.Defs.ProfileView subject;
+      public string cursor;
+      public List<Actor.Defs.ProfileView> follows;
+    }
   }
 }

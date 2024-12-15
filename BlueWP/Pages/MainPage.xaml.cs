@@ -26,6 +26,8 @@ namespace BlueWP.Pages
     private ATProto.Lexicons.App.BSky.Actor.Defs.SavedFeedsPrefV2 _savedFeedsPrefV2;
     private DispatcherTimer _notificationsTimer = new DispatcherTimer();
     private string _zoomedImageURL;
+    private string _followersActorDID;
+    private string _followingActorDID;
 
     public MainPage()
     {
@@ -197,6 +199,20 @@ namespace BlueWP.Pages
         convoInlay.ID = _convoID;
         await convoInlay.Refresh();
       }
+
+      var followersInlay = args.Item.ContentTemplateRoot as Controls.ProfileList.ProfileListFollowers;
+      if (followersInlay != null)
+      {
+        followersInlay.ActorDID = _followersActorDID;
+        await followersInlay.Refresh();
+      }
+
+      var followingInlay = args.Item.ContentTemplateRoot as Controls.ProfileList.ProfileListFollowing;
+      if (followingInlay != null)
+      {
+        followingInlay.ActorDID = _followingActorDID;
+        await followingInlay.Refresh();
+      }
     }
 
     private void Main_PivotItemUnloading(Pivot sender, PivotItemEventArgs args)
@@ -318,6 +334,52 @@ namespace BlueWP.Pages
       else
       {
         MainMenu.SelectedItem = ConvoPivotItem;
+      }
+    }
+
+    public async Task SwitchToFollowersInlay(string actorDID)
+    {
+      if (string.IsNullOrEmpty(actorDID))
+      {
+        return;
+      }
+      _followersActorDID = actorDID;
+      if (MainMenu.SelectedItem == FollowersPivotItem)
+      {
+        var followersInlay = FollowersPivotItem.ContentTemplateRoot as Controls.ProfileList.ProfileListFollowers;
+        if (followersInlay != null)
+        {
+          followersInlay.Flush();
+          followersInlay.ActorDID = actorDID;
+          await followersInlay.Refresh();
+        }
+      }
+      else
+      {
+        MainMenu.SelectedItem = FollowersPivotItem;
+      }
+    }
+
+    public async Task SwitchToFollowingInlay(string actorDID)
+    {
+      if (string.IsNullOrEmpty(actorDID))
+      {
+        return;
+      }
+      _followingActorDID = actorDID;
+      if (MainMenu.SelectedItem == FollowingPivotItem)
+      {
+        var followingInlay = FollowingPivotItem.ContentTemplateRoot as Controls.ProfileList.ProfileListFollowing;
+        if (followingInlay != null)
+        {
+          followingInlay.Flush();
+          followingInlay.ActorDID = actorDID;
+          await followingInlay.Refresh();
+        }
+      }
+      else
+      {
+        MainMenu.SelectedItem = FollowingPivotItem;
       }
     }
 

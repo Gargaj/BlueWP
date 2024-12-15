@@ -130,6 +130,8 @@
     <Compile Include="Controls\Profile.xaml.cs">
       <DependentUpon>Profile.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\ProfileList\ProfileListFollowing.cs" />
+    <Compile Include="Controls\ProfileList\ProfileListFollowers.cs" />
     <Compile Include="Controls\ProfileList\ProfileListSearch.cs" />
     <Compile Include="Controls\ProfileList\ProfileListBase.xaml.cs">
       <DependentUpon>ProfileListBase.xaml</DependentUpon>

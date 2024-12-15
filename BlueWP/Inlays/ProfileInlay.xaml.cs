@@ -89,14 +89,14 @@ namespace BlueWP.Inlays
       feed.Flush();
     }
 
-    private void Followers_Click(object sender, RoutedEventArgs e)
+    private async void Followers_Click(object sender, RoutedEventArgs e)
     {
-
+      await _mainPage.SwitchToFollowersInlay(ActorDID);
     }
 
-    private void Following_Click(object sender, RoutedEventArgs e)
+    private async void Following_Click(object sender, RoutedEventArgs e)
     {
-
+      await _mainPage.SwitchToFollowingInlay(ActorDID);
     }
 
     public event PropertyChangedEventHandler PropertyChanged;

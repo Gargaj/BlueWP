@@ -10,6 +10,7 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:bwpc="using:BlueWP.Controls"
     xmlns:bwpfl="using:BlueWP.Controls.PostList"
+    xmlns:bwppl="using:BlueWP.Controls.ProfileList"
     xmlns:bwpcp="using:BlueWP.Controls.Post"
     xmlns:bwpi="using:BlueWP.Inlays"
     mc:Ignorable="d"
@@ -178,6 +179,35 @@
         </PivotItem.Style>
         <bwpi:ConvoInlay />
       </PivotItem>
+
+      <!-- Custom inlay for viewing followers -->
+      <PivotItem x:Name="FollowersPivotItem">
+        <PivotItem.Header>
+          <TextBlock Text="" Width="0" Margin="0"/>
+        </PivotItem.Header>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
+        <bwppl:ProfileListFollowers />
+      </PivotItem>
+
+      <!-- Custom inlay for viewing followed profiles -->
+      <PivotItem x:Name="FollowingPivotItem">
+        <PivotItem.Header>
+          <TextBlock Text="" Width="0" Margin="0"/>
+        </PivotItem.Header>
+        <PivotItem.Style>
+          <Style TargetType="PivotItem">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+          </Style>
+        </PivotItem.Style>
+        <bwppl:ProfileListFollowing />
+      </PivotItem>
+
     </Pivot>
 
     <!-- modals -->

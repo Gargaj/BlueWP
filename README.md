@@ -23,5 +23,5 @@ to the device, but you should be able to compile and build packages with VS2022 
 
 ## Todo
 - Posting: Autocomplete handles
-- Following/follower lists
+- Following / unfollowing action
 - Pagination / infinite scrolling

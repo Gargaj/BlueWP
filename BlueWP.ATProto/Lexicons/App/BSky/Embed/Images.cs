@@ -9,15 +9,9 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
 
     public class Image
     {
-      public object image; // TODO: blob
+      public Blob image;
       public string alt;
-      public AspectRatio aspectRatio;
-    }
-
-    public class AspectRatio
-    {
-      public uint width;
-      public uint height;
+      public Defs.AspectRatio aspectRatio;
     }
 
     public class View
@@ -30,7 +24,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Embed
       public string thumb;
       public string fullsize;
       public string alt;
-      public AspectRatio aspectRatio;
+      public Defs.AspectRatio aspectRatio;
 
       public string ThumbURL
       {

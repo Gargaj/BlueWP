@@ -14,7 +14,7 @@ namespace BlueWP.ATProto.Lexicons.COM.ATProto.Repo
 
     public class Response : ILexiconResponse
     {
-      public object blob;
+      public Blob blob;
     }
   }
 }

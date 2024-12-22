@@ -207,5 +207,59 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Actor
       public string sort;
       public bool prioritizeFollowedUsers;
     }
+
+    public class InterestsPref
+    {
+      public List<string> tags;
+    }
+
+    public class MutedWord
+    {
+      public string id;
+      public string value;
+      public List<string> targets;
+      public string actorTarget;
+      public DateTime? expiresAt;
+    }
+
+    public class MutedWordsPref
+    {
+      public List<MutedWord> items;
+    }
+
+    public class HiddenPostsPref
+    {
+      public List<string> items;
+    }
+
+    public class LabelersPref
+    {
+      public List<LabelersPrefItem> labelers;
+    }
+
+    public class LabelersPrefItem
+    {
+      public string did;
+    }
+
+    public class BskyAppStatePref
+    {
+      public BskyAppProgressGuide activeProgressGuide;
+      public List<string> queuedNudges;
+      public List<Nux> nuxs;
+    }
+
+    public class BskyAppProgressGuide
+    {
+      public string guide;
+    }
+
+    public class Nux
+    {
+      public string id;
+      public bool completed;
+      public string data;
+      public DateTime? expiresAt;
+    }
   }
 }

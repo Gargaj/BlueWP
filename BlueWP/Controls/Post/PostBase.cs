@@ -62,11 +62,11 @@ namespace BlueWP.Controls.Post
     {
       get
       {
-        if (PostVideo == null)
+        if (PostVideo?.aspectRatio == null)
         {
-          return 100;
+          return 200;
         }
-        int height = PostVideo.aspectRatio == null ? 400 : (int)(ActualWidth * PostVideo.aspectRatio.height / PostVideo.aspectRatio.width);
+        int height = (int)(ActualWidth * PostVideo.aspectRatio.height / PostVideo.aspectRatio.width);
         height = Math.Min(height, 400);
         return height;
       }

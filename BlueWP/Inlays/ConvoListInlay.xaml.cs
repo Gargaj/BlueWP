@@ -39,7 +39,7 @@ namespace BlueWP.Inlays
       var response = await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvos.Response>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos()
       {
       });
-      if (response != null)
+      if (response != null && response.convos != null)
       {
         Convos = response.convos.Select(s => new Convo() {
           ConvoView = s,

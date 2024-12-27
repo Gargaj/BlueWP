@@ -159,7 +159,7 @@ namespace BlueWP.Pages
       var convoUnreadCountResponse = await Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvos.Response>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos() {
         limit = 1
       });
-      if (convoUnreadCountResponse != null)
+      if (convoUnreadCountResponse != null && convoUnreadCountResponse.convos != null)
       {
         UnreadConvoNotificationCount = convoUnreadCountResponse.convos.Sum(s => s.unreadCount);
       }

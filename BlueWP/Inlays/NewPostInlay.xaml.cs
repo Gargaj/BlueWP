@@ -278,7 +278,11 @@ namespace BlueWP.Inlays
             var image = new ATProto.Lexicons.App.BSky.Embed.Images.Image()
             {
               image = blobResponse.blob,
-              alt = imageAttachment.AltText
+              alt = imageAttachment.AltText,
+              aspectRatio = new ATProto.Lexicons.App.BSky.Embed.Defs.AspectRatio() {
+                width = imageAttachment.BitmapImage.PixelWidth,
+                height = imageAttachment.BitmapImage.PixelHeight,
+              }
             };
             images.images.Add(image);
             imageAttachment.IsLoading = false;

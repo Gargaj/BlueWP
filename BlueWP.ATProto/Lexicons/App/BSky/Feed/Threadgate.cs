@@ -13,6 +13,10 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
     {
     }
 
+    public class FollowerRule
+    {
+    }
+
     public class FollowingRule
     {
     }

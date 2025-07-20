@@ -17,7 +17,9 @@ namespace BlueWP.Controls
       var notification = item as Inlays.NotificationsInlay.NotificationGroup;
       switch (notification.Type)
       {
+        case "like-via-repost":
         case "like": return Like;
+        case "repost-via-repost":
         case "repost": return Repost;
         case "follow": return Follow;
         case "mention": return Mention;

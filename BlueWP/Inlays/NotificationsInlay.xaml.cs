@@ -52,12 +52,17 @@ namespace BlueWP.Inlays
           (k, v) => new NotificationGroup(this, k, v)
         ).ToList();
 
-        var subjectUris = response?.notifications.Select(s => s.reasonSubject).Where(s => !string.IsNullOrEmpty(s)).Distinct().Take(25);
-        var responsePosts = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPosts.Response>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
+        var subjectUris = response?.notifications.Select(s => s.PostSubjectURI).Where(s => !string.IsNullOrEmpty(s)).Distinct();
+        while (subjectUris.Any())
         {
-          uris = subjectUris.ToList()
-        });
-        responsePosts?.posts.ForEach(s => { if (!PostCache.ContainsKey(s.uri)) { PostCache.Add(s.uri, s); } });
+          var subjectUris25 = subjectUris.Take(25);
+          subjectUris = subjectUris.Skip(25);
+          var responsePosts = await _mainPage.Get<ATProto.Lexicons.App.BSky.Feed.GetPosts.Response>(new ATProto.Lexicons.App.BSky.Feed.GetPosts()
+          {
+            uris = subjectUris25.ToList()
+          });
+          responsePosts?.posts.ForEach(s => { if (!PostCache.ContainsKey(s.uri)) { PostCache.Add(s.uri, s); } });
+        }
       }
 
       _mainPage?.EndLoading();
@@ -126,7 +131,9 @@ namespace BlueWP.Inlays
         {
           switch (Type)
           {
+            case "like-via-repost": return "liked your repost";
             case "like": return "liked your post";
+            case "repost-via-repost": return "reposted your repost";
             case "repost": return "reposted your post";
             case "follow": return "followed you";
             case "mention": return "mentioned you";
@@ -142,7 +149,9 @@ namespace BlueWP.Inlays
         {
           switch (Type)
           {
+            case "like-via-repost":
             case "like": return "\xEB51";
+            case "repost-via-repost":
             case "repost": return "\xE8EB";
             case "follow": return "\xE8FA";
             default: return null;
@@ -152,7 +161,7 @@ namespace BlueWP.Inlays
       public string FirstName => Notifications.First().PostAuthorDisplayName;
       public string PostElapsedTime => Notifications.First().PostElapsedTime;
       public string AdditionalNames => Notifications.Count() > 1 ? $"and {Notifications.Count() - 1} others" : string.Empty;
-      public string SubjectPostText => FirstPost.reasonSubject != null && _parent.PostCache.ContainsKey(FirstPost.reasonSubject) ? _parent?.PostCache[FirstPost.reasonSubject]?.PostText : null;
+      public string SubjectPostText => FirstPost.PostSubjectURI != null && _parent.PostCache.ContainsKey(FirstPost.PostSubjectURI) ? _parent?.PostCache[FirstPost.PostSubjectURI]?.PostText : null;
       public ATProto.Lexicons.App.BSky.Notification.Notification FirstPost => Notifications.First();
     }
   }

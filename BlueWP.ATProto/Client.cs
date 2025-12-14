@@ -63,7 +63,7 @@ namespace BlueWP.ATProto
       }
       _hostOverride = null;
 
-      var didDoc = (response?.didDoc as Newtonsoft.Json.Linq.JObject).ToObject<Lexicons.COM.ATProto.Server.DIDDoc>();
+      var didDoc = (response?.didDoc as Newtonsoft.Json.Linq.JObject)?.ToObject<Lexicons.COM.ATProto.Server.DIDDoc>();
 
       // TODO: check if account already exists in the db
       var credentials = new Settings.AccountSettingsData()

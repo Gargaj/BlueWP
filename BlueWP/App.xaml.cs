@@ -112,17 +112,6 @@ namespace BlueWP
       return false;
     }
 
-    public void Logout()
-    {
-      if (_rootFrame == null)
-      {
-        return;
-      }
-
-      //await _client.DeleteCredentials();
-      _rootFrame.Navigate(typeof(Pages.LoginPage));
-    }
-
     public T GetCurrentFrame<T>() where T : Page
     {
       return _rootFrame.Content as T;

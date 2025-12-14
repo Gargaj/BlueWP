@@ -45,12 +45,12 @@ namespace BlueWP.Inlays
 
       foreach (var account in _app.Client.Settings.AccountSettings)
       {
-        var profile = response.profiles.FirstOrDefault(s => s.did == account.Credentials.DID);
+        var profile = response?.profiles?.FirstOrDefault(s => s.did == account.Credentials.DID);
         Accounts.Add(new AccountInfo() {
           AccountAvatarURL = profile?.avatar,
-          Handle = profile?.handle,
-          Name = profile?.DisplayName,
-          DID = profile?.did,
+          Handle = profile?.handle ?? account.Credentials.Handle,
+          Name = profile?.DisplayName ?? account.Credentials.Handle,
+          DID = profile?.did ?? account.Credentials.DID,
           IsSelected = _app.Client.CurrentAccountSettings == account
         });
       }
@@ -73,7 +73,21 @@ namespace BlueWP.Inlays
 
       var dialog = new Windows.UI.Popups.MessageDialog("Are you sure?");
       dialog.Commands.Add(new Windows.UI.Popups.UICommand("Yes", new Windows.UI.Popups.UICommandInvokedHandler(async (s) => {
+        var isSelected = _app.Client.CurrentAccountSettings.Credentials.DID == dataContext.DID;
         await _app.Client.Settings.DeleteAccountSettings(dataContext.DID);
+        if (!_app.Client.Settings.AccountSettings.Any())
+        {
+          await _app.Client.Settings.WriteSettings();
+          _app.NavigateToLoginScreen("");
+          return;
+        }
+        if (isSelected)
+        {
+          _app.Client.Settings.SelectedDID = _app.Client.Settings.AccountSettings.First().Credentials.DID;
+          await _mainPage.RefreshNotificationCounters();
+          _mainPage.SwitchToProfileInlay(_app.Client.Settings.SelectedDID);
+        }
+        await _app.Client.Settings.WriteSettings();
       })));
       dialog.Commands.Add(new Windows.UI.Popups.UICommand("No", new Windows.UI.Popups.UICommandInvokedHandler((s) => { })));
       dialog.DefaultCommandIndex = 1;

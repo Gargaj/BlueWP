@@ -29,7 +29,7 @@
               </ListView.ItemContainerStyle>
               <ListView.ItemTemplate>
                 <DataTemplate>
-                  <Button Click="SwitchAccount_Click" Background="Transparent">
+                  <Button Click="SwitchAccount_Click" Background="Transparent" HorizontalAlignment="Stretch">
                     <Button.Template>
                       <ControlTemplate>
                         <Grid>
@@ -38,11 +38,9 @@
                                   BorderThickness="{TemplateBinding BorderThickness}">
                             <Grid>
                               <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                               </Grid.ColumnDefinitions>
-                              <ContentPresenter HorizontalAlignment="Left" Grid.Column="0" VerticalAlignment="Center"/>
-                              <Canvas Background="AliceBlue" Grid.Column="1" />
+                              <ContentPresenter HorizontalAlignment="Stretch" Grid.Column="0" VerticalAlignment="Center"/>
                             </Grid>
                           </Border>
                         </Grid>
@@ -67,14 +65,6 @@
 
                       <Button Grid.Column="2" Click="RemoveAccount_Click">
                         <FontIcon FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE74D;" />
-                        <i:Interaction.Behaviors>
-                          <c:DataTriggerBehavior Binding="{Binding IsSelected}" Value="True">
-                            <c:ChangePropertyAction PropertyName="Visibility" Value="Collapsed" />
-                          </c:DataTriggerBehavior>
-                          <c:DataTriggerBehavior Binding="{Binding IsSelected}" Value="False">
-                            <c:ChangePropertyAction PropertyName="Visibility" Value="Visible" />
-                          </c:DataTriggerBehavior>
-                        </i:Interaction.Behaviors>
                       </Button>
                     </Grid>
                   </Button>

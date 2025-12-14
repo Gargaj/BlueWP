@@ -30,7 +30,7 @@ namespace BlueWP.Controls.PostList
         var feedItems = response?.feed;
         if (_followedOnly)
         {
-          feedItems = feedItems.Where((s) =>
+          feedItems = feedItems?.Where((s) =>
           {
             if (s?.reply?.parent == null)
             {
@@ -45,7 +45,7 @@ namespace BlueWP.Controls.PostList
           }).ToList();
         }
 
-        return feedItems.ToList<ATProto.IPost>();
+        return feedItems?.ToList<ATProto.IPost>();
       }
       else
       {

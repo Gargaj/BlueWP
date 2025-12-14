@@ -21,7 +21,7 @@ namespace BlueWP.Controls.PostList
         limit = 60,
         actor = ActorDID
       });
-      return response?.feed.ToList<ATProto.IPost>();
+      return response?.feed?.ToList<ATProto.IPost>();
     }
   }
 }

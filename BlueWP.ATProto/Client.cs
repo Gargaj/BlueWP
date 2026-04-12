@@ -157,6 +157,11 @@ namespace BlueWP.ATProto
         var jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(responseJson) as Newtonsoft.Json.Linq.JObject;
         if (jsonObj != null && jsonObj.GetValue("error") != null && jsonObj.GetValue("error").ToString() == "ExpiredToken")
         {
+          if (input is Lexicons.COM.ATProto.Server.RefreshSession)
+          {
+            
+            return default(T);
+          }
           if (await RefreshCredentials())
           {
             headers["Authorization"] = $"Bearer {CurrentAccountSettings.Credentials.AccessToken}";
@@ -181,6 +186,10 @@ namespace BlueWP.ATProto
                 break;
             }
           }
+          else
+          {
+            return default(T);
+          }
         }
         else
         {
@@ -197,14 +206,17 @@ namespace BlueWP.ATProto
     {
       var body = new Lexicons.COM.ATProto.Server.RefreshSession();
       var response = await PostAsync<Lexicons.COM.ATProto.Server.RefreshSession.Response>(body);
-      if (response != null && !string.IsNullOrEmpty(response.accessJwt))
+      if (response == null || string.IsNullOrEmpty(response.accessJwt))
       {
-        CurrentAccountSettings.Credentials.DID = response.did;
-        CurrentAccountSettings.Credentials.Handle = response.handle;
-        CurrentAccountSettings.Credentials.AccessToken = response.accessJwt;
-        CurrentAccountSettings.Credentials.RefreshToken = response.refreshJwt;
-        await _settings.WriteSettings();
+        await Settings.DeleteCurrentAccountSettings();
+        return false;
       }
+      
+      CurrentAccountSettings.Credentials.DID = response.did;
+      CurrentAccountSettings.Credentials.Handle = response.handle;
+      CurrentAccountSettings.Credentials.AccessToken = response.accessJwt;
+      CurrentAccountSettings.Credentials.RefreshToken = response.refreshJwt;
+      await _settings.WriteSettings();
 
       return true;
     }

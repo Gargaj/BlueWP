@@ -71,6 +71,11 @@ namespace BlueWP.Pages
 
       EndLoading();
 
+      if (_preferences == null)
+      {
+        return;
+      }
+
       _notificationsTimer.Start();
       await RefreshNotificationCounters(); // Start() doesn't trigger immediately
 
@@ -88,6 +93,10 @@ namespace BlueWP.Pages
         _preferences = preferences.preferences;
 
         await GenerateFeeds();
+      }
+      else if (!_app.Client.IsAuthenticated)
+      {
+        _app.NavigateToLoginScreen(null);
       }
     }
 

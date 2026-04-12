@@ -15,6 +15,7 @@ namespace BlueWP.Inlays
     private Pages.MainPage _mainPage;
     private DispatcherTimer _updateTimer = new DispatcherTimer();
     private ATProto.Lexicons.Chat.BSky.Convo.Defs.ConvoView _convoInfo;
+    private string _messageText;
 
     public ConvoInlay()
     {
@@ -29,7 +30,15 @@ namespace BlueWP.Inlays
 
     public string ID { get; set; }
     public ObservableCollection<Message> Messages { get; private set; } = new ObservableCollection<Message>();
-    public string MessageText { get; set; }
+    public string MessageText {
+      get => _messageText;
+      set {
+        _messageText = value;
+        OnPropertyChanged(nameof(IsMessageValid));
+        OnPropertyChanged(nameof(MessageText));
+      }
+    }
+    public bool IsMessageValid => !string.IsNullOrWhiteSpace(MessageText);
     public string ChatName { get; set; }
 
     private void ChatInlay_Loaded(object sender, RoutedEventArgs e)
@@ -92,7 +101,7 @@ namespace BlueWP.Inlays
 
     private void AddNewMessages(IEnumerable<object> messageBurst)
     {
-      var newMessages = messageBurst.Select(s => s as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView).Where(s => s != null && !Messages.Any(m=>m.ID == s.id));
+      var newMessages = messageBurst.Select(s => s as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView).Where(s => s != null && !Messages.Any(m => m.ID == s.id));
       if (!newMessages.Any())
       {
         return;
@@ -105,7 +114,7 @@ namespace BlueWP.Inlays
         Messages.Insert(idx < 0 ? Messages.Count : idx, new Message()
         {
           ID = message?.id,
-          SenderAvatarURL = _convoInfo.members.FirstOrDefault(s=>s.did == message?.sender?.did)?.avatar,
+          SenderAvatarURL = _convoInfo.members.FirstOrDefault(s => s.did == message?.sender?.did)?.avatar + "@jpeg",
           SenderName = _convoInfo.members.FirstOrDefault(s => s.did == message?.sender?.did)?.DisplayName,
           Text = message?.text,
           Timestamp = message?.sentAt.ToLocalTime()
@@ -127,6 +136,10 @@ namespace BlueWP.Inlays
 
     private async void Send_Click(object sender, RoutedEventArgs e)
     {
+      if (!IsMessageValid)
+      {
+        return;
+      }
       var response = await _mainPage.Post<ATProto.Lexicons.Chat.BSky.Convo.SendMessage.Response>(new ATProto.Lexicons.Chat.BSky.Convo.SendMessage
       {
         convoId = ID,
@@ -142,6 +155,7 @@ namespace BlueWP.Inlays
       {
         MessageText = string.Empty;
         OnPropertyChanged(nameof(MessageText));
+        OnPropertyChanged(nameof(IsMessageValid));
         AddNewMessages(new List<object>() { response });
       }
     }

@@ -53,7 +53,7 @@
         <ColumnDefinition Width="48"/>
       </Grid.ColumnDefinitions>
       <TextBox Grid.Column="0" Text="{Binding MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-      <Button Grid.Column="1" Click="Send_Click">
+      <Button Grid.Column="1" Click="Send_Click" IsEnabled="{Binding IsMessageValid}">
         <FontIcon Glyph="&#xE724;"/>
       </Button>
     </Grid>

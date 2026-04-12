@@ -31,7 +31,7 @@ namespace BlueWP.Controls
     public string ActorDID => ProfileData?.DID;
     public string DisplayName => ProfileData?.DisplayName;
     public string Handle => ProfileData?.Handle;
-    public string AvatarURL => ProfileData?.AvatarURL;
+    public string AvatarURL => ProfileData?.AvatarURL + "@jpeg";
     public string Description => ProfileData?.Description;
 
     public bool IsFollowing => !string.IsNullOrEmpty(ProfileData?.viewer?.following);

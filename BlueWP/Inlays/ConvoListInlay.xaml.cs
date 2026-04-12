@@ -57,7 +57,7 @@ namespace BlueWP.Inlays
       public string CurrentUserDID { get; set; }
 
       public string ID => ConvoView.id;
-      public string PartnerAvatarURL => ConvoView.members.Where(s=>s.did != CurrentUserDID).FirstOrDefault().avatar;
+      public string PartnerAvatarURL => ConvoView.members.Where(s=>s.did != CurrentUserDID).FirstOrDefault().avatar + "@jpeg";
       public string PartnerNames => string.Join(", ", ConvoView.members.Where(s => s.did != CurrentUserDID).Select(s => s.DisplayName));
       public string LastMessage => (ConvoView.lastMessage as ATProto.Lexicons.Chat.BSky.Convo.Defs.MessageView)?.text ?? string.Empty;
       public bool IsRead => ConvoView.unreadCount == 0;

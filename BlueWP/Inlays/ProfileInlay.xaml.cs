@@ -22,7 +22,7 @@ namespace BlueWP.Inlays
 
     public string ActorDID { get; set; }
     public string CoverImageURL => ProfileData?.banner;
-    public string AvatarURL => ProfileData?.AvatarURL;
+    public string AvatarURL => ProfileData?.AvatarURL + "@jpeg";
     public string DisplayName => ProfileData?.DisplayName;
     public string Handle => ProfileData?.Handle;
     public string Description => ProfileData?.Description;

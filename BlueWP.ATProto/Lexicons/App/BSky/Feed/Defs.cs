@@ -29,7 +29,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Feed
       public bool HasEmbedExternal => PostEmbedExternal != null;
       public bool HasVideo => embed is Video.View;
 
-      public string PostAuthorAvatarURL => author?.avatar;
+      public string PostAuthorAvatarURL => author?.avatar + "@jpeg";
       public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
       public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
       public string PostElapsedTime => Helpers.ToElapsedTime(indexedAt);

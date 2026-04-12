@@ -47,7 +47,7 @@ namespace BlueWP.Inlays
       {
         var profile = response?.profiles?.FirstOrDefault(s => s.did == account.Credentials.DID);
         Accounts.Add(new AccountInfo() {
-          AccountAvatarURL = profile?.avatar,
+          AccountAvatarURL = profile?.avatar + "@jpeg",
           Handle = profile?.handle ?? account.Credentials.Handle,
           Name = profile?.DisplayName ?? account.Credentials.Handle,
           DID = profile?.did ?? account.Credentials.DID,

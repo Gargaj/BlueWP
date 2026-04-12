@@ -65,10 +65,10 @@ namespace BlueWP.Controls.Post
         _images = images;
       }
       public int ImageCount => _images?.Count ?? 0;
-      public string Image1ThumbURL => _images != null && _images.Count > 0 ? _images[0]?.ThumbURL : null;
-      public string Image2ThumbURL => _images != null && _images.Count > 1 ? _images[1]?.ThumbURL : null;
-      public string Image3ThumbURL => _images != null && _images.Count > 2 ? _images[2]?.ThumbURL : null;
-      public string Image4ThumbURL => _images != null && _images.Count > 3 ? _images[3]?.ThumbURL : null;
+      public string Image1ThumbURL => _images != null && _images.Count > 0 ? _images[0]?.ThumbURL + "@jpeg" : null;
+      public string Image2ThumbURL => _images != null && _images.Count > 1 ? _images[1]?.ThumbURL + "@jpeg" : null;
+      public string Image3ThumbURL => _images != null && _images.Count > 2 ? _images[2]?.ThumbURL + "@jpeg" : null;
+      public string Image4ThumbURL => _images != null && _images.Count > 3 ? _images[3]?.ThumbURL + "@jpeg" : null;
     }
   }
 }

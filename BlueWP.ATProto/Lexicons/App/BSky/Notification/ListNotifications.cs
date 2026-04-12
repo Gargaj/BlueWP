@@ -42,7 +42,7 @@ namespace BlueWP.ATProto.Lexicons.App.BSky.Notification
     public bool HasEmbedExternal => false;
     public bool HasVideo => false;
 
-    public string PostAuthorAvatarURL => author?.avatar;
+    public string PostAuthorAvatarURL => author?.avatar + "@jpeg";
     public string PostAuthorDisplayName => author?.DisplayName ?? "[ERROR]";
     public string PostAuthorHandle => author?.Handle ?? "[ERROR]";
     public string PostElapsedTime => indexedAt != null ? Helpers.ToElapsedTime(indexedAt.GetValueOrDefault()) : string.Empty;

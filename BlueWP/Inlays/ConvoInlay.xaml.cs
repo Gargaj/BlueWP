@@ -116,6 +116,7 @@ namespace BlueWP.Inlays
           ID = message?.id,
           SenderAvatarURL = _convoInfo.members.FirstOrDefault(s => s.did == message?.sender?.did)?.avatar + "@jpeg",
           SenderName = _convoInfo.members.FirstOrDefault(s => s.did == message?.sender?.did)?.DisplayName,
+          QuotedPost = message?.embed?.record as ATProto.Lexicons.App.BSky.Embed.Record.ViewRecord,
           Text = message?.text,
           Timestamp = message?.sentAt.ToLocalTime()
         });
@@ -160,12 +161,25 @@ namespace BlueWP.Inlays
       }
     }
 
+    protected async void QuotedPost_Click(object sender, RoutedEventArgs e)
+    {
+      var button = e.OriginalSource as FrameworkElement;
+      var msg = button?.DataContext as Message;
+      if (msg == null || !msg.HasQuotedPost)
+      {
+        return;
+      }
+      await _mainPage.SwitchToThreadViewInlay(msg.QuotedPost.uri);
+    }
+
     public class Message
     {
       public string ID { get; set; }
       public string SenderName { get; set; }
       public string SenderAvatarURL { get; set; }
       public string TimestampString => Timestamp.HasValue ? (Timestamp.Value.Date == DateTime.Now.Date ? Timestamp.Value.ToString("HH:mm") : Timestamp.Value.ToString("yyyy-MM-dd HH:mm")) : string.Empty;
+      public bool HasQuotedPost => QuotedPost != null;
+      public ATProto.Lexicons.App.BSky.Embed.Record.ViewRecord QuotedPost { get; set; }
       public DateTime? Timestamp { get; set; }
       public string Text { get; set; }
     }

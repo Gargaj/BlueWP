@@ -223,21 +223,23 @@ namespace BlueWP.Inlays
             collection = collection,
             rkey = rkey
           });
-
-          var root = (recordResponse?.value as ATProto.Lexicons.App.BSky.Feed.Post)?.reply?.root;
-          post.reply = new ATProto.Lexicons.App.BSky.Feed.Post.ReplyRef()
+          if (recordResponse != null)
           {
-            root = root ?? new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+            var root = (recordResponse?.value as ATProto.Lexicons.App.BSky.Feed.Post)?.reply?.root;
+            post.reply = new ATProto.Lexicons.App.BSky.Feed.Post.ReplyRef()
             {
-              uri = recordResponse.uri,
-              cid = recordResponse.cid,
-            },
-            parent = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
-            {
-              uri = recordResponse.uri,
-              cid = recordResponse.cid,
-            },
-          };
+              root = root ?? new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+              {
+                uri = recordResponse.uri,
+                cid = recordResponse.cid,
+              },
+              parent = new ATProto.Lexicons.COM.ATProto.Repo.StrongRef()
+              {
+                uri = recordResponse.uri,
+                cid = recordResponse.cid,
+              },
+            };
+          }
         }
       }
 

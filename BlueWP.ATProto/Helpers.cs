@@ -107,12 +107,12 @@ namespace BlueWP.ATProto
         if (response != null)
         {
           facet.features = new List<object>()
-              {
+            {
               new Lexicons.App.BSky.RichText.Facet.Mention()
               {
                 did = response.did,
               }
-              };
+            };
         }
       });
 
@@ -120,24 +120,24 @@ namespace BlueWP.ATProto
       await FindFacet(postText, results, linkRegex, async (facet, matchText) =>
       {
         facet.features = new List<object>()
-            {
+          {
             new Lexicons.App.BSky.RichText.Facet.Link()
             {
               uri = matchText
             }
-            };
+          };
       });
 
       var hashtagRegex = new Regex(@"(#\w+)");
       await FindFacet(postText, results, hashtagRegex, async (facet, matchText) =>
       {
         facet.features = new List<object>()
-            {
+          {
             new Lexicons.App.BSky.RichText.Facet.Tag()
             {
               tag = matchText.Substring(1)
             }
-            };
+          };
       });
 
       return results.Count == 0 ? null : results;
@@ -145,6 +145,10 @@ namespace BlueWP.ATProto
 
     public static async Task FindFacet(string postText, List<Lexicons.App.BSky.RichText.Facet> facets, Regex regex, Func<Lexicons.App.BSky.RichText.Facet, string, Task> perform)
     {
+      if (string.IsNullOrEmpty(postText))
+      {
+        return;
+      }
       var matches = regex.Matches(postText);
       if (matches.Count <= 0)
       {

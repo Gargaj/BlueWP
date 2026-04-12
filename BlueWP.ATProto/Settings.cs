@@ -71,8 +71,6 @@ namespace BlueWP.ATProto
     {
       try
       {
-        var localFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
-
         _accounts.Remove(CurrentAccountSettings);
         SelectedDID = _accounts.Count > 0 ? _accounts[0].Credentials.DID : null;
         if (!await WriteSettings())

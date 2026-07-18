@@ -46,6 +46,8 @@ namespace BlueWP.Inlays
           CurrentUserDID = _app.Client.DID
         }).ToList();
         OnPropertyChanged(nameof(Convos));
+
+        _mainPage.UnreadConvoNotificationCount = Convos.Sum(s => s.ConvoView.unreadCount);
       }
 
       _mainPage?.EndLoading();

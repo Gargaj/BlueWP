@@ -91,12 +91,12 @@ namespace BlueWP.Inlays
         convoId = ID
       });
 
-      await UpdateRead();
-
       if (responseMessages != null)
       {
         AddNewMessages(responseMessages.messages);
       }
+
+      await UpdateRead();
     }
 
     private void AddNewMessages(IEnumerable<object> messageBurst)
@@ -129,10 +129,16 @@ namespace BlueWP.Inlays
 
     private async Task UpdateRead()
     {
-      await _mainPage.Get<ATProto.Lexicons.Chat.BSky.Convo.UpdateRead.Response>(new ATProto.Lexicons.Chat.BSky.Convo.UpdateRead()
+      if (_mainPage.UnreadConvoNotificationCount > 0)
       {
-        convoId = ID
-      });
+        var response = await _mainPage.Post<ATProto.Lexicons.Chat.BSky.Convo.UpdateRead.Response>(new ATProto.Lexicons.Chat.BSky.Convo.UpdateRead()
+        {
+          convoId = ID,
+          messageId = Messages.Last().ID
+        });
+
+        await _mainPage.RefreshConvoNotificationCounter();
+      }
     }
 
     private async void Send_Click(object sender, RoutedEventArgs e)

@@ -159,12 +159,21 @@ namespace BlueWP.Pages
 
     public async Task RefreshNotificationCounters()
     {
+      await RefreshNotificationCounter();
+      await RefreshConvoNotificationCounter();
+    }
+
+    public async Task RefreshNotificationCounter()
+    {
       var unreadCountResponse = await Get<ATProto.Lexicons.App.BSky.Notification.GetUnreadCount.Response>(new ATProto.Lexicons.App.BSky.Notification.GetUnreadCount());
       if (unreadCountResponse != null)
       {
         UnreadNotificationCount = (int)unreadCountResponse.count;
       }
+    }
 
+    public async Task RefreshConvoNotificationCounter()
+    {
       var convoUnreadCountResponse = await Get<ATProto.Lexicons.Chat.BSky.Convo.ListConvos.Response>(new ATProto.Lexicons.Chat.BSky.Convo.ListConvos() {
         limit = 1
       });
@@ -459,6 +468,10 @@ namespace BlueWP.Pages
         {
           TriggerError($"ERROR\n\n{ex?.InnerException?.Message ?? ex?.Message}");
         }
+
+        var timestamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+        var path = Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, $"exception-{timestamp}.txt");
+        File.WriteAllText(path, ex.ToString());
       }
       catch (Exception ex)
       {

@@ -196,6 +196,7 @@ namespace BlueWP.ATProto
 #if DEBUG
           System.Diagnostics.Debug.WriteLine($"[HTTP ERROR {http.Response.StatusCode}] {responseJson}");
 #endif
+          throw new Exception($"[HTTP ERROR {http.Response.StatusCode}] {responseJson}");
         }
       }
 
